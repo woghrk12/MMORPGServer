@@ -1,0 +1,43 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# User-speicifc files
+*.user
+*.userosscache
+*.suo
+*.csprojuser
+*.rsuser
+*.sln.docstates
+
+# Package management
+# NuGet packages
+*.nupkg
+# NuGet project.lock.json files
+project.lock.json
+# .NET Core package artifacts
+project.fragment.lock.json
+artifacts/
+
+# IDE settings
+.vscode/
+.vscode/*
+
+# Rider
+.idea/
+*.sln.iml
+
+# Window files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Log files
+*.log
+
+# Environment variable files
+*.env
+
+# Other
+*.DS_Store
