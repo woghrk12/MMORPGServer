@@ -9,20 +9,20 @@ namespace ServerCore
 
         private Socket listenSocket = null;
 
-        private Action<Socket> acceptedHandler = null;
+        private Func<Session> sessionFactory = null;
 
         #endregion Variables
 
         #region  Methods
 
-        public void Init(IPEndPoint endPoint, Action<Socket> acceptedHandler)
+        public void Init(IPEndPoint endPoint, Func<Session> sessionFactory)
         {
             listenSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             listenSocket.Bind(endPoint);
             listenSocket.Listen(10);
-
-            this.acceptedHandler += acceptedHandler;
+            
+            this.sessionFactory += sessionFactory;
 
             SocketAsyncEventArgs args = new();
 
@@ -35,7 +35,7 @@ namespace ServerCore
         {
             args.AcceptSocket = null;
 
-            if(listenSocket.AcceptAsync(args)) return;
+            if (listenSocket.AcceptAsync(args)) return;
 
             OnAcceptCompleted(null, args);
         }
@@ -46,7 +46,9 @@ namespace ServerCore
         {
             if (args.SocketError == SocketError.Success)
             {
-                acceptedHandler?.Invoke(args.AcceptSocket);
+                Session session = sessionFactory?.Invoke();
+                session.Init(args.AcceptSocket);
+                session.OnConnected(args.AcceptSocket.RemoteEndPoint);
             }
             else
             {
