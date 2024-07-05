@@ -64,6 +64,37 @@ public class {0}
 @"public {0} {1};";
 
         /// <summary>
+        /// {0} : The name of the struct, starting with a capital letter, to be used as the element type of the list. <br/>
+        /// {1} : The name of the struct, starting with a lowercase letter, to be used as the element type of the list. <br/>
+        /// {2} : Member variables. <br/>
+        /// {3} : The logic to read the member variables from the packet. <br/>
+        /// {4} : The logic to write the member variables to the packet. <br/>
+        /// </summary>
+        public static string MEMBER_LIST_FORMAT =
+@"
+public struct {0}
+{{
+    {2}
+
+    public List<{0}> {1}List { private set; get; } = new();
+
+    public void Read(ReadOnlySpan<byte> span, ref ushort count)
+    {{
+        {3}
+    }}
+
+    public bool Write(Span<byte> span, ref ushort count)
+    {{
+        bool isSuccess = true;
+
+        {4}
+
+        return isSuccess;
+    }}
+}}
+";
+
+        /// <summary>
         /// {0} : The name of the member variable to read from the packet. <br/>
         /// {1} : The name of the method to convert a byte array to the type of the member variable. <br/>
         /// {2} : The type of the member variable to read from the packet.
@@ -81,6 +112,22 @@ count += sizeof(ushort);
 this.{0} = Encoding.Unicode.GetString(span.Slice(count, {0}Len));
 count += {0}Len;";
 
+
+        /// <summary>
+        /// {0} : The name of the struct, starting with a capital letter, to be used as the element type of the list. <br/>
+        /// {1} : The name of the struct, starting with a lowercase letter, to be used as the element type of the list. <br/>
+        /// </summary>
+        public static string READ_LIST_FORMAT =
+@"this.{1}List.Clear();
+ushort {1}Len = BitConverter.ToUInt16(span.Slice(count, span.Length - count));
+count += sizeof(ushort);
+for (int index = 0; index < {1}Len; index++)
+{{
+    {0} {1} = new();
+    {1}.Read(span, ref count);
+    {1}List.Add({1});
+}}";
+
         /// <summary>
         /// {0} : The name of the member variable to write to the packet. <br/>
         /// {1} : The type of the member variable to write to the packet.
@@ -97,5 +144,17 @@ count += sizeof({1});";
 isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count, {0}Len));
 count += sizeof(ushort);
 count += {0}Len;";
+
+        /// <summary>
+        /// {0} : The name of the struct, starting with a capital letter, to be used as the element type of the list. <br/>
+        /// {1} : The name of the struct, starting with a lowercase letter, to be used as the element type of the list. <br/>
+        /// </summary>
+        public static string WRITE_LIST_FORMAT =
+@"isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), (ushort)this.{1}List.Count);
+count += sizeof(ushort);
+foreach ({0} {1} in {1}List)
+{{
+    isSuccess &= {1}.Write(span, ref count);
+}}";
     }
 }
