@@ -6,6 +6,41 @@ using System.Threading.Tasks.Sources;
 
 namespace ServerCore
 {
+    public abstract class PacketSession : Session
+    {
+        #region Variables
+
+        private static readonly int HEADER_SIZE = 2;
+
+        #endregion Variables
+
+        #region Methods
+
+        public sealed override int OnReceive(ArraySegment<byte> buffer)
+        {
+            int processLen = 0;
+
+            while (true)
+            {
+                if (buffer.Count < HEADER_SIZE) break;
+
+                ushort dataSize = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
+                if(buffer.Count < dataSize) break;
+
+                OnReceivePacket(new ArraySegment<byte>(buffer.Array, buffer.Offset, dataSize));
+
+                processLen += dataSize;
+                buffer = new ArraySegment<byte>(buffer.Array, buffer.Offset + dataSize, buffer.Count - dataSize);
+            }
+
+            return processLen;
+        }
+
+        public abstract void OnReceivePacket(ArraySegment<byte> buffer);
+
+        #endregion Methods
+    }
+
     public abstract class Session
     {
         #region  Variables
