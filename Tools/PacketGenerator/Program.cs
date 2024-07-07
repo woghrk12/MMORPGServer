@@ -59,7 +59,7 @@ namespace PacketGenerator
             }
 
             Tuple<string, string, string> tuple = ParseMembers(reader);
-            generatedPacket += string.Format(PacketFormat.PACKET_FORMAT, packetName, tuple.Item1, ConvertStringToEnumElementName(packetName), tuple.Item2, tuple.Item3);
+            generatedPacket += string.Format(PacketFormat.PACKET_FORMAT, packetName, tuple.Item1, ConvertStringToEnumElementName(packetName), tuple.Item2, tuple.Item3) + "\n";
             generatedEnumList += string.Format(PacketFormat.PACKET_ENUM_FORMAT, ConvertStringToEnumElementName(packetName), ++packetId) + "\n\t";
         }
 
