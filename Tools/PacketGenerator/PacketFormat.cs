@@ -130,6 +130,13 @@ count += sizeof({2});";
 
         /// <summary>
         /// {0} : The name of the member variable of type string to read from the packet.
+        /// {0} : The name of the member variable to read from the packet. <br/>
+        /// {1} : The type of the member variable to read from the packet. <br/>
+        /// </summary>
+        public static string READ_BYTE_FORMAT =
+@"this.{0} = ({1})segment.Array[segment.Offset + count];
+count += sizeof({1}});";
+
         /// </summary>
         public static string READ_STRING_FORMAT =
 @"ushort {0}Len = BitConverter.ToUInt16(span.Slice(count, span.Length - count));
@@ -163,6 +170,13 @@ count += sizeof({1});";
 
         /// <summary>
         /// {0} : The name of the member variable of type string to write to the packet.
+        /// {0} : The name of the member variable to write to the packet. <br/>
+        /// {1} : The type of the member variable to write to the packet. <br/>
+        /// </summary>
+        public static string WRITE_BYTE_FORMAT =
+@"segment.Array[segment.Offset + count] = (byte)this.{0};
+count += sizeof({1}});";
+
         /// </summary>
         public static string WRITE_STRING_FORMAT =
 @"ushort {0}Len = (ushort)Encoding.Unicode.GetBytes(this.{0}, 0, this.{0}.Length, segment.Array, segment.Offset + count + sizeof(ushort));
