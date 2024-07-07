@@ -1,7 +1,13 @@
 #!/bin/bash
 
+# Navigate to the directory containing the project
+cd ../Tools/PacketGenerator
+
+# build the project
+dotnet build
+
 # Navigate to the directory containing the built executable
-cd ../Tools/PacketGenerator/bin
+cd ./bin
 
 # Execute the C# program
 ./PacketGenerator ../PDL.xml
