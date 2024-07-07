@@ -7,8 +7,7 @@ namespace PacketGenerator
         /// {1} : The classes representing the packet.
         /// </summary>
         public static string FILE_FORMAT =
-@"
-using System;
+@"using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
@@ -32,12 +31,12 @@ public enum EPacketID
         /// <summary>
         /// {0} : The name of the packet to be generated. <br/>
         /// {1} : Member variables. <br/>
-        /// {2} : The logic to read the member variables from the packet. <br/>
-        /// {3} : The logic to write the member variables to the packet. <br/>
+        /// {2} : The element of the enum representing the packet. <br/>
+        /// {3} : The logic to read the member variables from the packet. <br/>
+        /// {4} : The logic to write the member variables to the packet. <br/>
         /// </summary>
         public static string PACKET_FORMAT =
-@"
-public class {0}
+@"public class {0}
 {{
     #region Variables
 
@@ -48,18 +47,18 @@ public class {0}
     #region Methods
 
     public void Read(ArraySegment<byte> segment)
-    {
+    {{
         ushort count = 0;
 
         ReadOnlySpan<byte> span = new ReadOnlySpan<byte>(segment.Array, segment.Offset, segment.Count);
         count += sizeof(ushort);
         count += sizeof(ushort);
 
-        {2}
-    }
+        {3}
+    }}
 
     public ArraySegment<byte> Write()
-    {
+    {{
         ArraySegment<byte> segment = SendBufferHelper.Open(4096);
         ushort count = 0;
         bool isSuccess = true;
@@ -67,17 +66,17 @@ public class {0}
         Span<byte> span = new Span<byte>(segment.Array, segment.Offset, segment.Count);
 
         count += sizeof(ushort);
-        isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), (ushort)PacketID.{0});
+        isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), (ushort)EPacketID.{2});
         count += sizeof(ushort);
 
-        {3}
+        {4}
 
-        isSuccess &= BitConverter.TryWriteBytes(s, count);
+        isSuccess &= BitConverter.TryWriteBytes(span, count);
 
-        if (isSuccess == false) return false;
+        if (isSuccess == false) return null;
 
         return SendBufferHelper.Close(count);
-    }
+    }}
 
     #endregion Methods
 }}
@@ -103,8 +102,6 @@ public struct {0}
 {{
     {2}
 
-    public List<{0}> {1}List { private set; get; } = new();
-
     public void Read(ReadOnlySpan<byte> span, ref ushort count)
     {{
         {3}
@@ -119,7 +116,8 @@ public struct {0}
         return isSuccess;
     }}
 }}
-";
+
+public List<{0}> {1}List {{ private set; get; }} = new();";
 
         /// <summary>
         /// {0} : The name of the member variable to read from the packet. <br/>
@@ -160,7 +158,7 @@ for (int index = 0; index < {1}Len; index++)
         /// {1} : The type of the member variable to write to the packet.
         /// </summary>
         public static string WRITE_FORMAT =
-@"isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), this.{0}));
+@"isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), this.{0});
 count += sizeof({1});";
 
         /// <summary>
@@ -168,7 +166,7 @@ count += sizeof({1});";
         /// </summary>
         public static string WRITE_STRING_FORMAT =
 @"ushort {0}Len = (ushort)Encoding.Unicode.GetBytes(this.{0}, 0, this.{0}.Length, segment.Array, segment.Offset + count + sizeof(ushort));
-isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count, {0}Len));
+isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), {0}Len);
 count += sizeof(ushort);
 count += {0}Len;";
 
