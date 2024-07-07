@@ -4,7 +4,7 @@ namespace PacketGenerator
     {
         /// <summary>
         /// {0} : The enum elements representing the index of the packet. <br/>
-        /// {1} : The classes representing the packet.
+        /// {1} : The classes representing the packet. <br/>
         /// </summary>
         public static string FILE_FORMAT =
 @"using System;
@@ -90,15 +90,15 @@ public enum EPacketID
 @"public {0} {1};";
 
         /// <summary>
-        /// {0} : The name of the struct, starting with a capital letter, to be used as the element type of the list. <br/>
-        /// {1} : The name of the struct, starting with a lowercase letter, to be used as the element type of the list. <br/>
+        /// {0} : The name of the class, starting with a capital letter, to be used as the element type of the list. <br/>
+        /// {1} : The name of the class, starting with a lowercase letter, to be used as the element type of the list. <br/>
         /// {2} : Member variables. <br/>
         /// {3} : The logic to read the member variables from the packet. <br/>
         /// {4} : The logic to write the member variables to the packet. <br/>
         /// </summary>
         public static string MEMBER_LIST_FORMAT =
 @"
-public struct {0}
+public class {0}
 {{
     {2}
 
@@ -122,14 +122,13 @@ public List<{0}> {1}List {{ private set; get; }} = new();";
         /// <summary>
         /// {0} : The name of the member variable to read from the packet. <br/>
         /// {1} : The name of the method to convert a byte array to the type of the member variable. <br/>
-        /// {2} : The type of the member variable to read from the packet.
+        /// {2} : The type of the member variable to read from the packet. <br/>
         /// </summary>
         public static string READ_FORMAT =
 @"this.{0} = BitConverter.{1}(span.Slice(count, span.Length - count));
 count += sizeof({2});";
 
         /// <summary>
-        /// {0} : The name of the member variable of type string to read from the packet.
         /// {0} : The name of the member variable to read from the packet. <br/>
         /// {1} : The type of the member variable to read from the packet. <br/>
         /// </summary>
@@ -137,6 +136,8 @@ count += sizeof({2});";
 @"this.{0} = ({1})segment.Array[segment.Offset + count];
 count += sizeof({1}});";
 
+        /// <summary>
+        /// {0} : The name of the member variable of type string to read from the packet. <br/>
         /// </summary>
         public static string READ_STRING_FORMAT =
 @"ushort {0}Len = BitConverter.ToUInt16(span.Slice(count, span.Length - count));
@@ -162,14 +163,13 @@ for (int index = 0; index < {1}Len; index++)
 
         /// <summary>
         /// {0} : The name of the member variable to write to the packet. <br/>
-        /// {1} : The type of the member variable to write to the packet.
+        /// {1} : The type of the member variable to write to the packet. <br/>
         /// </summary>
         public static string WRITE_FORMAT =
 @"isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), this.{0});
 count += sizeof({1});";
 
         /// <summary>
-        /// {0} : The name of the member variable of type string to write to the packet.
         /// {0} : The name of the member variable to write to the packet. <br/>
         /// {1} : The type of the member variable to write to the packet. <br/>
         /// </summary>
@@ -177,6 +177,8 @@ count += sizeof({1});";
 @"segment.Array[segment.Offset + count] = (byte)this.{0};
 count += sizeof({1}});";
 
+        /// <summary>
+        /// {0} : The name of the member variable of type string to write to the packet. <br/>
         /// </summary>
         public static string WRITE_STRING_FORMAT =
 @"ushort {0}Len = (ushort)Encoding.Unicode.GetBytes(this.{0}, 0, this.{0}.Length, segment.Array, segment.Offset + count + sizeof(ushort));
