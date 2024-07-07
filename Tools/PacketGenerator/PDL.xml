@@ -1,5 +1,12 @@
-<!-- Must start with the packet element -->
 <?xml version="1.0" encoding="utf-8"?>
 <PDL>
+    <!-- Must start with the packet element -->
     <!-- Your packet contents here -->
+    <packet name="FirstTest">
+        <string name="chat"/>
+    </packet>
+    <packet name="SecondTest">
+        <int name="playerId"/>
+        <string name="chat"/>
+    </packet>
 </PDL>
