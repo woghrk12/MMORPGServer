@@ -1,0 +1,5 @@
+<!-- Must start with the packet element -->
+<?xml version="1.0" encoding="utf-8"?>
+<PDL>
+    <!-- Your packet contents here -->
+</PDL>
