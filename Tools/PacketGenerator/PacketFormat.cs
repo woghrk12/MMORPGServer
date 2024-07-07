@@ -3,6 +3,33 @@ namespace PacketGenerator
     public class PacketFormat
     {
         /// <summary>
+        /// {0} : The enum elements representing the index of the packet. <br/>
+        /// {1} : The classes representing the packet.
+        /// </summary>
+        public static string FILE_FORMAT =
+@"
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+using ServerCore;
+
+public enum EPacketID
+{{
+    {0}
+}}
+
+{1}
+";
+
+        /// <summary>
+        /// {0} : The packet name with all letters in uppercase and spaces replaced by underscores. <br/>
+        /// {1} : The index of the packet. <br/>
+        /// </summary>
+        public static string PACKET_ENUM_FORMAT =
+@"{0} = {1},";
+
+        /// <summary>
         /// {0} : The name of the packet to be generated. <br/>
         /// {1} : Member variables. <br/>
         /// {2} : The logic to read the member variables from the packet. <br/>
