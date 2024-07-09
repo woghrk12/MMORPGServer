@@ -50,7 +50,8 @@ namespace ServerCore
 
         private int isDisconnected = 0;
 
-        private object sendLock = new();
+        private object lockObj = new();
+
         private SocketAsyncEventArgs sendArgs = new();
         private Queue<ArraySegment<byte>> sendQueue = new();
         private List<ArraySegment<byte>> pendingList = new();
@@ -77,10 +78,10 @@ namespace ServerCore
 
         public void Send(ArraySegment<byte> sendBuff)
         {
-            lock (sendLock)
+            lock (lockObj)
             {
                 sendQueue.Enqueue(sendBuff);
-                
+
                 if (pendingList.Count == 0)
                 {
                     RegisterSend();
@@ -96,6 +97,17 @@ namespace ServerCore
 
             socket.Shutdown(SocketShutdown.Both);
             socket.Close();
+
+            Clear();
+        }
+
+        private void Clear()
+        {
+            lock (lockObj)
+            {
+                sendQueue.Clear();
+                pendingList.Clear();
+            }
         }
 
         private void RegisterSend()
@@ -153,7 +165,7 @@ namespace ServerCore
 
         private void OnSendCompleted(object sender, SocketAsyncEventArgs args)
         {
-            lock (sendLock)
+            lock (lockObj)
             {
                 if (args.BytesTransferred > 0 && args.SocketError == SocketError.Success)
                 {
