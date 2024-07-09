@@ -5,11 +5,13 @@ namespace Server
 {
     public class PacketHandler
     {
-          
         public static void HandleClientChat(PacketSession session, IPacket packet)
         {
-            throw new NotImplementedException();
-        }
+            ClientChat chatPacket = packet as ClientChat;
+            ClientSession clientSession = session as ClientSession;
 
+            if (ReferenceEquals(clientSession.Room, null) == true) return;
+
+        }
     }
 }
