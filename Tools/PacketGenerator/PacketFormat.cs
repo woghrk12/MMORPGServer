@@ -17,7 +17,7 @@ namespace {0}
     {{
         #region Variables
 
-        private static PacketManager instance = null;
+        private static PacketManager instance = new();
 
         private Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>> receivedPacketHandlerDict = new();
         private Dictionary<ushort, Action<PacketSession, IPacket>> handlerDict = new();
@@ -26,20 +26,18 @@ namespace {0}
 
         #region Properties
 
-        public static PacketManager Instance
-        {{
-            get
-            {{
-                if (ReferenceEquals(instance, null))
-                {{
-                    instance = new PacketManager();
-                }}
-
-                return instance;
-            }}
-        }}
+        public static PacketManager Instance => instance;
 
         #endregion Properties   
+
+        #region Constructor
+
+        public PacketManager()
+        {{
+            Register();
+        }}
+
+        #endregion Constructor
 
         #region Methods
 
