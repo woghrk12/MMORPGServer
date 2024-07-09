@@ -1,7 +1,98 @@
 namespace PacketGenerator
 {
+    /// <summary>
+    /// {0} : The logic to register the packet handler to the manager. <br/>
+    /// </summary>
     public class PacketFormat
     {
+        public static readonly string MANAGER_FORMAT =
+@"using System;
+using System.Collections.Generic;
+using ServerCore;
+
+public class PacketManager
+{{
+    #region Variables
+
+    private static PacketManager instance = null;
+
+    private Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>> receivedPacketHandlerDict = new();
+    private Dictionary<ushort, Action<PacketSession, IPacket>> handlerDict = new();
+
+    #endregion Variables
+
+    #region Properties
+
+    public static PacketManager Instance
+    {{
+        get
+        {{
+            if (ReferenceEquals(instance, null))
+            {{
+                instance = new PacketManager();
+            }}
+
+            return instance;
+        }}
+    }}
+
+    #endregion Properties   
+
+    #region Methods
+
+    public void Register()
+    {{
+        {0}
+    }}
+
+    private void MakePacket<T>(PacketSession session, ArraySegment<byte> buffer) where T : IPacket, new()
+    {{
+        T packet = new();
+        packet.Read(buffer);
+
+        if (handlerDict.TryGetValue(packet.Protocol, out Action<PacketSession, IPacket> action))
+        {{
+            action.Invoke(session, packet);
+        }}
+    }}
+
+    #region Events
+
+    public void OnReceivePacket(PacketSession session, ArraySegment<byte> buffer)
+    {{
+        ushort count = 0;
+
+        ushort size = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
+        count += 2;
+        ushort id = BitConverter.ToUInt16(buffer.Array, buffer.Offset + count);
+        count += 2;
+
+        if (receivedPacketHandlerDict.TryGetValue(id, out Action<PacketSession, ArraySegment<byte>> action))
+        {{
+            action.Invoke(session, buffer);
+        }}
+    }}
+    
+    #endregion Events
+
+    #endregion Methods
+}}
+";
+
+        /// <summary>
+        /// {0} : The classes representing the packet. <br/>
+        /// {1} : The enum elements representing the index of the packet. <br/>
+        /// </summary>
+        public static readonly string MANAGER_CREATE_HANDLER_FORMAT =
+@"receivedPacketHandlerDict.Add((ushort)EPacketID.{1}, MakePacket<{0}>);";
+
+        /// <summary>
+        /// {0} : The classes representing the packet. <br/>
+        /// {1} : The enum elements representing the index of the packet. <br/>
+        /// </summary>
+        public static readonly string MANAGER_REGISTER_HANDLER_FORMAT =
+@"handlerDict.Add((ushort)EPacketID.{1}, PacketHandler.Handle{0});";
+
         /// <summary>
         /// {0} : The enum elements representing the index of the packet. <br/>
         /// {1} : The classes representing the packet. <br/>
@@ -16,6 +107,14 @@ using ServerCore;
 public enum EPacketID
 {{
     {0}
+}}
+
+public interface IPacket
+{{
+    public ushort Protocol {{ get; }}
+
+    public void Read(ArraySegment<byte> segment);
+    public ArraySegment<byte> Write();
 }}
 
 {1}
@@ -36,13 +135,19 @@ public enum EPacketID
         /// {4} : The logic to write the member variables to the packet. <br/>
         /// </summary>
         public static readonly string PACKET_FORMAT =
-@"public class {0}
+@"public class {0} : IPacket
 {{
     #region Variables
 
     {1}
 
     #endregion Variables
+
+    #region Properties
+
+    public ushort Protocol => (ushort)EPacketID.{2};
+
+    #endregion Properties
 
     #region Methods
 

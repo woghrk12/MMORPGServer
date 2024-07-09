@@ -8,6 +8,8 @@ namespace PacketGenerator
         private static ushort packetId = 0;
         private static string generatedEnumList = string.Empty;
 
+        private static string generatedManager = string.Empty;
+
         static void Main(string[] args)
         {
             string pdlPath = "PDL.xml";
@@ -38,6 +40,9 @@ namespace PacketGenerator
 
                 string fileText = string.Format(PacketFormat.FILE_FORMAT, generatedEnumList, generatedPacket);
                 File.WriteAllText("GeneratedPackets.cs", fileText);
+
+                string managerText = string.Format(PacketFormat.MANAGER_FORMAT, generatedManager);
+                File.WriteAllText("PacketManager.cs", managerText);
             }
         }
 
@@ -61,6 +66,9 @@ namespace PacketGenerator
             Tuple<string, string, string> tuple = ParseMembers(reader);
             generatedPacket += string.Format(PacketFormat.PACKET_FORMAT, packetName, tuple.Item1, ConvertStringToEnumElementName(packetName), tuple.Item2, tuple.Item3) + "\n";
             generatedEnumList += string.Format(PacketFormat.PACKET_ENUM_FORMAT, ConvertStringToEnumElementName(packetName), ++packetId) + "\n\t";
+
+            generatedManager += string.Format(PacketFormat.MANAGER_CREATE_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
+            generatedManager += string.Format(PacketFormat.MANAGER_REGISTER_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
         }
 
         private static Tuple<string, string, string> ParseMembers(XmlReader reader)
