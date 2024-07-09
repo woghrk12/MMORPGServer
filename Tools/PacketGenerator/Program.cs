@@ -11,6 +11,9 @@ namespace PacketGenerator
         private static string generatedClientRegister = string.Empty;
         private static string generatedServerRegister = string.Empty;
 
+        private static string generatedClientPacketHandler = string.Empty;
+        private static string generatedServerPacketHandler = string.Empty;
+
         static void Main(string[] args)
         {
             string pdlPath = "PDL.xml";
@@ -42,10 +45,15 @@ namespace PacketGenerator
                 string fileText = string.Format(PacketFormat.FILE_FORMAT, generatedEnumList, generatedPacket);
                 File.WriteAllText("GeneratedPackets.cs", fileText);
 
-                string clientManagerText = string.Format(PacketFormat.MANAGER_FORMAT, generatedClientRegister);
+                string clientManagerText = string.Format(PacketFormat.MANAGER_FORMAT, "DummyClient", generatedClientRegister);
                 File.WriteAllText("ClientPacketManager.cs", clientManagerText);
-                string serverManagerText = string.Format(PacketFormat.MANAGER_FORMAT, generatedServerRegister);
+                string serverManagerText = string.Format(PacketFormat.MANAGER_FORMAT, "Server", generatedServerRegister);
                 File.WriteAllText("ServerPacketManager.cs", serverManagerText);
+
+                string clinetHandlerText = string.Format(PacketFormat.HANDLER_FORMAT, "DummyClient", generatedClientPacketHandler);
+                File.WriteAllText("ClientPacketHandler.cs", clinetHandlerText);
+                string serverHandlerText = string.Format(PacketFormat.HANDLER_FORMAT, "Server", generatedServerPacketHandler);
+                File.WriteAllText("ServerPacketHandler.cs", serverHandlerText);
             }
         }
 
@@ -78,18 +86,21 @@ namespace PacketGenerator
 
             if (usage.Equals("Client") == true || usage.Equals("client") == true)
             {
-                generatedClientRegister += string.Format(PacketFormat.MANAGER_CREATE_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
-                generatedClientRegister += string.Format(PacketFormat.MANAGER_REGISTER_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
+                generatedServerRegister += string.Format(PacketFormat.MANAGER_CREATE_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t\t";
+                generatedServerRegister += string.Format(PacketFormat.MANAGER_REGISTER_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t\t";
+                generatedServerPacketHandler += string.Format(PacketFormat.HANDLE_PACKET_FORMAT, packetName);
             }
             else if (usage.Equals("Server") == true || usage.Equals("server") == true)
             {
-                generatedServerRegister += string.Format(PacketFormat.MANAGER_CREATE_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
-                generatedServerRegister += string.Format(PacketFormat.MANAGER_REGISTER_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
+                generatedClientRegister += string.Format(PacketFormat.MANAGER_CREATE_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t\t";
+                generatedClientRegister += string.Format(PacketFormat.MANAGER_REGISTER_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t\t";
+                generatedClientPacketHandler += string.Format(PacketFormat.HANDLE_PACKET_FORMAT, packetName);
             }
             else
             {
                 throw new Exception($"You need to specify the usage purpose as either server or client. Packet : {packetName}");
             }
+
         }
 
         private static Tuple<string, string, string> ParseMembers(XmlReader reader)

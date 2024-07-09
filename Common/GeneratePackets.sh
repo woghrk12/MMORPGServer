@@ -15,7 +15,9 @@ cd ./bin
 # Copy the C# file to DummyClient folder
 cp GeneratedPackets.cs ../../../DummyClient/Packet
 cp ClientPacketManager.cs ../../../DummyClient/Packet
+cp ClientPacketHandler.cs ../../../DummyClient/Packet
 
 # Copy the C# file to Server folder
 cp GeneratedPackets.cs ../../../Server/Packet
 cp ServerPacketManager.cs ../../../Server/Packet
+cp ServerPacketHandler.cs ../../../Server/Packet

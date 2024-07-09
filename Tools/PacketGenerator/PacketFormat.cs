@@ -1,81 +1,85 @@
 namespace PacketGenerator
 {
-    /// <summary>
-    /// {0} : The logic to register the packet handler to the manager. <br/>
-    /// </summary>
     public class PacketFormat
     {
+        /// <summary>
+        /// {0} : The usage of the manager class. (server or client) <br/>
+        /// {1} : The logic to register the packet handler to the manager. <br/>
+        /// </summary>
         public static readonly string MANAGER_FORMAT =
 @"using System;
 using System.Collections.Generic;
 using ServerCore;
 
-public class PacketManager
+namespace {0}
 {{
-    #region Variables
-
-    private static PacketManager instance = null;
-
-    private Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>> receivedPacketHandlerDict = new();
-    private Dictionary<ushort, Action<PacketSession, IPacket>> handlerDict = new();
-
-    #endregion Variables
-
-    #region Properties
-
-    public static PacketManager Instance
+    public class PacketManager
     {{
-        get
+        #region Variables
+
+        private static PacketManager instance = null;
+
+        private Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>> receivedPacketHandlerDict = new();
+        private Dictionary<ushort, Action<PacketSession, IPacket>> handlerDict = new();
+
+        #endregion Variables
+
+        #region Properties
+
+        public static PacketManager Instance
         {{
-            if (ReferenceEquals(instance, null))
+            get
             {{
-                instance = new PacketManager();
+                if (ReferenceEquals(instance, null))
+                {{
+                    instance = new PacketManager();
+                }}
+
+                return instance;
             }}
-
-            return instance;
         }}
-    }}
 
-    #endregion Properties   
+        #endregion Properties   
 
-    #region Methods
+        #region Methods
 
-    public void Register()
-    {{
-        {0}
-    }}
-
-    private void MakePacket<T>(PacketSession session, ArraySegment<byte> buffer) where T : IPacket, new()
-    {{
-        T packet = new();
-        packet.Read(buffer);
-
-        if (handlerDict.TryGetValue(packet.Protocol, out Action<PacketSession, IPacket> action))
+        public void Register()
         {{
-            action.Invoke(session, packet);
+            {1}
         }}
-    }}
 
-    #region Events
-
-    public void OnReceivePacket(PacketSession session, ArraySegment<byte> buffer)
-    {{
-        ushort count = 0;
-
-        ushort size = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
-        count += 2;
-        ushort id = BitConverter.ToUInt16(buffer.Array, buffer.Offset + count);
-        count += 2;
-
-        if (receivedPacketHandlerDict.TryGetValue(id, out Action<PacketSession, ArraySegment<byte>> action))
+        private void MakePacket<T>(PacketSession session, ArraySegment<byte> buffer) where T : IPacket, new()
         {{
-            action.Invoke(session, buffer);
+            T packet = new();
+            packet.Read(buffer);
+
+            if (handlerDict.TryGetValue(packet.Protocol, out Action<PacketSession, IPacket> action))
+            {{
+                action.Invoke(session, packet);
+            }}
         }}
-    }}
+
+        #region Events
+
+        public void OnReceivePacket(PacketSession session, ArraySegment<byte> buffer)
+        {{
+            ushort count = 0;
+
+            ushort size = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
+            count += 2;
+            ushort id = BitConverter.ToUInt16(buffer.Array, buffer.Offset + count);
+            count += 2;
+
+            if (receivedPacketHandlerDict.TryGetValue(id, out Action<PacketSession, ArraySegment<byte>> action))
+            {{
+                action.Invoke(session, buffer);
+            }}
+        }}
     
-    #endregion Events
+        #endregion Events
 
-    #endregion Methods
+        #endregion Methods
+    }}
 }}
 ";
 
@@ -92,6 +96,34 @@ public class PacketManager
         /// </summary>
         public static readonly string MANAGER_REGISTER_HANDLER_FORMAT =
 @"handlerDict.Add((ushort)EPacketID.{1}, PacketHandler.Handle{0});";
+
+        /// <summary>
+        /// {0} : The usage of the manager class. (server or client) <br/>
+        /// {1} : The logic to handle the registered packets. <br/>
+        /// </summary>
+        public static readonly string HANDLER_FORMAT =
+@"using System;
+using ServerCore;
+
+namespace {0}
+{{
+    public class PacketHandler
+    {{
+        {1}
+    }}
+}}
+";
+
+        /// <summary>
+        /// {0} : The name of the packet to be handled. <br/>
+        /// </summary>
+        public static readonly string HANDLE_PACKET_FORMAT =
+@"  
+        public static void Handle{0}(PacketSession session, IPacket packet)
+        {{
+            throw new NotImplementedException();
+        }}
+";
 
         /// <summary>
         /// {0} : The enum elements representing the index of the packet. <br/>
