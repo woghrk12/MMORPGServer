@@ -36,8 +36,8 @@ namespace DummyClient
 
         public void Register()
         {
-            receivedPacketHandlerDict.Add((ushort)EPacketID.CHAT, MakePacket<Chat>);
-			handlerDict.Add((ushort)EPacketID.CHAT, PacketHandler.HandleChat);
+            receivedPacketHandlerDict.Add((ushort)EPacketID.SERVER_CHAT, MakePacket<ServerChat>);
+			handlerDict.Add((ushort)EPacketID.SERVER_CHAT, PacketHandler.HandleServerChat);
 			
         }
 

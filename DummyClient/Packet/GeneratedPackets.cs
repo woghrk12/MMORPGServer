@@ -6,8 +6,8 @@ using ServerCore;
 
 public enum EPacketID
 {
-    CHAT = 1,
-	CHAT = 2,
+    CLIENT_CHAT = 1,
+	SERVER_CHAT = 2,
 	
 }
 
@@ -19,7 +19,7 @@ public interface IPacket
     public ArraySegment<byte> Write();
 }
 
-public class Chat : IPacket
+public class ClientChat : IPacket
 {
     #region Variables
 
@@ -29,7 +29,7 @@ public class Chat : IPacket
 
     #region Properties
 
-    public ushort Protocol => (ushort)EPacketID.CHAT;
+    public ushort Protocol => (ushort)EPacketID.CLIENT_CHAT;
 
     #endregion Properties
 
@@ -58,7 +58,7 @@ public class Chat : IPacket
         Span<byte> span = new Span<byte>(segment.Array, segment.Offset, segment.Count);
 
         count += sizeof(ushort);
-        isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), (ushort)EPacketID.CHAT);
+        isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), (ushort)EPacketID.CLIENT_CHAT);
         count += sizeof(ushort);
 
         ushort chatLen = (ushort)Encoding.Unicode.GetBytes(this.chat, 0, this.chat.Length, segment.Array, segment.Offset + count + sizeof(ushort));
@@ -76,7 +76,7 @@ public class Chat : IPacket
     #endregion Methods
 }
 
-public class Chat : IPacket
+public class ServerChat : IPacket
 {
     #region Variables
 
@@ -87,7 +87,7 @@ public class Chat : IPacket
 
     #region Properties
 
-    public ushort Protocol => (ushort)EPacketID.CHAT;
+    public ushort Protocol => (ushort)EPacketID.SERVER_CHAT;
 
     #endregion Properties
 
@@ -118,7 +118,7 @@ public class Chat : IPacket
         Span<byte> span = new Span<byte>(segment.Array, segment.Offset, segment.Count);
 
         count += sizeof(ushort);
-        isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), (ushort)EPacketID.CHAT);
+        isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), (ushort)EPacketID.SERVER_CHAT);
         count += sizeof(ushort);
 
         isSuccess &= BitConverter.TryWriteBytes(span.Slice(count, span.Length - count), this.playerId);

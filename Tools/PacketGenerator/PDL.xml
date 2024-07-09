@@ -2,10 +2,10 @@
 <PDL>
     <!-- Must start with the packet element -->
     <!-- Your packet contents here -->
-    <packet name="Chat" usage="Client">
+    <packet name="ClientChat" usage="Client">
         <string name="chat"/>
     </packet>
-    <packet name="Chat" usage="Server">
+    <packet name="ServerChat" usage="Server">
         <int name="playerId"/>
         <string name="chat"/>
     </packet>

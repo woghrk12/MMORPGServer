@@ -6,7 +6,7 @@ namespace DummyClient
     public class PacketHandler
     {
           
-        public static void HandleChat(PacketSession session, IPacket packet)
+        public static void HandleServerChat(PacketSession session, IPacket packet)
         {
             throw new NotImplementedException();
         }

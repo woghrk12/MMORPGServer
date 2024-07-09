@@ -36,8 +36,8 @@ namespace Server
 
         public void Register()
         {
-            receivedPacketHandlerDict.Add((ushort)EPacketID.CHAT, MakePacket<Chat>);
-			handlerDict.Add((ushort)EPacketID.CHAT, PacketHandler.HandleChat);
+            receivedPacketHandlerDict.Add((ushort)EPacketID.CLIENT_CHAT, MakePacket<ClientChat>);
+			handlerDict.Add((ushort)EPacketID.CLIENT_CHAT, PacketHandler.HandleClientChat);
 			
         }
 
