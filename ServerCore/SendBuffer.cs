@@ -33,7 +33,7 @@ namespace ServerCore
         }
 
         #endregion Methods
-    } 
+    }
 
     public class SendBuffer
     {
@@ -41,7 +41,7 @@ namespace ServerCore
 
         private byte[] buffer = null;
 
-        private int usedSize = -1;
+        private int usedSize = 0;
 
         #endregion Variables
 

@@ -6,8 +6,8 @@ namespace ServerCore
 
         private ArraySegment<byte> buffer = null;
 
-        private int readPos = -1;
-        private int writePos = -1;
+        private int readPos = 0;
+        private int writePos = 0;
 
         #endregion Variables
 
