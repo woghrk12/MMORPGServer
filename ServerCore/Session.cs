@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Intrinsics.Arm;
@@ -25,7 +26,7 @@ namespace ServerCore
                 if (buffer.Count < HEADER_SIZE) break;
 
                 ushort dataSize = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
-                if(buffer.Count < dataSize) break;
+                if (buffer.Count < dataSize) break;
 
                 OnReceivePacket(new ArraySegment<byte>(buffer.Array, buffer.Offset, dataSize));
 
@@ -99,33 +100,51 @@ namespace ServerCore
 
         private void RegisterSend()
         {
+            if (isDisconnected == 1) return;
+
             while (sendQueue.Count > 0)
             {
                 ArraySegment<byte> buff = sendQueue.Dequeue();
                 pendingList.Add(buff);
             }
 
-            if (socket.SendAsync(sendArgs)) return;
+            try
+            {
+                if (socket.SendAsync(sendArgs)) return;
 
-            OnSendCompleted(null, sendArgs);
+                OnSendCompleted(null, sendArgs);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"RegisterSend Failed. {e}");
+            }
         }
 
         private void RegisterRecv()
         {
+            if (isDisconnected == 1) return;
+
             recvBuffer.Clear();
 
             ArraySegment<byte> segment = recvBuffer.WriteSegment;
             recvArgs.SetBuffer(segment.Array, segment.Offset, segment.Count);
 
-            if (socket.ReceiveAsync(recvArgs)) return;
+            try
+            {
+                if (socket.ReceiveAsync(recvArgs)) return;
 
-            OnRecvCompleted(null, recvArgs);
+                OnRecvCompleted(null, recvArgs);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"RegisterRecv Failed. {e}");
+            }
         }
 
         #region Events
 
         public abstract void OnConnected(EndPoint endPoint);
-       
+
         public abstract void OnSend(int numBytes);
 
         public abstract int OnReceive(ArraySegment<byte> buffer);
