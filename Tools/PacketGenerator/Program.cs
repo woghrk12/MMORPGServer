@@ -8,7 +8,8 @@ namespace PacketGenerator
         private static ushort packetId = 0;
         private static string generatedEnumList = string.Empty;
 
-        private static string generatedManager = string.Empty;
+        private static string generatedClientRegister = string.Empty;
+        private static string generatedServerRegister = string.Empty;
 
         static void Main(string[] args)
         {
@@ -41,8 +42,10 @@ namespace PacketGenerator
                 string fileText = string.Format(PacketFormat.FILE_FORMAT, generatedEnumList, generatedPacket);
                 File.WriteAllText("GeneratedPackets.cs", fileText);
 
-                string managerText = string.Format(PacketFormat.MANAGER_FORMAT, generatedManager);
-                File.WriteAllText("PacketManager.cs", managerText);
+                string clientManagerText = string.Format(PacketFormat.MANAGER_FORMAT, generatedClientRegister);
+                File.WriteAllText("ClientPacketManager.cs", clientManagerText);
+                string serverManagerText = string.Format(PacketFormat.MANAGER_FORMAT, generatedServerRegister);
+                File.WriteAllText("ServerPacketManager.cs", serverManagerText);
             }
         }
 
@@ -63,12 +66,30 @@ namespace PacketGenerator
                 return;
             }
 
+            string usage = reader["usage"];
+            if (string.IsNullOrEmpty(usage))
+            {
+                throw new Exception($"There is no \"usage\" element. You need to add a \"usage\" element as either server or client. Packet : {packetName}");
+            }
+
             Tuple<string, string, string> tuple = ParseMembers(reader);
             generatedPacket += string.Format(PacketFormat.PACKET_FORMAT, packetName, tuple.Item1, ConvertStringToEnumElementName(packetName), tuple.Item2, tuple.Item3) + "\n";
             generatedEnumList += string.Format(PacketFormat.PACKET_ENUM_FORMAT, ConvertStringToEnumElementName(packetName), ++packetId) + "\n\t";
 
-            generatedManager += string.Format(PacketFormat.MANAGER_CREATE_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
-            generatedManager += string.Format(PacketFormat.MANAGER_REGISTER_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
+            if (usage.Equals("Client") == true || usage.Equals("client") == true)
+            {
+                generatedClientRegister += string.Format(PacketFormat.MANAGER_CREATE_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
+                generatedClientRegister += string.Format(PacketFormat.MANAGER_REGISTER_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
+            }
+            else if (usage.Equals("Server") == true || usage.Equals("server") == true)
+            {
+                generatedServerRegister += string.Format(PacketFormat.MANAGER_CREATE_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
+                generatedServerRegister += string.Format(PacketFormat.MANAGER_REGISTER_HANDLER_FORMAT, packetName, ConvertStringToEnumElementName(packetName)) + "\n\t\t";
+            }
+            else
+            {
+                throw new Exception($"You need to specify the usage purpose as either server or client. Packet : {packetName}");
+            }
         }
 
         private static Tuple<string, string, string> ParseMembers(XmlReader reader)
