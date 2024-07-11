@@ -58,7 +58,7 @@ namespace ServerCore
 
         private SocketAsyncEventArgs recvArgs = new();
 
-        private RecvBuffer recvBuffer = new RecvBuffer(1024);
+        private RecvBuffer recvBuffer = new RecvBuffer(65535);
 
         #endregion Variables
 

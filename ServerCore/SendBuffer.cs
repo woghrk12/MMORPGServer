@@ -6,7 +6,7 @@ namespace ServerCore
 
         public static ThreadLocal<SendBuffer> CurrentBuffer { set; get; } = new(() => { return null; });
 
-        public static int ChunckSize { set; get; } = 4096;
+        public static int ChunckSize { set; get; } = 65535 * 100;
 
         #endregion Properties
 
