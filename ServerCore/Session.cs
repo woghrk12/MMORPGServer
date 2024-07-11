@@ -89,6 +89,24 @@ namespace ServerCore
             }
         }
 
+        public void Send(List<ArraySegment<byte>> sendBuffList)
+        {
+            if (sendBuffList.Count == 0) return;
+
+            lock (lockObj)
+            {
+                foreach (ArraySegment<byte> sendBuff in sendBuffList)
+                {
+                    sendQueue.Enqueue(sendBuff);
+                }
+
+                if (pendingList.Count == 0)
+                {
+                    RegisterSend();
+                }
+            }
+        }
+
         public void Disconnect()
         {
             if (Interlocked.Exchange(ref isDisconnected, 1) == 1) return;
