@@ -15,20 +15,22 @@ namespace ServerCore
 
         #region  Methods
 
-        public void Init(IPEndPoint endPoint, Func<Session> sessionFactory)
+        public void Init(IPEndPoint endPoint, Func<Session> sessionFactory, int register = 10, int backlog = 100)
         {
             listenSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-            listenSocket.Bind(endPoint);
-            listenSocket.Listen(10);
-            
             this.sessionFactory += sessionFactory;
 
-            SocketAsyncEventArgs args = new();
+            listenSocket.Bind(endPoint);
 
-            args.Completed += new EventHandler<SocketAsyncEventArgs>(OnAcceptCompleted);
+            // Backlog : the maximum number of clients requesting connection to the server
+            listenSocket.Listen(backlog);
 
-            RegisterAccept(args);
+            for (int index = 0; index < register; index++)
+            {
+                SocketAsyncEventArgs args = new();
+                args.Completed += new EventHandler<SocketAsyncEventArgs>(OnAcceptCompleted);
+                RegisterAccept(args);
+            }
         }
 
         private void RegisterAccept(SocketAsyncEventArgs args)
