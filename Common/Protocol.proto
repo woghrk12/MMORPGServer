@@ -1,0 +1,21 @@
+syntax = "proto3";
+package tutorial;
+
+option csharp_namespace = "Google.Protobuf.Protocol";
+
+enum EMessageID
+{
+    PLAYER_MOVE_REQUEST = 0;
+    PLAYER_MOVE_BRODCAST = 1;
+}
+
+message PlayerMoveRequest
+{
+    int32 direction = 1;
+}
+
+message PlayerMoveBrodcast
+{
+    int32 playerID = 1;
+    int32 direction = 2;
+}
