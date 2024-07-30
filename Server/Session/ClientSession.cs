@@ -1,7 +1,4 @@
 using System.Net;
-using System.Runtime.InteropServices;
-using Google.Protobuf;
-using Google.Protobuf.Protocol;
 using ServerCore;
 
 namespace Server
@@ -30,22 +27,6 @@ namespace Server
         public override void OnConnected(EndPoint endPoint)
         {
             Console.WriteLine($"Session ID : {SessionID}\nOnConnected : {endPoint}");
-
-            // Proto Test
-            PlayerMoveBrodcast packet = new PlayerMoveBrodcast()
-            {
-                PlayerID = SessionID,
-                Direction = 1
-            };
-
-            ushort size = (ushort)packet.CalculateSize();
-            byte[] sendBuffer = new byte[size + 4];
-            Array.Copy(BitConverter.GetBytes(size + 4), 0, sendBuffer, 0, sizeof(ushort));
-            ushort protocolID = (ushort)EMessageID.PlayerMoveBrodcast;
-            Array.Copy(BitConverter.GetBytes(protocolID), 0, sendBuffer, 2, sizeof(ushort));
-            Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);
-
-            Send(new ArraySegment<byte>(sendBuffer));
         }
 
         public override void OnDisconnected(EndPoint endPoint)
