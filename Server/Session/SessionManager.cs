@@ -31,8 +31,6 @@ namespace Server
                 ClientSession session = new(++sessionID);
                 sessionDict.Add(session.SessionID, session);
 
-                Console.WriteLine($"Connected : {session.SessionID}");
-
                 return session;
             }
         }

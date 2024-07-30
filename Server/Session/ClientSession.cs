@@ -29,7 +29,8 @@ namespace Server
 
         public override void OnConnected(EndPoint endPoint)
         {
-            Console.WriteLine($"OnConnected : {endPoint}");
+            Console.WriteLine($"Session ID : {SessionID}\nOnConnected : {endPoint}");
+
             // Proto Test
             PlayerMoveBrodcast packet = new PlayerMoveBrodcast()
             {
@@ -51,7 +52,7 @@ namespace Server
         {
             SessionManager.Instance.Remove(this);
 
-            Console.WriteLine($"OnDisconnected : {endPoint}");
+            Console.WriteLine($"Session ID : {SessionID}\nOnDisconnected : {endPoint}");
         }
 
         public override void OnReceivePacket(ArraySegment<byte> buffer)
