@@ -138,6 +138,8 @@ namespace ServerCore
                 pendingList.Add(buff);
             }
 
+            sendArgs.BufferList = pendingList;
+
             try
             {
                 if (socket.SendAsync(sendArgs)) return;
