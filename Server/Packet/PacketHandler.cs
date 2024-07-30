@@ -10,7 +10,10 @@ namespace Server
     {
         public static void HandlePlayerMoveRequest(PacketSession session, IMessage message)
         {
+            PlayerMoveRequest packet = message as PlayerMoveRequest;
+            ClientSession clientSession = session as ClientSession;
 
+            Console.WriteLine(packet.Direction);
         }
     }
 }
