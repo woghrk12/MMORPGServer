@@ -68,8 +68,6 @@ namespace ServerCore
         {
             this.socket = socket;
 
-            SocketAsyncEventArgs recvArgs = new();
-
             recvArgs.Completed += new EventHandler<SocketAsyncEventArgs>(OnRecvCompleted);
             sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(OnSendCompleted);
 
