@@ -45,3 +45,6 @@ $RECYCLE.BIN/
 # Resource Data
 [Rr]esources/
 DummyClient/
+
+# Executable files
+*.exe
