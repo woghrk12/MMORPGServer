@@ -11,7 +11,7 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.27.2" />
+    <PackageReference Include="Google.Protobuf" Version="3.27.3" />
   </ItemGroup>
 
 </Project>
