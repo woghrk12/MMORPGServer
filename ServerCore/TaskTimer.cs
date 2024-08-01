@@ -1,6 +1,3 @@
-using System;
-using System.Net.Http.Headers;
-
 namespace ServerCore
 {
     public struct TaskTimerElement : IComparable<TaskTimerElement>
