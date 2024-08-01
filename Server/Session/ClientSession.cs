@@ -1,5 +1,7 @@
+using Google.Protobuf;
 using System.Net;
 using ServerCore;
+using Google.Protobuf.Protocol;
 
 namespace Server
 {
@@ -21,6 +23,20 @@ namespace Server
         #endregion Constructor
 
         #region Methods
+
+        public void Send(IMessage packet)
+        {
+            string packetName = packet.Descriptor.Name;
+            EMessageID packetID = (EMessageID)Enum.Parse(typeof(EMessageID), packetName);
+            ushort size = (ushort)packet.CalculateSize();
+            byte[] sendBuffer = new byte[size + 4];
+
+            Array.Copy(BitConverter.GetBytes(size + 4), 0, sendBuffer, 0, sizeof(ushort));
+            Array.Copy(BitConverter.GetBytes((ushort)packetID), 0, sendBuffer, 2, sizeof(ushort));
+            Array.Copy(packet.ToByteArray(), 0, sendBuffer, 4, size);
+
+            Send(new ArraySegment<byte>(sendBuffer));
+        }
 
         #region Events
 
