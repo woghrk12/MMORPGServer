@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace ServerCore
+namespace Server
 {
     public class Listener
     {
@@ -9,13 +9,13 @@ namespace ServerCore
 
         private Socket listenSocket = null;
 
-        private Func<Session> sessionFactory = null;
+        private Func<ClientSession> sessionFactory = null;
 
         #endregion Variables
 
         #region  Methods
 
-        public void Init(IPEndPoint endPoint, Func<Session> sessionFactory, int register = 10, int backlog = 100)
+        public void Init(IPEndPoint endPoint, Func<ClientSession> sessionFactory, int register = 10, int backlog = 100)
         {
             listenSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             this.sessionFactory += sessionFactory;
@@ -48,9 +48,8 @@ namespace ServerCore
         {
             if (args.SocketError == SocketError.Success)
             {
-                Session session = sessionFactory?.Invoke();
+                ClientSession session = sessionFactory?.Invoke();
                 session.Init(args.AcceptSocket);
-                session.OnConnected(args.AcceptSocket.RemoteEndPoint);
             }
             else
             {

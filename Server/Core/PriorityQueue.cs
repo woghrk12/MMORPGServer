@@ -1,4 +1,4 @@
-namespace ServerCore
+namespace Server
 {
     public class PriorityQueue<T> where T : IComparable<T>
     {

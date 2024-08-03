@@ -1,4 +1,4 @@
-namespace ServerCore
+namespace Server
 {
     public interface ITaskQueue
     {

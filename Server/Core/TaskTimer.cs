@@ -1,4 +1,4 @@
-namespace ServerCore
+namespace Server
 {
     public struct TaskTimerElement : IComparable<TaskTimerElement>
     {
@@ -49,7 +49,7 @@ namespace ServerCore
         {
             while (true)
             {
-                int now = System.Environment.TickCount;
+                int now = Environment.TickCount;
 
                 TaskTimerElement task;
 

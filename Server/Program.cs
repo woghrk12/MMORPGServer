@@ -1,7 +1,5 @@
 using System.Net;
 
-using ServerCore;
-
 namespace Server
 {
     public class Program
@@ -18,7 +16,7 @@ namespace Server
             IPAddress ipAddr = IPAddress.Parse(GlobalDefine.IP_ADDRESS);
             IPEndPoint endPoint = new IPEndPoint(ipAddr, GlobalDefine.PORT_NUMBER);
 
-            listener.Init(endPoint, () => { return SessionManager.Instance.Generate(); });
+            listener.Init(endPoint, SessionManager.Instance.Generate);
             Console.WriteLine("Listening...");
 
             while (true)
