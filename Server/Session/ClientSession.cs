@@ -161,9 +161,11 @@ namespace Server
 
         private void OnDisconnected(EndPoint endPoint)
         {
+            Console.WriteLine($"Session ID : {SessionID}\nOnDisconnected : {endPoint}");
+
             SessionManager.Instance.Remove(this);
 
-            Console.WriteLine($"Session ID : {SessionID}\nOnDisconnected : {endPoint}");
+            RoomManager.Instance.Find(1).LeaveRoom(Player.Info.PlayerID);
         }
 
         private int OnReceive(ArraySegment<byte> buffer)
