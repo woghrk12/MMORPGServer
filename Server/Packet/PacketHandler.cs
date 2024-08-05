@@ -5,11 +5,9 @@ namespace Server
 {
     public class PacketHandler
     {
-        public static void HandlePlayerMoveRequest(ClientSession session, IMessage message)
+        public static void HandleCreatureMoveRequest(ClientSession session, IMessage message)
         {
-            PlayerMoveRequest packet = message as PlayerMoveRequest;
-
-            Console.WriteLine(packet.Direction);
+            CreatureMoveRequest packet = message as CreatureMoveRequest;
         }
     }
 }
