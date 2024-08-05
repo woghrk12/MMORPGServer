@@ -1,4 +1,5 @@
 using System.Net;
+using Server.Game;
 
 namespace Server
 {
@@ -12,6 +13,8 @@ namespace Server
 
         private static void Main(string[] args)
         {
+            RoomManager.Instance.Add();
+
             // DNS (Domain Name System)
             IPAddress ipAddr = IPAddress.Parse(GlobalDefine.IP_ADDRESS);
             IPEndPoint endPoint = new IPEndPoint(ipAddr, GlobalDefine.PORT_NUMBER);
