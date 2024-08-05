@@ -1,5 +1,6 @@
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
+using Server.Game;
 using System.Net;
 using System.Net.Sockets;
 
@@ -29,6 +30,8 @@ namespace Server
         #region Properties
 
         public int SessionID { private set; get; }
+
+        public Player Player { private set; get; }
 
         #endregion Properties
 
@@ -145,6 +148,15 @@ namespace Server
         private void OnConnected(EndPoint endPoint)
         {
             Console.WriteLine($"Session ID : {SessionID}\nOnConnected : {endPoint}");
+
+            Player = PlayerManager.Instance.Add();
+
+            Player.Info.Name = $"Player_{Player.Info.PlayerID}";
+            Player.Info.PosX = 0;
+            Player.Info.PosY = 0;
+            Player.Session = this;
+
+            RoomManager.Instance.Find(1).EnterRoom(Player);
         }
 
         private void OnDisconnected(EndPoint endPoint)
