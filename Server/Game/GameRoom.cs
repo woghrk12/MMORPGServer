@@ -30,30 +30,23 @@ namespace Server.Game
                 newPlayer.Room = this;
 
                 {
-                    PlayerEnterBrodcast packet = new();
+                    PlayerEnteredRoomResponse packet = new();
 
-                    packet.Player = newPlayer.Info;
-
-                    newPlayer.Session.Send(packet);
-                }
-
-                {
-                    CreatureSpawnBrodcast packet = new();
-
+                    packet.MyInfo = newPlayer.Info;
                     foreach (Player player in playerList)
                     {
                         if (newPlayer.Info.PlayerID == player.Info.PlayerID) continue;
 
-                        packet.Players.Add(player.Info);
+                        packet.OtherPlayers.Add(player.Info);
                     }
 
                     newPlayer.Session.Send(packet);
                 }
 
                 {
-                    CreatureSpawnBrodcast packet = new();
+                    PlayerEnteredRoomBrodcast packet = new();
 
-                    packet.Players.Add(newPlayer.Info);
+                    packet.NewPlayer = newPlayer.Info;
 
                     foreach (Player player in playerList)
                     {
@@ -77,15 +70,15 @@ namespace Server.Game
                 leftPlayer.Room = null;
 
                 {
-                    PlayerLeaveBrodcast packet = new();
+                    PlayerLeftRoomResponse packet = new();
 
                     leftPlayer.Session.Send(packet);
                 }
 
                 {
-                    CreatureDespawnBrodcast packet = new();
+                    PlayerLeftRoomBrodcast packet = new();
 
-                    packet.PlayerIDs.Add(leftPlayer.Info.PlayerID);
+                    packet.OtherPlayerID = leftPlayer.Info.PlayerID;
 
                     foreach (Player player in playerList)
                     {
