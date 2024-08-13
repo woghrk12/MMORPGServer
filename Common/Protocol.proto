@@ -54,15 +54,26 @@ message CreatureDespawnedBrodcast
     repeated int32 oldObjectIDs = 1;
 }
 
+enum EMoveDirection
+{
+    NONE = 0;
+    UP = 1;
+    DOWN = 2;
+    LEFT = 3;
+    RIGHT = 4;
+}
+
 message CreatureMoveRequest
 {
-    int32 posX = 1;
-    int32 posY = 2;
+    EMoveDirection moveDirection = 1;
+    int32 posX = 2;
+    int32 posY = 3;
 }
 
 message CreatureMoveBrodcast
 {
-    int32 playerID = 1;
-    int32 posX = 2;
-    int32 posY = 3;
+    int32 creatureID = 1;
+    EMoveDirection moveDirection = 2;
+    int32 posX = 3;
+    int32 posY = 4;
 }
