@@ -1,3 +1,4 @@
+using Google.Protobuf;
 using Google.Protobuf.Protocol;
 
 namespace Server.Game
@@ -84,6 +85,17 @@ namespace Server.Game
                     {
                         player.Session.Send(packet);
                     }
+                }
+            }
+        }
+
+        public void Brodcast(IMessage packet)
+        {
+            lock (lockObj)
+            {
+                foreach (Player player in playerList)
+                {
+                    player.Session.Send(packet);
                 }
             }
         }
