@@ -63,6 +63,13 @@ enum EMoveDirection
     RIGHT = 4;
 }
 
+message CreatureMoveCompletedNotify
+{
+    int32 creatureID = 1;
+    int32 posX = 2;
+    int32 posY = 3;
+}
+
 message CreatureMoveRequest
 {
     EMoveDirection moveDirection = 1;
