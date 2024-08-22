@@ -77,9 +77,10 @@ namespace Server.Game
                 }
 
                 {
-                    PlayerLeftRoomBrodcast packet = new();
-
-                    packet.OtherPlayerID = leftPlayer.Info.PlayerID;
+                    PlayerLeftRoomBrodcast packet = new()
+                    {
+                        OtherPlayerID = leftPlayer.Info.PlayerID
+                    };
 
                     foreach (Player player in playerList)
                     {
@@ -125,12 +126,13 @@ namespace Server.Game
                         break;
                 }
 
-                CreatureMoveBrodcast creatureMoveBrodcastPacket = new();
-
-                creatureMoveBrodcastPacket.CreatureID = player.Info.PlayerID;
-                creatureMoveBrodcastPacket.MoveDirection = moveDirection;
-                creatureMoveBrodcastPacket.PosX = info.PosX;
-                creatureMoveBrodcastPacket.PosY = info.PosY;
+                CreatureMoveBrodcast creatureMoveBrodcastPacket = new()
+                {
+                    CreatureID = player.Info.PlayerID,
+                    MoveDirection = moveDirection,
+                    PosX = info.PosX,
+                    PosY = info.PosY
+                };
 
                 Brodcast(creatureMoveBrodcastPacket);
             }
