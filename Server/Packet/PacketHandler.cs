@@ -1,5 +1,6 @@
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
+using Server.Game;
 
 namespace Server
 {
@@ -11,35 +12,13 @@ namespace Server
 
             Console.WriteLine($"CreatureMoveRequest. Session ID : {session.SessionID} ({packet.PosX}, {packet.PosY}, {packet.MoveDirection})");
 
-            if (ReferenceEquals(session.Player, null) == true) return;
-            if (ReferenceEquals(session.Player.Room, null) == true) return;
+            Player player = session.Player;
+            if (ReferenceEquals(player, null) == true) return;
 
-            // TODO : Verify if the transmitted packet is valid.
+            GameRoom room = player.Room;
+            if (ReferenceEquals(room, null) == true) return;
 
-            PlayerInfo info = session.Player.Info;
-            switch (packet.MoveDirection)
-            {
-                case EMoveDirection.Up:
-                    info.PosY += 1;
-                    break;
-                case EMoveDirection.Down:
-                    info.PosY -= 1;
-                    break;
-                case EMoveDirection.Left:
-                    info.PosX -= 1;
-                    break;
-                case EMoveDirection.Right:
-                    info.PosX += 1;
-                    break;
-            }
-
-            CreatureMoveBrodcast creatureMoveBrodcastPacket = new();
-            creatureMoveBrodcastPacket.CreatureID = session.Player.Info.PlayerID;
-            creatureMoveBrodcastPacket.MoveDirection = packet.MoveDirection;
-            creatureMoveBrodcastPacket.PosX = info.PosX;
-            creatureMoveBrodcastPacket.PosY = info.PosY;
-
-            session.Player.Room.Brodcast(creatureMoveBrodcastPacket);
+            room.MovePlayer(player, packet.MoveDirection);
         }
     }
 }
