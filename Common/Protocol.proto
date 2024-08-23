@@ -11,16 +11,26 @@ enum EMessageID
     PLAYER_LEFT_ROOM_BRODCAST = 3;
     CREATURE_SPAWNED_BRODCAST = 4;
     CREATURE_DESPAWNED_BRODCAST = 5;
-    CREATURE_MOVE_REQUEST = 6;
-    CREATURE_MOVE_BRODCAST = 7;
+    UPDATE_CREATURE_STATE_BROADCAST = 6;
+    CREATURE_MOVE_REQUEST = 7;
+    CREATURE_MOVE_BRODCAST = 8;
+}
+
+enum ECreatureState
+{
+    IDLE = 0;
+    MOVE = 1;
+    ATTACK = 2;
+    DEAD = 3;
 }
 
 message PlayerInfo
 {
     int32 playerID = 1;
     string name = 2;
-    int32 posX = 3;
-    int32 posY = 4;
+    ECreatureState state = 3;
+    int32 posX = 4;
+    int32 posY = 5;
 }
 
 message PlayerEnteredRoomResponse
@@ -52,6 +62,12 @@ message CreatureSpawnedBrodcast
 message CreatureDespawnedBrodcast
 {
     repeated int32 oldObjectIDs = 1;
+}
+
+message UpdateCreatureStateBroadcast 
+{
+    int32 creatureID = 1;
+    ECreatureState state = 2;
 }
 
 enum EMoveDirection

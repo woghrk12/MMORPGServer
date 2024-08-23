@@ -110,6 +110,7 @@ namespace Server.Game
                 // TODO : Verify if the transmitted packet is valid.
 
                 PlayerInfo info = player.Info;
+
                 switch (moveDirection)
                 {
                     case EMoveDirection.Up:
@@ -135,7 +136,23 @@ namespace Server.Game
                 };
 
                 Brodcast(creatureMoveBrodcastPacket);
+                UpdatePlayerState(info, ECreatureState.Move);
             }
+        }
+
+        private void UpdatePlayerState(PlayerInfo info, ECreatureState state)
+        {
+            if (info.State == state) return;
+
+            info.State = state;
+
+            UpdateCreatureStateBroadcast packet = new()
+            {
+                CreatureID = info.PlayerID,
+                State = state
+            };
+
+            Brodcast(packet);
         }
 
         #endregion Methods
