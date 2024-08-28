@@ -13,7 +13,7 @@ namespace Server
 
         private static void Main(string[] args)
         {
-            RoomManager.Instance.Add();
+            RoomManager.Instance.Add(1);
 
             // DNS (Domain Name System)
             IPAddress ipAddr = IPAddress.Parse(GlobalDefine.IP_ADDRESS);

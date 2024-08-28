@@ -19,9 +19,9 @@ namespace Server.Game
 
         #region Methods
 
-        public GameRoom Add()
+        public GameRoom Add(int mapID)
         {
-            GameRoom room = new();
+            GameRoom room = new(mapID);
 
             lock (lockObj)
             {

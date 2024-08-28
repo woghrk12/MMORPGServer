@@ -9,7 +9,9 @@ namespace Server.Game
 
         private object lockObj = new();
 
-        private List<Player> playerList = new();
+        private Map map = new();
+
+        private Dictionary<int, Player> playerDictionary = new();
 
         #endregion Variables
 
@@ -19,6 +21,15 @@ namespace Server.Game
 
         #endregion Properties
 
+        #region Constructor
+
+        public GameRoom(int mapID)
+        {
+            map.LoadMap(mapID);
+        }
+
+        #endregion Constructor
+
         #region Methods
 
         public void EnterRoom(Player newPlayer)
@@ -27,14 +38,14 @@ namespace Server.Game
 
             lock (lockObj)
             {
-                playerList.Add(newPlayer);
+                playerDictionary.Add(newPlayer.Info.PlayerID, newPlayer);
                 newPlayer.Room = this;
 
                 {
                     PlayerEnteredRoomResponse packet = new();
 
                     packet.MyInfo = newPlayer.Info;
-                    foreach (Player player in playerList)
+                    foreach (Player player in playerDictionary.Values)
                     {
                         if (newPlayer.Info.PlayerID == player.Info.PlayerID) continue;
 
@@ -49,7 +60,7 @@ namespace Server.Game
 
                     packet.NewPlayer = newPlayer.Info;
 
-                    foreach (Player player in playerList)
+                    foreach (Player player in playerDictionary.Values)
                     {
                         if (newPlayer.Info.PlayerID == player.Info.PlayerID) continue;
 
@@ -63,11 +74,8 @@ namespace Server.Game
         {
             lock (lockObj)
             {
-                Player leftPlayer = playerList.Find(player => player.Info.PlayerID == playerID);
+                if (playerDictionary.Remove(playerID, out Player leftPlayer) == false) return;
 
-                if (ReferenceEquals(leftPlayer, null) == true) return;
-
-                playerList.Remove(leftPlayer);
                 leftPlayer.Room = null;
 
                 {
@@ -82,7 +90,7 @@ namespace Server.Game
                         OtherPlayerID = leftPlayer.Info.PlayerID
                     };
 
-                    foreach (Player player in playerList)
+                    foreach (Player player in playerDictionary.Values)
                     {
                         player.Session.Send(packet);
                     }
@@ -94,7 +102,7 @@ namespace Server.Game
         {
             lock (lockObj)
             {
-                foreach (Player player in playerList)
+                foreach (Player player in playerDictionary.Values)
                 {
                     player.Session.Send(packet);
                 }
