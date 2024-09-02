@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace Server.Game
 {
     public struct Vector2Int
@@ -11,12 +13,17 @@ namespace Server.Game
         public int X;
         public int Y;
 
+        public int SqrMagnitude => X * X + Y * Y;
+
         public static Vector2Int Up => new Vector2Int(0, 1);
         public static Vector2Int Down => new Vector2Int(0, -1);
         public static Vector2Int Left => new Vector2Int(-1, 0);
         public static Vector2Int Right => new Vector2Int(1, 0);
+        public static Vector2Int Zero => new Vector2Int(0, 0);
 
         public static Vector2Int operator +(Vector2Int a, Vector2Int b) => new Vector2Int(a.X + b.X, a.Y + b.Y);
         public static Vector2Int operator -(Vector2Int a, Vector2Int b) => new Vector2Int(a.X - b.X, a.Y - b.Y);
+        public static bool operator ==(Vector2Int a, Vector2Int b) => a.X == b.X && a.Y == b.Y;
+        public static bool operator !=(Vector2Int a, Vector2Int b) => a.X != b.X || a.Y == b.Y;
     }
 }

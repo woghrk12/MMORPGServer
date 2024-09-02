@@ -150,10 +150,6 @@ namespace Server
             Console.WriteLine($"Session ID : {SessionID}\nOnConnected : {endPoint}");
 
             Player = PlayerManager.Instance.Add();
-
-            Player.Info.Name = $"Player_{Player.Info.PlayerID}";
-            Player.Info.PosX = 0;
-            Player.Info.PosY = 0;
             Player.Session = this;
 
             RoomManager.Instance.Find(1).EnterRoom(Player);
@@ -165,7 +161,7 @@ namespace Server
 
             SessionManager.Instance.Remove(this);
 
-            RoomManager.Instance.Find(1).LeaveRoom(Player.Info.PlayerID);
+            RoomManager.Instance.Find(1).LeaveRoom(Player.ID);
         }
 
         private int OnReceive(ArraySegment<byte> buffer)

@@ -1,4 +1,5 @@
 using Google.Protobuf;
+using Google.Protobuf.Collections;
 using Google.Protobuf.Protocol;
 
 namespace Server.Game
@@ -38,34 +39,60 @@ namespace Server.Game
 
             lock (lockObj)
             {
-                playerDictionary.Add(newPlayer.Info.PlayerID, newPlayer);
+                playerDictionary.Add(newPlayer.ID, newPlayer);
                 newPlayer.Room = this;
 
+                CreatureInfo newPlayerInfo = new()
                 {
-                    PlayerEnteredRoomResponse packet = new();
+                    CreatureID = newPlayer.ID,
+                    Name = newPlayer.Name,
+                    CurState = newPlayer.CurState,
+                    CellPosX = newPlayer.CellPos.X,
+                    CellPosY = newPlayer.CellPos.Y,
+                    FacingDirection = newPlayer.FacingDirection
+                };
 
-                    packet.MyInfo = newPlayer.Info;
-                    foreach (Player player in playerDictionary.Values)
+                // Send the packets to the player who has just enterend the room
+                PlayerEnteredRoomResponse playerEnteredRoomResponse = new()
+                {
+                    NewPlayer = newPlayerInfo
+                };
+
+                foreach (Player player in playerDictionary.Values)
+                {
+                    if (newPlayer.ID == player.ID) continue;
+
+                    CreatureInfo otherPlayerInfo = new()
                     {
-                        if (newPlayer.Info.PlayerID == player.Info.PlayerID) continue;
+                        CreatureID = player.ID,
+                        Name = player.Name,
+                        CurState = player.CurState,
+                        CellPosX = player.CellPos.X,
+                        CellPosY = player.CellPos.Y,
+                        FacingDirection = player.FacingDirection
+                    };
 
-                        packet.OtherPlayers.Add(player.Info);
-                    }
-
-                    newPlayer.Session.Send(packet);
+                    playerEnteredRoomResponse.OtherPlayers.Add(otherPlayerInfo);
                 }
 
+                newPlayer.Session.Send(playerEnteredRoomResponse);
+
+                // Send the packets to the players who are in the room
+                PlayerEnteredRoomBrodcast playerEnteredRoomBrodcast = new()
                 {
-                    PlayerEnteredRoomBrodcast packet = new();
+                    NewPlayer = newPlayerInfo
+                };
 
-                    packet.NewPlayer = newPlayer.Info;
+                foreach (Player player in playerDictionary.Values)
+                {
+                    if (newPlayer.ID == player.ID) continue;
 
-                    foreach (Player player in playerDictionary.Values)
+                    PlayerEnteredRoomBrodcast packet = new()
                     {
-                        if (newPlayer.Info.PlayerID == player.Info.PlayerID) continue;
+                        NewPlayer = newPlayerInfo
+                    };
 
-                        player.Session.Send(packet);
-                    }
+                    player.Session.Send(playerEnteredRoomBrodcast);
                 }
             }
         }
@@ -87,7 +114,7 @@ namespace Server.Game
                 {
                     PlayerLeftRoomBrodcast packet = new()
                     {
-                        OtherPlayerID = leftPlayer.Info.PlayerID
+                        OtherPlayerID = leftPlayer.ID
                     };
 
                     foreach (Player player in playerDictionary.Values)
@@ -109,59 +136,64 @@ namespace Server.Game
             }
         }
 
-        public void MovePlayer(Player player, EMoveDirection moveDirection)
+        public void ModifyDirection(Player player, EMoveDirection moveDirection)
         {
             if (ReferenceEquals(player, null) == true) return;
 
             lock (lockObj)
             {
-                // TODO : Verify if the transmitted packet is valid.
-
-                PlayerInfo info = player.Info;
-
-                switch (moveDirection)
-                {
-                    case EMoveDirection.Up:
-                        info.PosY += 1;
-                        break;
-                    case EMoveDirection.Down:
-                        info.PosY -= 1;
-                        break;
-                    case EMoveDirection.Left:
-                        info.PosX -= 1;
-                        break;
-                    case EMoveDirection.Right:
-                        info.PosX += 1;
-                        break;
-                }
-
-                CreatureMoveBrodcast creatureMoveBrodcastPacket = new()
-                {
-                    CreatureID = player.Info.PlayerID,
-                    MoveDirection = moveDirection,
-                    PosX = info.PosX,
-                    PosY = info.PosY
-                };
-
-                Brodcast(creatureMoveBrodcastPacket);
-                UpdatePlayerState(info, ECreatureState.Move);
+                player.InputDirection = moveDirection;
             }
         }
 
-        private void UpdatePlayerState(PlayerInfo info, ECreatureState state)
+        public void MoveCreature(int creatureID, EMoveDirection moveDirection)
         {
-            if (info.State == state) return;
+            if (playerDictionary.TryGetValue(creatureID, out Player player) == false) return;
 
-            info.State = state;
+            Vector2Int cellPos = player.CellPos;
 
-            UpdateCreatureStateBroadcast packet = new()
+            switch (moveDirection)
             {
-                CreatureID = info.PlayerID,
-                State = state
-            };
+                case EMoveDirection.Up:
+                    cellPos += Vector2Int.Up;
+                    break;
 
-            Brodcast(packet);
+                case EMoveDirection.Down:
+                    cellPos += Vector2Int.Down;
+                    break;
+
+                case EMoveDirection.Left:
+                    cellPos += Vector2Int.Left;
+                    break;
+
+                case EMoveDirection.Right:
+                    cellPos += Vector2Int.Right;
+                    break;
+
+                default:
+                    player.CurState = ECreatureState.Idle;
+                    return;
+            }
+
+            if (map.CheckCanMove(cellPos, true) == false) return;
+
+            player.CellPos = cellPos;
         }
+
+        #region Events
+
+        public void OnUpdate(float deltaTime)
+        {
+            lock (lockObj)
+            {
+                foreach (Player player in playerDictionary.Values)
+                {
+                    player.OnUpdate(deltaTime);
+                }
+            }
+        }
+
+        #endregion Events
 
         #endregion Methods
     }

@@ -24,9 +24,9 @@ namespace Server
 
         public PacketManager()
         {
-            receivedPacketHandlerDict.Add((ushort)EMessageID.CreatureMoveRequest, MakePacket<CreatureMoveRequest>);
+            receivedPacketHandlerDict.Add((ushort)EMessageID.InputDirectionRequest, MakePacket<InputDirectionRequest>);
 
-            handlerDict.Add((ushort)EMessageID.CreatureMoveRequest, PacketHandler.HandleCreatureMoveRequest);
+            handlerDict.Add((ushort)EMessageID.InputDirectionRequest, PacketHandler.HandleInputDirectionRequest);
         }
 
         #endregion Constructor

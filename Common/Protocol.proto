@@ -11,9 +11,8 @@ enum EMessageID
     PLAYER_LEFT_ROOM_BRODCAST = 3;
     CREATURE_SPAWNED_BRODCAST = 4;
     CREATURE_DESPAWNED_BRODCAST = 5;
-    UPDATE_CREATURE_STATE_BROADCAST = 6;
-    CREATURE_MOVE_REQUEST = 7;
-    CREATURE_MOVE_BRODCAST = 8;
+    UPDATE_CREATURE_INFO_BROADCAST = 6;
+    INPUT_DIRECTION_REQUEST = 7;
 }
 
 enum ECreatureState
@@ -24,24 +23,35 @@ enum ECreatureState
     DEAD = 3;
 }
 
-message PlayerInfo
+enum EMoveDirection
 {
-    int32 playerID = 1;
+    NONE = 0;
+    UP = 1;
+    DOWN = 2;
+    LEFT = 4;
+    RIGHT = 8;
+}
+
+message CreatureInfo
+{
+    int32 creatureID = 1;
     string name = 2;
-    ECreatureState state = 3;
-    int32 posX = 4;
-    int32 posY = 5;
+    ECreatureState curState = 3;
+    int32 cellPosX = 4;
+    int32 cellPosY = 5;
+    EMoveDirection facingDirection = 6;
+    int32 moveSpeed = 7;
 }
 
 message PlayerEnteredRoomResponse
 {
-    PlayerInfo myInfo = 1;
-    repeated PlayerInfo otherPlayers = 2;
+    CreatureInfo newPlayer = 1;
+    repeated CreatureInfo otherPlayers = 2;
 }
 
 message PlayerEnteredRoomBrodcast
 {
-    PlayerInfo newPlayer = 1;
+    CreatureInfo newPlayer = 1;
 }
 
 message PlayerLeftRoomResponse
@@ -56,47 +66,20 @@ message PlayerLeftRoomBrodcast
 
 message CreatureSpawnedBrodcast
 {
-    repeated int32 newObjectIDs = 1;
+    CreatureInfo newCreatureInfo = 1;
 }
 
 message CreatureDespawnedBrodcast
 {
-    repeated int32 oldObjectIDs = 1;
+    int32 oldObjectID = 1;
 }
 
-message UpdateCreatureStateBroadcast 
+message UpdateCreatureInfoBroadcast
 {
-    int32 creatureID = 1;
-    ECreatureState state = 2;
+    CreatureInfo creatureInfo = 1;
 }
 
-enum EMoveDirection
-{
-    NONE = 0;
-    UP = 1;
-    DOWN = 2;
-    LEFT = 3;
-    RIGHT = 4;
-}
-
-message CreatureMoveCompletedNotify
-{
-    int32 creatureID = 1;
-    int32 posX = 2;
-    int32 posY = 3;
-}
-
-message CreatureMoveRequest
+message InputDirectionRequest
 {
     EMoveDirection moveDirection = 1;
-    int32 posX = 2;
-    int32 posY = 3;
-}
-
-message CreatureMoveBrodcast
-{
-    int32 creatureID = 1;
-    EMoveDirection moveDirection = 2;
-    int32 posX = 3;
-    int32 posY = 4;
 }

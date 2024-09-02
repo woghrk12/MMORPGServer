@@ -21,13 +21,13 @@ namespace Server.Game
 
         public Player Add()
         {
-            Player player = new();
+            Player player = null;
 
             lock (lockObj)
             {
-                player.Info.PlayerID = playerID++;
+                player = new(playerID++);
 
-                playerDict.Add(player.Info.PlayerID, player);
+                playerDict.Add(player.ID, player);
             }
 
             return player;

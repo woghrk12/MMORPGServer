@@ -1,6 +1,6 @@
 using Google.Protobuf.Protocol;
 
-namespace Server.Game.Creature
+namespace Server.Game
 {
     public abstract class CreatureState
     {
@@ -14,7 +14,7 @@ namespace Server.Game.Creature
 
         public virtual void OnStart() { }
 
-        public virtual void OnUpdate() { }
+        public virtual void OnUpdate(float deltaTime) { }
 
         public virtual void OnEnd() { }
 

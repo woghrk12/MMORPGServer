@@ -6,11 +6,11 @@ namespace Server
 {
     public class PacketHandler
     {
-        public static void HandleCreatureMoveRequest(ClientSession session, IMessage message)
+        public static void HandleInputDirectionRequest(ClientSession session, IMessage message)
         {
-            CreatureMoveRequest packet = message as CreatureMoveRequest;
+            InputDirectionRequest packet = message as InputDirectionRequest;
 
-            Console.WriteLine($"CreatureMoveRequest. Session ID : {session.SessionID} ({packet.PosX}, {packet.PosY}, {packet.MoveDirection})");
+            Console.WriteLine($"InputDirectionRequest. Session ID : {session.SessionID} ({packet.MoveDirection})");
 
             Player player = session.Player;
             if (ReferenceEquals(player, null) == true) return;
@@ -18,7 +18,7 @@ namespace Server
             GameRoom room = player.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.MovePlayer(player, packet.MoveDirection);
+            room.ModifyDirection(player, packet.MoveDirection);
         }
     }
 }
