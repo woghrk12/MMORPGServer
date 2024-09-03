@@ -136,13 +136,15 @@ namespace Server.Game
             }
         }
 
-        public void ModifyDirection(Player player, EMoveDirection moveDirection)
+        public void ModifyInputDirection(Player player, EMoveDirection inputDirection)
         {
             if (ReferenceEquals(player, null) == true) return;
 
             lock (lockObj)
             {
-                player.InputDirection = moveDirection;
+                if (player.InputDirection == inputDirection) return;
+
+                player.InputDirection = (inputDirection & player.InputDirection) != EMoveDirection.None ? player.InputDirection ^ inputDirection : inputDirection;
             }
         }
 

@@ -18,7 +18,7 @@ namespace Server
             GameRoom room = player.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.ModifyDirection(player, packet.MoveDirection);
+            room.ModifyInputDirection(player, packet.MoveDirection);
         }
     }
 }
