@@ -49,7 +49,7 @@ namespace Server.Game
                     CurState = newPlayer.CurState,
                     CellPosX = newPlayer.CellPos.X,
                     CellPosY = newPlayer.CellPos.Y,
-                    FacingDirection = newPlayer.FacingDirection
+                    FacingDirection = newPlayer.MoveDirection
                 };
 
                 // Send the packets to the player who has just enterend the room
@@ -69,7 +69,7 @@ namespace Server.Game
                         CurState = player.CurState,
                         CellPosX = player.CellPos.X,
                         CellPosY = player.CellPos.Y,
-                        FacingDirection = player.FacingDirection
+                        FacingDirection = player.MoveDirection
                     };
 
                     playerEnteredRoomResponse.OtherPlayers.Add(otherPlayerInfo);
@@ -136,66 +136,56 @@ namespace Server.Game
             }
         }
 
-        public void ModifyInputDirection(Player player, EMoveDirection inputDirection)
-        {
-            if (ReferenceEquals(player, null) == true) return;
-
-            lock (lockObj)
-            {
-                if (player.InputDirection == inputDirection) return;
-
-                player.InputDirection = (inputDirection & player.InputDirection) != EMoveDirection.None ? player.InputDirection ^ inputDirection : inputDirection;
-            }
-        }
-
-        public void MoveCreature(int creatureID, EMoveDirection moveDirection)
-        {
-            if (playerDictionary.TryGetValue(creatureID, out Player player) == false) return;
-
-            Vector2Int cellPos = player.CellPos;
-
-            switch (moveDirection)
-            {
-                case EMoveDirection.Up:
-                    cellPos += Vector2Int.Up;
-                    break;
-
-                case EMoveDirection.Down:
-                    cellPos += Vector2Int.Down;
-                    break;
-
-                case EMoveDirection.Left:
-                    cellPos += Vector2Int.Left;
-                    break;
-
-                case EMoveDirection.Right:
-                    cellPos += Vector2Int.Right;
-                    break;
-
-                default:
-                    player.CurState = ECreatureState.Idle;
-                    return;
-            }
-
-            if (map.CheckCanMove(cellPos, true) == false) return;
-
-            player.CellPos = cellPos;
-        }
-
-        #region Events
-
-        public void OnUpdate(float deltaTime)
+        public void MoveCreature(int creatureID, (int, int) curCellPos, EMoveDirection moveDirection)
         {
             lock (lockObj)
             {
-                foreach (Player player in playerDictionary.Values)
+                if (playerDictionary.TryGetValue(creatureID, out Player player) == false) return;
+
+                // TODO : Certify the movement info passed by the packet
+
+                player.MoveDirection = moveDirection;
+
+                Vector2Int cellPos = player.CellPos;
+
+                switch (moveDirection)
                 {
-                    player.OnUpdate(deltaTime);
+                    case EMoveDirection.Up:
+                        cellPos += Vector2Int.Up;
+                        break;
+
+                    case EMoveDirection.Down:
+                        cellPos += Vector2Int.Down;
+                        break;
+
+                    case EMoveDirection.Left:
+                        cellPos += Vector2Int.Left;
+                        break;
+
+                    case EMoveDirection.Right:
+                        cellPos += Vector2Int.Right;
+                        break;
+
+                    default:
+                        player.CurState = ECreatureState.Idle;
+                        return;
                 }
+
+                if (map.CheckCanMove(cellPos, true) == false) return;
+
+                player.CellPos = cellPos;
+
+                PerformMoveBroadcast packet = new()
+                {
+                    CreatureID = player.ID,
+                    MoveDirection = player.MoveDirection,
+                    TargetCellPosX = player.CellPos.X,
+                    TargetCellPosY = player.CellPos.Y
+                };
+
+                Brodcast(packet);
             }
         }
-
-        #endregion Events
 
         #endregion Methods
     }

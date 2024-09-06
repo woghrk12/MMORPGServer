@@ -11,8 +11,10 @@ enum EMessageID
     PLAYER_LEFT_ROOM_BRODCAST = 3;
     CREATURE_SPAWNED_BRODCAST = 4;
     CREATURE_DESPAWNED_BRODCAST = 5;
-    UPDATE_CREATURE_INFO_BROADCAST = 6;
-    INPUT_DIRECTION_REQUEST = 7;
+    PERFORM_MOVE_REQUEST = 6;
+    PERFORM_MOVE_BROADCAST = 7;
+    PERFORM_ATTACK_REQUEST = 8;
+    PERFORM_ATTACK_BROADCAST = 9;
 }
 
 enum ECreatureState
@@ -74,12 +76,17 @@ message CreatureDespawnedBrodcast
     int32 oldObjectID = 1;
 }
 
-message UpdateCreatureInfoBroadcast
-{
-    CreatureInfo creatureInfo = 1;
-}
-
-message InputDirectionRequest
+message PerformMoveRequest
 {
     EMoveDirection moveDirection = 1;
+    int32 curCellPosX = 2;
+    int32 curCellPosY = 3;
+}
+
+message PerformMoveBroadcast
+{
+    int32 creatureID = 1;
+    EMoveDirection moveDirection = 2;
+    int32 targetCellPosX = 3;
+    int32 targetCellPosY = 4;
 }

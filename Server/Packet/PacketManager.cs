@@ -24,9 +24,9 @@ namespace Server
 
         public PacketManager()
         {
-            receivedPacketHandlerDict.Add((ushort)EMessageID.InputDirectionRequest, MakePacket<InputDirectionRequest>);
+            receivedPacketHandlerDict.Add((ushort)EMessageID.PerformMoveRequest, MakePacket<PerformMoveRequest>);
 
-            handlerDict.Add((ushort)EMessageID.InputDirectionRequest, PacketHandler.HandleInputDirectionRequest);
+            handlerDict.Add((ushort)EMessageID.PerformMoveRequest, PacketHandler.HandlePerformMoveRequest);
         }
 
         #endregion Constructor

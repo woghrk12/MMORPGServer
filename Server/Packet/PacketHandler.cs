@@ -6,11 +6,11 @@ namespace Server
 {
     public class PacketHandler
     {
-        public static void HandleInputDirectionRequest(ClientSession session, IMessage message)
+        public static void HandlePerformMoveRequest(ClientSession session, IMessage message)
         {
-            InputDirectionRequest packet = message as InputDirectionRequest;
+            PerformMoveRequest packet = message as PerformMoveRequest;
 
-            Console.WriteLine($"InputDirectionRequest. Session ID : {session.SessionID} ({packet.MoveDirection})");
+            Console.WriteLine($"PerformMoveRequest. Session ID : {session.SessionID} Cell Pos : ({packet.CurCellPosX}, {packet.CurCellPosY}) Move Direction : {packet.MoveDirection}");
 
             Player player = session.Player;
             if (ReferenceEquals(player, null) == true) return;
@@ -18,7 +18,7 @@ namespace Server
             GameRoom room = player.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.ModifyInputDirection(player, packet.MoveDirection);
+            room.MoveCreature(player.ID, (packet.CurCellPosX, packet.CurCellPosY), packet.MoveDirection);
         }
     }
 }
