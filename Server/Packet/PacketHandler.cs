@@ -10,7 +10,7 @@ namespace Server
         {
             PerformMoveRequest packet = message as PerformMoveRequest;
 
-            Console.WriteLine($"PerformMoveRequest. Session ID : {session.SessionID} Cell Pos : ({packet.CurCellPosX}, {packet.CurCellPosY}) Move Direction : {packet.MoveDirection}");
+            Console.WriteLine($"PerformMoveRequest. Session ID : {session.SessionID} Cell Pos : ({packet.CurPosX}, {packet.CurPosY}) Move Direction : {packet.MoveDirection}");
 
             Player player = session.Player;
             if (ReferenceEquals(player, null) == true) return;
@@ -18,7 +18,7 @@ namespace Server
             GameRoom room = player.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.MoveCreature(player.ID, (packet.CurCellPosX, packet.CurCellPosY), packet.MoveDirection);
+            room.MoveCreature(player.ID, (packet.CurPosX, packet.CurPosY), packet.MoveDirection);
         }
     }
 }

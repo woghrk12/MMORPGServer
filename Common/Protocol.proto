@@ -12,9 +12,8 @@ enum EMessageID
     CREATURE_SPAWNED_BRODCAST = 4;
     CREATURE_DESPAWNED_BRODCAST = 5;
     PERFORM_MOVE_REQUEST = 6;
-    PERFORM_MOVE_BROADCAST = 7;
-    PERFORM_ATTACK_REQUEST = 8;
-    PERFORM_ATTACK_BROADCAST = 9;
+    PERFORM_MOVE_RESPONSE = 7;
+    PERFORM_MOVE_BROADCAST = 8;
 }
 
 enum ECreatureState
@@ -39,8 +38,8 @@ message CreatureInfo
     int32 creatureID = 1;
     string name = 2;
     ECreatureState curState = 3;
-    int32 cellPosX = 4;
-    int32 cellPosY = 5;
+    int32 posX = 4;
+    int32 posY = 5;
     EMoveDirection facingDirection = 6;
     int32 moveSpeed = 7;
 }
@@ -79,14 +78,26 @@ message CreatureDespawnedBrodcast
 message PerformMoveRequest
 {
     EMoveDirection moveDirection = 1;
-    int32 curCellPosX = 2;
-    int32 curCellPosY = 3;
+    int32 curPosX = 2;
+    int32 curPosY = 3;
+    int32 targetPosX = 4;
+    int32 targetPosY = 5;
+}
+
+message PerformMoveResponse
+{
+    int32 curPosX = 1;
+    int32 curPosY = 2;
+    int32 targetPosX = 3;
+    int32 targetPosY = 4;
 }
 
 message PerformMoveBroadcast
 {
     int32 creatureID = 1;
     EMoveDirection moveDirection = 2;
-    int32 targetCellPosX = 3;
-    int32 targetCellPosY = 4;
+    int32 curPosX = 3;
+    int32 curPosY = 4;
+    int32 targetPosX = 5;
+    int32 targetPosY = 6;
 }

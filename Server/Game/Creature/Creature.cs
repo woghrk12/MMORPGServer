@@ -12,7 +12,7 @@ namespace Server.Game
         public string Name { set; get; } = string.Empty;
 
         public ECreatureState CurState { set; get; }
-        public Vector2Int CellPos { set; get; }
+        public Pos Position { set; get; }
 
         public int MoveSpeed { set; get; } = 5;
         public EMoveDirection MoveDirection { set; get; }

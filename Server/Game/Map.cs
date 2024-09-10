@@ -29,19 +29,19 @@ namespace Server.Game
 
     public class Map
     {
-        #region Properties
+        #region Variables
 
-        public int[,] Collision { private set; get; } = null;
+        private Dictionary<int, Creature>[,] collision = null;
 
-        public int MinX { private set; get; } = 0;
-        public int MaxX { private set; get; } = 0;
-        public int MinY { private set; get; } = 0;
-        public int MaxY { private set; get; } = 0;
+        private int minX = 0;
+        private int maxX = 0;
+        private int minY = 0;
+        private int maxY = 0;
 
-        public int Width => MaxX - MinX + 1;
-        public int Height => MaxY - MinY + 1;
+        private int width = 0;
+        private int height = 0;
 
-        #endregion Properties
+        #endregion Variables
 
         #region Methods
 
@@ -52,31 +52,68 @@ namespace Server.Game
             string text = File.ReadAllText($"{pathPrefix}/{mapName}.txt");
             StringReader reader = new(text);
 
-            MinX = int.Parse(reader.ReadLine());
-            MaxX = int.Parse(reader.ReadLine());
-            MinY = int.Parse(reader.ReadLine());
-            MaxY = int.Parse(reader.ReadLine());
+            minX = int.Parse(reader.ReadLine());
+            maxX = int.Parse(reader.ReadLine());
+            minY = int.Parse(reader.ReadLine());
+            maxY = int.Parse(reader.ReadLine());
 
-            Collision = new int[Height, Width];
-            for (int y = 0; y < Height; y++)
+            width = maxX - minX + 1;
+            height = maxY - minY + 1;
+
+            collision = new Dictionary<int, Creature>[height, width];
+            for (int y = height - 1; y >= 0; y--)
             {
                 string line = reader.ReadLine();
-                for (int x = 0; x < Width; x++)
+                for (int x = 0; x < width; x++)
                 {
-                    Collision[y, x] = line[x] == '1' ? -1 : 0;
+                    collision[y, x] = new Dictionary<int, Creature>();
+
+                    if (line[x] == '1')
+                    {
+                        collision[y, x].Add(-1, null);
+                    }
                 }
             }
         }
 
-        public bool CheckCanMove(Vector2Int cellPos, bool isCheckObjects)
+        public bool CheckCanMove(Pos position, bool isIgnoreObject = false)
         {
-            if (cellPos.X < MinX || cellPos.X > MaxX) return false;
-            if (cellPos.Y < MinY || cellPos.Y > MaxY) return false;
+            if (position.X < minX || position.X > maxX) return false;
+            if (position.Y < minY || position.Y > maxY) return false;
 
-            int x = cellPos.X - MinX;
-            int y = MaxY - cellPos.Y;
+            Vector2Int cellPos = ConvertPosToCell(position);
 
-            return isCheckObjects ? Collision[y, x] == 0 : Collision[y, x] >= 0;
+            if (collision[cellPos.Y, cellPos.X].ContainsKey(-1) == true) return false;
+            if (isIgnoreObject == false && collision[cellPos.Y, cellPos.X].Count > 0) return false;
+
+            return true;
+        }
+
+        public void AddCreature(Creature creature)
+        {
+            if (ReferenceEquals(creature, null) == true) return;
+
+            Vector2Int cellPos = ConvertPosToCell(creature.Position);
+            collision[cellPos.Y, cellPos.X].Add(creature.ID, creature);
+        }
+
+        public void RemoveCreature(Creature creature)
+        {
+            if (ReferenceEquals(creature, null) == true) return;
+
+            Vector2Int cellPos = ConvertPosToCell(creature.Position);
+            collision[cellPos.Y, cellPos.X].Remove(creature.ID);
+        }
+
+        public void MoveCreature(int creatureID, Pos curPos, Pos targetPos)
+        {
+            Vector2Int curCellPos = ConvertPosToCell(curPos);
+            Vector2Int targetCellPos = ConvertPosToCell(targetPos);
+
+            if (collision[curCellPos.Y, curCellPos.X].TryGetValue(creatureID, out Creature creature) == false) return;
+
+            collision[curCellPos.Y, curCellPos.X].Remove(creatureID);
+            collision[targetCellPos.Y, targetCellPos.X].Add(creatureID, creature);
         }
 
         #region A* PathFinding
@@ -87,14 +124,14 @@ namespace Server.Game
 
         public bool FindPath(Vector2Int startCellPos, Vector2Int destCellPos, out List<Vector2Int> path)
         {
-            bool[,] closedArray = new bool[Height, Width];
-            int[,] openArray = new int[Height, Width];
-            Pos[,] parentArray = new Pos[Height, Width];
+            bool[,] closedArray = new bool[height, width];
+            int[,] openArray = new int[height, width];
+            Pos[,] parentArray = new Pos[height, width];
             PriorityQueue<PQNode> pq = new();
 
-            for (int y = 0; y < Height; y++)
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < Width; x++)
+                for (int x = 0; x < width; x++)
                 {
                     closedArray[y, x] = false;
                     openArray[y, x] = Int32.MaxValue;
@@ -129,7 +166,7 @@ namespace Server.Game
                         break;
                     }
 
-                    if (CheckCanMove(ConvertPosToCell(next), false) == false) continue;
+                    if (CheckCanMove(next, true) == false) continue;
                     if (closedArray[next.Y, next.X] == true) continue;
 
                     int g = node.G + cost[i];
@@ -164,9 +201,9 @@ namespace Server.Game
             return true;
         }
 
-        private Pos ConvertCellToPos(Vector2Int cell) => new Pos(cell.X - MinX, MaxY - cell.Y);
+        private Pos ConvertCellToPos(Vector2Int cell) => new Pos(cell.X + minX, cell.Y + minY);
 
-        private Vector2Int ConvertPosToCell(Pos pos) => new Vector2Int(pos.X + MinX, MaxY - pos.Y);
+        private Vector2Int ConvertPosToCell(Pos pos) => new Vector2Int(pos.X - minX, pos.Y - minY);
 
         #endregion A* PathFinding
 

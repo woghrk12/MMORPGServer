@@ -1,5 +1,4 @@
 using Google.Protobuf;
-using Google.Protobuf.Collections;
 using Google.Protobuf.Protocol;
 
 namespace Server.Game
@@ -42,14 +41,17 @@ namespace Server.Game
                 playerDictionary.Add(newPlayer.ID, newPlayer);
                 newPlayer.Room = this;
 
+                map.AddCreature(newPlayer);
+
                 CreatureInfo newPlayerInfo = new()
                 {
                     CreatureID = newPlayer.ID,
                     Name = newPlayer.Name,
                     CurState = newPlayer.CurState,
-                    CellPosX = newPlayer.CellPos.X,
-                    CellPosY = newPlayer.CellPos.Y,
-                    FacingDirection = newPlayer.MoveDirection
+                    PosX = newPlayer.Position.X,
+                    PosY = newPlayer.Position.Y,
+                    FacingDirection = newPlayer.MoveDirection,
+                    MoveSpeed = 5
                 };
 
                 // Send the packets to the player who has just enterend the room
@@ -67,9 +69,10 @@ namespace Server.Game
                         CreatureID = player.ID,
                         Name = player.Name,
                         CurState = player.CurState,
-                        CellPosX = player.CellPos.X,
-                        CellPosY = player.CellPos.Y,
-                        FacingDirection = player.MoveDirection
+                        PosX = player.Position.X,
+                        PosY = player.Position.Y,
+                        FacingDirection = player.MoveDirection,
+                        MoveSpeed = 5
                     };
 
                     playerEnteredRoomResponse.OtherPlayers.Add(otherPlayerInfo);
@@ -103,6 +106,7 @@ namespace Server.Game
             {
                 if (playerDictionary.Remove(playerID, out Player leftPlayer) == false) return;
 
+                map.RemoveCreature(leftPlayer);
                 leftPlayer.Room = null;
 
                 {
@@ -144,46 +148,76 @@ namespace Server.Game
 
                 // TODO : Certify the movement info passed by the packet
 
-                player.MoveDirection = moveDirection;
+                if (moveDirection == EMoveDirection.None)
+                {
+                    player.CurState = ECreatureState.Idle;
+                    player.MoveDirection = EMoveDirection.None;
+                    return;
+                }
 
-                Vector2Int cellPos = player.CellPos;
+                if (player.CurState != ECreatureState.Move)
+                {
+                    player.CurState = ECreatureState.Move;
+                }
+
+                if (player.MoveDirection != moveDirection)
+                {
+                    player.MoveDirection = moveDirection;
+                }
+
+                Pos position = player.Position;
 
                 switch (moveDirection)
                 {
                     case EMoveDirection.Up:
-                        cellPos += Vector2Int.Up;
+                        position.Y += 1;
                         break;
 
                     case EMoveDirection.Down:
-                        cellPos += Vector2Int.Down;
+                        position.Y -= 1;
                         break;
 
                     case EMoveDirection.Left:
-                        cellPos += Vector2Int.Left;
+                        position.X -= 1;
                         break;
 
                     case EMoveDirection.Right:
-                        cellPos += Vector2Int.Right;
+                        position.X += 1;
                         break;
-
-                    default:
-                        player.CurState = ECreatureState.Idle;
-                        return;
                 }
 
-                if (map.CheckCanMove(cellPos, true) == false) return;
+                if (map.CheckCanMove(position) == false)
+                {
+                    position = player.Position;
+                }
+                else
+                {
+                    map.MoveCreature(creatureID, player.Position, position);
+                }
 
-                player.CellPos = cellPos;
+                PerformMoveResponse performMoveResponsePacket = new()
+                {
+                    CurPosX = player.Position.X,
+                    CurPosY = player.Position.Y,
+                    TargetPosX = position.X,
+                    TargetPosY = position.Y
+                };
 
-                PerformMoveBroadcast packet = new()
+                player.Session.Send(performMoveResponsePacket);
+
+                PerformMoveBroadcast performMoveBroadcastPacket = new()
                 {
                     CreatureID = player.ID,
                     MoveDirection = player.MoveDirection,
-                    TargetCellPosX = player.CellPos.X,
-                    TargetCellPosY = player.CellPos.Y
+                    CurPosX = player.Position.X,
+                    CurPosY = player.Position.Y,
+                    TargetPosX = position.X,
+                    TargetPosY = position.Y
                 };
 
-                Brodcast(packet);
+                Brodcast(performMoveBroadcastPacket);
+
+                player.Position = position;
             }
         }
 
