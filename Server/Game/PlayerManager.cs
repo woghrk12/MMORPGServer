@@ -26,6 +26,7 @@ namespace Server.Game
             lock (lockObj)
             {
                 player = new(playerID++);
+                player.Name = $"Player_{player.ID}";
 
                 playerDict.Add(player.ID, player);
             }
