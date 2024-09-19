@@ -222,6 +222,42 @@ namespace Server.Game
             }
         }
 
+        public void PerformAttack(int creatureID, AttackInfo attackInfo)
+        {
+            lock (lockObj)
+            {
+                if (playerDictionary.TryGetValue(creatureID, out Player player) == false) return;
+
+                // TODO : Certify the attack info passed by the packet
+
+                // TODO : Check whether the creature can attack
+                if (player.CurState != ECreatureState.Idle) return;
+
+                player.CurState = ECreatureState.Attack;
+
+                long attackStartTime = DateTime.UtcNow.Ticks;
+
+                PerformAttackResponse performAttackResponsePacket = new()
+                {
+                    AttackStartTime = attackStartTime,
+                    AttackInfo = new() { AttackID = 1 }
+                };
+
+                player.Session.Send(performAttackResponsePacket);
+
+                PerformAttackBroadcast performAttackBroadcastPacket = new()
+                {
+                    CreatureID = creatureID,
+                    AttackStartTime = attackStartTime,
+                    AttackInfo = new() { AttackID = 1 }
+                };
+
+                Brodcast(performAttackBroadcastPacket);
+
+                // TODO : Perform the damage calculation
+            }
+        }
+
         #endregion Methods
     }
 }

@@ -14,6 +14,9 @@ enum EMessageID
     PERFORM_MOVE_REQUEST = 6;
     PERFORM_MOVE_RESPONSE = 7;
     PERFORM_MOVE_BROADCAST = 8;
+    PERFORM_ATTACK_REQUEST = 9;
+    PERFORM_ATTACK_RESPONSE = 10;
+    PERFORM_ATTACK_BROADCAST = 11;
 }
 
 enum ECreatureState
@@ -100,4 +103,27 @@ message PerformMoveBroadcast
     int32 curPosY = 4;
     int32 targetPosX = 5;
     int32 targetPosY = 6;
+}
+
+message AttackInfo
+{
+    int32 attackID = 1;
+}
+
+message PerformAttackRequest
+{
+    AttackInfo attackInfo = 1;
+}
+
+message PerformAttackResponse
+{
+    int64 attackStartTime = 1;
+    AttackInfo attackInfo = 2;
+}
+
+message PerformAttackBroadcast
+{
+    int32 creatureID = 1;
+    int64 attackStartTime = 2;
+    AttackInfo attackInfo = 3;
 }

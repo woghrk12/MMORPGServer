@@ -20,5 +20,20 @@ namespace Server
 
             room.MoveCreature(player.ID, (packet.CurPosX, packet.CurPosY), packet.MoveDirection);
         }
+
+        public static void HandlePerformAttackRequest(ClientSession session, IMessage message)
+        {
+            PerformAttackRequest packet = message as PerformAttackRequest;
+
+            Console.WriteLine($"PerformAttackRequest. Session ID : {session.SessionID} Attack ID : {packet.AttackInfo.AttackID}");
+
+            Player player = session.Player;
+            if (ReferenceEquals(player, null) == true) return;
+
+            GameRoom room = player.Room;
+            if (ReferenceEquals(room, null) == true) return;
+
+            room.PerformAttack(player.ID, packet.AttackInfo);
+        }
     }
 }

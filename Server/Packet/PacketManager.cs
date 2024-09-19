@@ -25,8 +25,10 @@ namespace Server
         public PacketManager()
         {
             receivedPacketHandlerDict.Add((ushort)EMessageID.PerformMoveRequest, MakePacket<PerformMoveRequest>);
+            receivedPacketHandlerDict.Add((ushort)EMessageID.PerformAttackRequest, MakePacket<PerformAttackRequest>);
 
             handlerDict.Add((ushort)EMessageID.PerformMoveRequest, PacketHandler.HandlePerformMoveRequest);
+            handlerDict.Add((ushort)EMessageID.PerformAttackRequest, PacketHandler.HandlePerformAttackRequest);
         }
 
         #endregion Constructor
