@@ -17,6 +17,7 @@ enum EMessageID
     PERFORM_ATTACK_REQUEST = 9;
     PERFORM_ATTACK_RESPONSE = 10;
     PERFORM_ATTACK_BROADCAST = 11;
+    ATTACK_COMPLETE_REQUEST = 12;
 }
 
 enum ECreatureState
@@ -126,4 +127,9 @@ message PerformAttackBroadcast
     int32 creatureID = 1;
     int64 attackStartTime = 2;
     AttackInfo attackInfo = 3;
+}
+
+message AttackCompleteRequest
+{
+
 }

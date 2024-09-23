@@ -35,5 +35,18 @@ namespace Server
 
             room.PerformAttack(player.ID, packet.AttackInfo);
         }
+
+        public static void HandleAttackCompleteRequest(ClientSession session, IMessage message)
+        {
+            AttackCompleteRequest packet = message as AttackCompleteRequest;
+
+            Player player = session.Player;
+            if (ReferenceEquals(player, null) == true) return;
+
+            GameRoom room = player.Room;
+            if (ReferenceEquals(room, null) == true) return;
+
+            room.SetCreatureState(player.ID, ECreatureState.Idle);
+        }
     }
 }

@@ -258,6 +258,16 @@ namespace Server.Game
             }
         }
 
+        public void SetCreatureState(int creatureID, ECreatureState state)
+        {
+            lock (lockObj)
+            {
+                if (playerDictionary.TryGetValue(creatureID, out Player player) == false) return;
+
+                player.CurState = state;
+            }
+        }
+
         #endregion Methods
     }
 }
