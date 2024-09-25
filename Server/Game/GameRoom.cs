@@ -163,42 +163,16 @@ namespace Server.Game
                     player.MoveDirection = moveDirection;
                 }
 
-                Pos position = player.Position;
-
-                switch (moveDirection)
-                {
-                    case EMoveDirection.Up:
-                        position.Y += 1;
-                        break;
-
-                    case EMoveDirection.Down:
-                        position.Y -= 1;
-                        break;
-
-                    case EMoveDirection.Left:
-                        position.X -= 1;
-                        break;
-
-                    case EMoveDirection.Right:
-                        position.X += 1;
-                        break;
-                }
-
-                if (map.CheckCanMove(position) == false)
-                {
-                    position = player.Position;
-                }
-                else
-                {
-                    map.MoveCreature(creatureID, player.Position, position);
-                }
+                Pos curPos = player.Position;
+                map.MoveCreature(player, moveDirection);
+                Pos targetPos = player.Position;
 
                 PerformMoveResponse performMoveResponsePacket = new()
                 {
-                    CurPosX = player.Position.X,
-                    CurPosY = player.Position.Y,
-                    TargetPosX = position.X,
-                    TargetPosY = position.Y
+                    CurPosX = curPos.X,
+                    CurPosY = curPos.Y,
+                    TargetPosX = targetPos.X,
+                    TargetPosY = targetPos.Y
                 };
 
                 player.Session.Send(performMoveResponsePacket);
@@ -207,15 +181,13 @@ namespace Server.Game
                 {
                     CreatureID = player.ID,
                     MoveDirection = player.MoveDirection,
-                    CurPosX = player.Position.X,
-                    CurPosY = player.Position.Y,
-                    TargetPosX = position.X,
-                    TargetPosY = position.Y
+                    CurPosX = curPos.X,
+                    CurPosY = curPos.Y,
+                    TargetPosX = targetPos.X,
+                    TargetPosY = targetPos.Y
                 };
 
                 Brodcast(performMoveBroadcastPacket);
-
-                player.Position = position;
             }
         }
 

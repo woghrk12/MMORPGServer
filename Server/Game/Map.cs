@@ -89,6 +89,16 @@ namespace Server.Game
             return true;
         }
 
+        public bool CheckCanMove(Vector2Int cellPos, bool isIgnoreObject = false)
+        {
+            if (cellPos.X < 0 || cellPos.X >= width || cellPos.Y < 0 || cellPos.Y >= height) return false;
+
+            if (collision[cellPos.Y, cellPos.X].ContainsKey(-1) == true) return false;
+            if (isIgnoreObject == false && collision[cellPos.Y, cellPos.X].Count > 0) return false;
+
+            return true;
+        }
+
         public void AddCreature(Creature creature)
         {
             if (ReferenceEquals(creature, null) == true) return;
@@ -105,18 +115,41 @@ namespace Server.Game
             collision[cellPos.Y, cellPos.X].Remove(creature.ID);
         }
 
-        public void MoveCreature(int creatureID, Pos curPos, Pos targetPos)
         {
-            if (curPos.X < minX || curPos.X > maxX || curPos.Y < minY || curPos.Y > minY) return;
-            if (targetPos.X < minX || targetPos.X > maxX || targetPos.Y < minY || targetPos.Y > maxY) return;
+        public void MoveCreature(Creature creature, EMoveDirection moveDirection)
+        {
+            if (ReferenceEquals(creature, null) == true) return;
+            if (moveDirection == EMoveDirection.None) return;
 
-            Vector2Int curCellPos = ConvertPosToCell(curPos);
-            Vector2Int targetCellPos = ConvertPosToCell(targetPos);
+            Vector2Int curCellPos = ConvertPosToCell(creature.Position);
+            if (collision[curCellPos.Y, curCellPos.X].ContainsKey(creature.ID) == false) return;
 
-            if (collision[curCellPos.Y, curCellPos.X].TryGetValue(creatureID, out Creature creature) == false) return;
+            Vector2Int targetCellPos = curCellPos;
+            switch (moveDirection)
+            {
+                case EMoveDirection.Up:
+                    targetCellPos += Vector2Int.Up;
+                    break;
 
-            collision[curCellPos.Y, curCellPos.X].Remove(creatureID);
-            collision[targetCellPos.Y, targetCellPos.X].Add(creatureID, creature);
+                case EMoveDirection.Down:
+                    targetCellPos += Vector2Int.Down;
+                    break;
+
+                case EMoveDirection.Left:
+                    targetCellPos += Vector2Int.Left;
+                    break;
+
+                case EMoveDirection.Right:
+                    targetCellPos += Vector2Int.Right;
+                    break;
+            }
+
+            if (CheckCanMove(targetCellPos) == false) return;
+
+            collision[curCellPos.Y, curCellPos.X].Remove(creature.ID);
+            collision[targetCellPos.Y, targetCellPos.X].Add(creature.ID, creature);
+
+            creature.Position = ConvertCellToPos(targetCellPos);
         }
 
         #region A* PathFinding
