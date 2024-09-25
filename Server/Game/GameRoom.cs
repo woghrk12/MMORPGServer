@@ -160,10 +160,7 @@ namespace Server.Game
                         player.CurState = ECreatureState.Move;
                     }
 
-                    if (player.MoveDirection != moveDirection)
-                    {
-                        player.MoveDirection = moveDirection;
-                    }
+                    player.MoveDirection = moveDirection;
                 }
 
                 Pos position = player.Position;
