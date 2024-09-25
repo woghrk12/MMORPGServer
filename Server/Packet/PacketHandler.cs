@@ -18,7 +18,7 @@ namespace Server
             GameRoom room = player.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.MoveCreature(player.ID, (packet.CurPosX, packet.CurPosY), packet.MoveDirection);
+            room.MoveCreature(player.ID, new Vector2Int(packet.CurPosX, packet.CurPosY), packet.MoveDirection);
         }
 
         public static void HandlePerformAttackRequest(ClientSession session, IMessage message)

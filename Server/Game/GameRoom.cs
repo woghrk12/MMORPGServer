@@ -140,13 +140,13 @@ namespace Server.Game
             }
         }
 
-        public void MoveCreature(int creatureID, (int, int) curCellPos, EMoveDirection moveDirection)
+        public void MoveCreature(int creatureID, Vector2Int curCellPos, EMoveDirection moveDirection)
         {
             lock (lockObj)
             {
                 if (playerDictionary.TryGetValue(creatureID, out Player player) == false) return;
 
-                // TODO : Certify the movement info passed by the packet
+                if (curCellPos.X != player.Position.X || curCellPos.Y != player.Position.Y) return;
 
                 if (moveDirection == EMoveDirection.None)
                 {

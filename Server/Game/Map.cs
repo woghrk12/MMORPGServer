@@ -107,6 +107,9 @@ namespace Server.Game
 
         public void MoveCreature(int creatureID, Pos curPos, Pos targetPos)
         {
+            if (curPos.X < minX || curPos.X > maxX || curPos.Y < minY || curPos.Y > minY) return;
+            if (targetPos.X < minX || targetPos.X > maxX || targetPos.Y < minY || targetPos.Y > maxY) return;
+
             Vector2Int curCellPos = ConvertPosToCell(curPos);
             Vector2Int targetCellPos = ConvertPosToCell(targetPos);
 
