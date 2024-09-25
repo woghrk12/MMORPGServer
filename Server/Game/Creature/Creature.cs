@@ -52,26 +52,26 @@ namespace Server.Game
 
         #region Methods
 
-        public Vector2Int GetFrontCellPos(int distance = 1)
+        public Pos GetFrontPos(int distance = 1)
         {
-            Vector2Int frontPos = new Vector2Int(Position.X, Position.Y);
+            Pos frontPos = Position;
 
             switch (FacingDirection)
             {
                 case EMoveDirection.Up:
-                    frontPos += Vector2Int.Up * distance;
+                    frontPos += Pos.Up * distance;
                     break;
 
                 case EMoveDirection.Down:
-                    frontPos += Vector2Int.Down * distance;
+                    frontPos += Pos.Down * distance;
                     break;
 
                 case EMoveDirection.Left:
-                    frontPos += Vector2Int.Left * distance;
+                    frontPos += Pos.Left * distance;
                     break;
 
                 case EMoveDirection.Right:
-                    frontPos += Vector2Int.Right * distance;
+                    frontPos += Pos.Right * distance;
                     break;
             }
 

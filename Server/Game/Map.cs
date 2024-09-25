@@ -1,3 +1,5 @@
+using Google.Protobuf.Protocol;
+
 namespace Server.Game
 {
     public struct Pos
@@ -10,6 +12,19 @@ namespace Server.Game
 
         public int X;
         public int Y;
+
+        public static Pos Up => new Pos(0, 1);
+        public static Pos Down => new Pos(0, -1);
+        public static Pos Left => new Pos(-1, 0);
+        public static Pos Right => new Pos(1, 0);
+        public static Pos Zero => new Pos(0, 0);
+
+        public static Pos operator +(Pos a, Pos b) => new Pos(a.X + b.X, a.Y + b.Y);
+        public static Pos operator -(Pos a, Pos b) => new Pos(a.X - b.X, a.Y - b.Y);
+        public static Pos operator *(Pos a, int b) => new Pos(a.X * b, a.Y * b);
+        public static Pos operator *(int a, Pos b) => new Pos(a * b.X, a * b.Y);
+        public static bool operator ==(Pos a, Pos b) => a.X == b.X && a.Y == b.Y;
+        public static bool operator !=(Pos a, Pos b) => a.X != b.X || a.Y != b.Y;
     }
 
     public struct PQNode : IComparable<PQNode>
@@ -115,7 +130,25 @@ namespace Server.Game
             collision[cellPos.Y, cellPos.X].Remove(creature.ID);
         }
 
+        public bool Find(Pos position, out List<Creature> creatureList)
         {
+            creatureList = null;
+
+            if (position.X < minX || position.X > maxX || position.Y < minY || position.Y > maxY) return false;
+
+            creatureList = new List<Creature>();
+            Vector2Int cellPos = ConvertPosToCell(position);
+
+            foreach (Creature creature in collision[cellPos.Y, cellPos.X].Values)
+            {
+                if (ReferenceEquals(creature, null) == true) continue;
+
+                creatureList.Add(creature);
+            }
+
+            return creatureList.Count > 0;
+        }
+
         public void MoveCreature(Creature creature, EMoveDirection moveDirection)
         {
             if (ReferenceEquals(creature, null) == true) return;

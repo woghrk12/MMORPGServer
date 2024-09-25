@@ -224,6 +224,20 @@ namespace Server.Game
                 Brodcast(performAttackBroadcastPacket);
 
                 // TODO : Perform the damage calculation
+                Pos attackPos = player.GetFrontPos();
+
+                if (map.Find(attackPos, out List<Creature> creatureList) == false) return;
+
+                foreach (Creature creature in creatureList)
+                {
+                    HitBroadcast hitBroadcastPacket = new()
+                    {
+                        AttackerID = creatureID,
+                        DefenderID = creature.ID
+                    };
+
+                    Brodcast(hitBroadcastPacket);
+                }
             }
         }
 
