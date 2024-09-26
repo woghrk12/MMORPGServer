@@ -149,7 +149,7 @@ namespace Server
         {
             Console.WriteLine($"Session ID : {SessionID}\nOnConnected : {endPoint}");
 
-            Player = PlayerManager.Instance.Add();
+            Player = ObjectManager.Instance.Add<Player>();
             Player.Session = this;
 
             RoomManager.Instance.Find(1).EnterRoom(Player);

@@ -14,13 +14,19 @@ namespace Server.Game
 
         public GameRoom Room { set; get; }
 
+        // [UNUSED(1)][TYPE(7)][ID(24)]
         public int ID { private set; get; } = -1;
+
         public string Name { set; get; } = string.Empty;
 
+        public EGameObjectType ObjectType { protected set; get; }
+
         public EObjectState CurState { set; get; }
+
         public Pos Position { set; get; }
 
         public int MoveSpeed { set; get; } = 5;
+
         public EMoveDirection MoveDirection
         {
             set

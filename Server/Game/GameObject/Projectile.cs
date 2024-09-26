@@ -2,7 +2,7 @@ using Google.Protobuf.Protocol;
 
 namespace Server.Game
 {
-    public class Player : GameObject
+    public class Projectile : GameObject
     {
         #region Properties
 
@@ -12,9 +12,9 @@ namespace Server.Game
 
         #region Constructor
 
-        public Player(int ID) : base(ID)
+        public Projectile(int ID) : base(ID)
         {
-            ObjectType = EGameObjectType.Player;
+            ObjectType = EGameObjectType.Projectile;
         }
 
         #endregion Constructor
