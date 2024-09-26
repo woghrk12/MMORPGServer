@@ -6,11 +6,11 @@ option csharp_namespace = "Google.Protobuf.Protocol";
 enum EMessageID
 {
     PLAYER_ENTERED_ROOM_RESPONSE = 0;
-    PLAYER_ENTERED_ROOM_BRODCAST = 1;
+    PLAYER_ENTERED_ROOM_BROADCAST = 1;
     PLAYER_LEFT_ROOM_RESPONSE = 2;
-    PLAYER_LEFT_ROOM_BRODCAST = 3;
-    CREATURE_SPAWNED_BRODCAST = 4;
-    CREATURE_DESPAWNED_BRODCAST = 5;
+    PLAYER_LEFT_ROOM_BROADCAST = 3;
+    CREATURE_SPAWNED_BROADCAST = 4;
+    CREATURE_DESPAWNED_BROADCAST = 5;
     PERFORM_MOVE_REQUEST = 6;
     PERFORM_MOVE_RESPONSE = 7;
     PERFORM_MOVE_BROADCAST = 8;
@@ -55,7 +55,7 @@ message PlayerEnteredRoomResponse
     repeated CreatureInfo otherPlayers = 2;
 }
 
-message PlayerEnteredRoomBrodcast
+message PlayerEnteredRoomBroadcast
 {
     CreatureInfo newPlayer = 1;
 }
@@ -65,17 +65,17 @@ message PlayerLeftRoomResponse
 
 }
 
-message PlayerLeftRoomBrodcast
+message PlayerLeftRoomBroadcast
 {
     int32 otherPlayerID = 1;
 }
 
-message CreatureSpawnedBrodcast
+message CreatureSpawnedBroadcast
 {
     CreatureInfo newCreatureInfo = 1;
 }
 
-message CreatureDespawnedBrodcast
+message CreatureDespawnedBroadcast
 {
     int32 oldObjectID = 1;
 }

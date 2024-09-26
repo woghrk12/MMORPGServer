@@ -81,7 +81,7 @@ namespace Server.Game
                 newPlayer.Session.Send(playerEnteredRoomResponse);
 
                 // Send the packets to the players who are in the room
-                PlayerEnteredRoomBrodcast playerEnteredRoomBrodcast = new()
+                PlayerEnteredRoomBroadcast playerEnteredRoomBroadcast = new()
                 {
                     NewPlayer = newPlayerInfo
                 };
@@ -90,12 +90,7 @@ namespace Server.Game
                 {
                     if (newPlayer.ID == player.ID) continue;
 
-                    PlayerEnteredRoomBrodcast packet = new()
-                    {
-                        NewPlayer = newPlayerInfo
-                    };
-
-                    player.Session.Send(playerEnteredRoomBrodcast);
+                    player.Session.Send(playerEnteredRoomBroadcast);
                 }
             }
         }
@@ -116,7 +111,7 @@ namespace Server.Game
                 }
 
                 {
-                    PlayerLeftRoomBrodcast packet = new()
+                    PlayerLeftRoomBroadcast packet = new()
                     {
                         OtherPlayerID = leftPlayer.ID
                     };
@@ -129,7 +124,7 @@ namespace Server.Game
             }
         }
 
-        public void Brodcast(IMessage packet)
+        public void Broadcast(IMessage packet)
         {
             lock (lockObj)
             {
@@ -187,7 +182,7 @@ namespace Server.Game
                     TargetPosY = targetPos.Y
                 };
 
-                Brodcast(performMoveBroadcastPacket);
+                Broadcast(performMoveBroadcastPacket);
             }
         }
 
@@ -221,7 +216,7 @@ namespace Server.Game
                     AttackInfo = new() { AttackID = 1 }
                 };
 
-                Brodcast(performAttackBroadcastPacket);
+                Broadcast(performAttackBroadcastPacket);
 
                 // TODO : Perform the damage calculation
                 Pos attackPos = player.GetFrontPos();
@@ -236,7 +231,7 @@ namespace Server.Game
                         DefenderID = creature.ID
                     };
 
-                    Brodcast(hitBroadcastPacket);
+                    Broadcast(hitBroadcastPacket);
                 }
             }
         }

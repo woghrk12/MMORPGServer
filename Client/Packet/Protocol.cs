@@ -31,54 +31,54 @@ namespace Google.Protobuf.Protocol {
             "b3JpYWwuRU1vdmVEaXJlY3Rpb24SEQoJbW92ZVNwZWVkGAcgASgFInQKGVBs",
             "YXllckVudGVyZWRSb29tUmVzcG9uc2USKQoJbmV3UGxheWVyGAEgASgLMhYu",
             "dHV0b3JpYWwuQ3JlYXR1cmVJbmZvEiwKDG90aGVyUGxheWVycxgCIAMoCzIW",
-            "LnR1dG9yaWFsLkNyZWF0dXJlSW5mbyJGChlQbGF5ZXJFbnRlcmVkUm9vbUJy",
-            "b2RjYXN0EikKCW5ld1BsYXllchgBIAEoCzIWLnR1dG9yaWFsLkNyZWF0dXJl",
-            "SW5mbyIYChZQbGF5ZXJMZWZ0Um9vbVJlc3BvbnNlIi8KFlBsYXllckxlZnRS",
-            "b29tQnJvZGNhc3QSFQoNb3RoZXJQbGF5ZXJJRBgBIAEoBSJKChdDcmVhdHVy",
-            "ZVNwYXduZWRCcm9kY2FzdBIvCg9uZXdDcmVhdHVyZUluZm8YASABKAsyFi50",
-            "dXRvcmlhbC5DcmVhdHVyZUluZm8iMAoZQ3JlYXR1cmVEZXNwYXduZWRCcm9k",
-            "Y2FzdBITCgtvbGRPYmplY3RJRBgBIAEoBSKPAQoSUGVyZm9ybU1vdmVSZXF1",
-            "ZXN0Ei8KDW1vdmVEaXJlY3Rpb24YASABKA4yGC50dXRvcmlhbC5FTW92ZURp",
-            "cmVjdGlvbhIPCgdjdXJQb3NYGAIgASgFEg8KB2N1clBvc1kYAyABKAUSEgoK",
-            "dGFyZ2V0UG9zWBgEIAEoBRISCgp0YXJnZXRQb3NZGAUgASgFIl8KE1BlcmZv",
-            "cm1Nb3ZlUmVzcG9uc2USDwoHY3VyUG9zWBgBIAEoBRIPCgdjdXJQb3NZGAIg",
-            "ASgFEhIKCnRhcmdldFBvc1gYAyABKAUSEgoKdGFyZ2V0UG9zWRgEIAEoBSKl",
-            "AQoUUGVyZm9ybU1vdmVCcm9hZGNhc3QSEgoKY3JlYXR1cmVJRBgBIAEoBRIv",
-            "Cg1tb3ZlRGlyZWN0aW9uGAIgASgOMhgudHV0b3JpYWwuRU1vdmVEaXJlY3Rp",
-            "b24SDwoHY3VyUG9zWBgDIAEoBRIPCgdjdXJQb3NZGAQgASgFEhIKCnRhcmdl",
-            "dFBvc1gYBSABKAUSEgoKdGFyZ2V0UG9zWRgGIAEoBSIeCgpBdHRhY2tJbmZv",
-            "EhAKCGF0dGFja0lEGAEgASgFIkAKFFBlcmZvcm1BdHRhY2tSZXF1ZXN0EigK",
-            "CmF0dGFja0luZm8YASABKAsyFC50dXRvcmlhbC5BdHRhY2tJbmZvIloKFVBl",
-            "cmZvcm1BdHRhY2tSZXNwb25zZRIXCg9hdHRhY2tTdGFydFRpbWUYASABKAMS",
-            "KAoKYXR0YWNrSW5mbxgCIAEoCzIULnR1dG9yaWFsLkF0dGFja0luZm8ibwoW",
-            "UGVyZm9ybUF0dGFja0Jyb2FkY2FzdBISCgpjcmVhdHVyZUlEGAEgASgFEhcK",
-            "D2F0dGFja1N0YXJ0VGltZRgCIAEoAxIoCgphdHRhY2tJbmZvGAMgASgLMhQu",
-            "dHV0b3JpYWwuQXR0YWNrSW5mbyIXChVBdHRhY2tDb21wbGV0ZVJlcXVlc3Qi",
-            "NgoMSGl0QnJvYWRjYXN0EhIKCmF0dGFja2VySUQYASABKAUSEgoKZGVmZW5k",
-            "ZXJJRBgCIAEoBSqmAwoKRU1lc3NhZ2VJRBIgChxQTEFZRVJfRU5URVJFRF9S",
-            "T09NX1JFU1BPTlNFEAASIAocUExBWUVSX0VOVEVSRURfUk9PTV9CUk9EQ0FT",
-            "VBABEh0KGVBMQVlFUl9MRUZUX1JPT01fUkVTUE9OU0UQAhIdChlQTEFZRVJf",
-            "TEVGVF9ST09NX0JST0RDQVNUEAMSHQoZQ1JFQVRVUkVfU1BBV05FRF9CUk9E",
-            "Q0FTVBAEEh8KG0NSRUFUVVJFX0RFU1BBV05FRF9CUk9EQ0FTVBAFEhgKFFBF",
-            "UkZPUk1fTU9WRV9SRVFVRVNUEAYSGQoVUEVSRk9STV9NT1ZFX1JFU1BPTlNF",
-            "EAcSGgoWUEVSRk9STV9NT1ZFX0JST0FEQ0FTVBAIEhoKFlBFUkZPUk1fQVRU",
-            "QUNLX1JFUVVFU1QQCRIbChdQRVJGT1JNX0FUVEFDS19SRVNQT05TRRAKEhwK",
-            "GFBFUkZPUk1fQVRUQUNLX0JST0FEQ0FTVBALEhsKF0FUVEFDS19DT01QTEVU",
-            "RV9SRVFVRVNUEAwSEQoNSElUX0JST0FEQ0FTVBANKjoKDkVDcmVhdHVyZVN0",
-            "YXRlEggKBElETEUQABIICgRNT1ZFEAESCgoGQVRUQUNLEAISCAoEREVBRBAD",
-            "KkEKDkVNb3ZlRGlyZWN0aW9uEggKBE5PTkUQABIGCgJVUBABEggKBERPV04Q",
-            "AhIICgRMRUZUEAQSCQoFUklHSFQQCEIbqgIYR29vZ2xlLlByb3RvYnVmLlBy",
-            "b3RvY29sYgZwcm90bzM="));
+            "LnR1dG9yaWFsLkNyZWF0dXJlSW5mbyJHChpQbGF5ZXJFbnRlcmVkUm9vbUJy",
+            "b2FkY2FzdBIpCgluZXdQbGF5ZXIYASABKAsyFi50dXRvcmlhbC5DcmVhdHVy",
+            "ZUluZm8iGAoWUGxheWVyTGVmdFJvb21SZXNwb25zZSIwChdQbGF5ZXJMZWZ0",
+            "Um9vbUJyb2FkY2FzdBIVCg1vdGhlclBsYXllcklEGAEgASgFIksKGENyZWF0",
+            "dXJlU3Bhd25lZEJyb2FkY2FzdBIvCg9uZXdDcmVhdHVyZUluZm8YASABKAsy",
+            "Fi50dXRvcmlhbC5DcmVhdHVyZUluZm8iMQoaQ3JlYXR1cmVEZXNwYXduZWRC",
+            "cm9hZGNhc3QSEwoLb2xkT2JqZWN0SUQYASABKAUijwEKElBlcmZvcm1Nb3Zl",
+            "UmVxdWVzdBIvCg1tb3ZlRGlyZWN0aW9uGAEgASgOMhgudHV0b3JpYWwuRU1v",
+            "dmVEaXJlY3Rpb24SDwoHY3VyUG9zWBgCIAEoBRIPCgdjdXJQb3NZGAMgASgF",
+            "EhIKCnRhcmdldFBvc1gYBCABKAUSEgoKdGFyZ2V0UG9zWRgFIAEoBSJfChNQ",
+            "ZXJmb3JtTW92ZVJlc3BvbnNlEg8KB2N1clBvc1gYASABKAUSDwoHY3VyUG9z",
+            "WRgCIAEoBRISCgp0YXJnZXRQb3NYGAMgASgFEhIKCnRhcmdldFBvc1kYBCAB",
+            "KAUipQEKFFBlcmZvcm1Nb3ZlQnJvYWRjYXN0EhIKCmNyZWF0dXJlSUQYASAB",
+            "KAUSLwoNbW92ZURpcmVjdGlvbhgCIAEoDjIYLnR1dG9yaWFsLkVNb3ZlRGly",
+            "ZWN0aW9uEg8KB2N1clBvc1gYAyABKAUSDwoHY3VyUG9zWRgEIAEoBRISCgp0",
+            "YXJnZXRQb3NYGAUgASgFEhIKCnRhcmdldFBvc1kYBiABKAUiHgoKQXR0YWNr",
+            "SW5mbxIQCghhdHRhY2tJRBgBIAEoBSJAChRQZXJmb3JtQXR0YWNrUmVxdWVz",
+            "dBIoCgphdHRhY2tJbmZvGAEgASgLMhQudHV0b3JpYWwuQXR0YWNrSW5mbyJa",
+            "ChVQZXJmb3JtQXR0YWNrUmVzcG9uc2USFwoPYXR0YWNrU3RhcnRUaW1lGAEg",
+            "ASgDEigKCmF0dGFja0luZm8YAiABKAsyFC50dXRvcmlhbC5BdHRhY2tJbmZv",
+            "Im8KFlBlcmZvcm1BdHRhY2tCcm9hZGNhc3QSEgoKY3JlYXR1cmVJRBgBIAEo",
+            "BRIXCg9hdHRhY2tTdGFydFRpbWUYAiABKAMSKAoKYXR0YWNrSW5mbxgDIAEo",
+            "CzIULnR1dG9yaWFsLkF0dGFja0luZm8iFwoVQXR0YWNrQ29tcGxldGVSZXF1",
+            "ZXN0IjYKDEhpdEJyb2FkY2FzdBISCgphdHRhY2tlcklEGAEgASgFEhIKCmRl",
+            "ZmVuZGVySUQYAiABKAUqqgMKCkVNZXNzYWdlSUQSIAocUExBWUVSX0VOVEVS",
+            "RURfUk9PTV9SRVNQT05TRRAAEiEKHVBMQVlFUl9FTlRFUkVEX1JPT01fQlJP",
+            "QURDQVNUEAESHQoZUExBWUVSX0xFRlRfUk9PTV9SRVNQT05TRRACEh4KGlBM",
+            "QVlFUl9MRUZUX1JPT01fQlJPQURDQVNUEAMSHgoaQ1JFQVRVUkVfU1BBV05F",
+            "RF9CUk9BRENBU1QQBBIgChxDUkVBVFVSRV9ERVNQQVdORURfQlJPQURDQVNU",
+            "EAUSGAoUUEVSRk9STV9NT1ZFX1JFUVVFU1QQBhIZChVQRVJGT1JNX01PVkVf",
+            "UkVTUE9OU0UQBxIaChZQRVJGT1JNX01PVkVfQlJPQURDQVNUEAgSGgoWUEVS",
+            "Rk9STV9BVFRBQ0tfUkVRVUVTVBAJEhsKF1BFUkZPUk1fQVRUQUNLX1JFU1BP",
+            "TlNFEAoSHAoYUEVSRk9STV9BVFRBQ0tfQlJPQURDQVNUEAsSGwoXQVRUQUNL",
+            "X0NPTVBMRVRFX1JFUVVFU1QQDBIRCg1ISVRfQlJPQURDQVNUEA0qOgoORUNy",
+            "ZWF0dXJlU3RhdGUSCAoESURMRRAAEggKBE1PVkUQARIKCgZBVFRBQ0sQAhII",
+            "CgRERUFEEAMqQQoORU1vdmVEaXJlY3Rpb24SCAoETk9ORRAAEgYKAlVQEAES",
+            "CAoERE9XThACEggKBExFRlQQBBIJCgVSSUdIVBAIQhuqAhhHb29nbGUuUHJv",
+            "dG9idWYuUHJvdG9jb2xiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.EMessageID), typeof(global::Google.Protobuf.Protocol.ECreatureState), typeof(global::Google.Protobuf.Protocol.EMoveDirection), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.CreatureInfo), global::Google.Protobuf.Protocol.CreatureInfo.Parser, new[]{ "CreatureID", "Name", "CurState", "PosX", "PosY", "FacingDirection", "MoveSpeed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerEnteredRoomResponse), global::Google.Protobuf.Protocol.PlayerEnteredRoomResponse.Parser, new[]{ "NewPlayer", "OtherPlayers" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerEnteredRoomBrodcast), global::Google.Protobuf.Protocol.PlayerEnteredRoomBrodcast.Parser, new[]{ "NewPlayer" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerEnteredRoomBroadcast), global::Google.Protobuf.Protocol.PlayerEnteredRoomBroadcast.Parser, new[]{ "NewPlayer" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerLeftRoomResponse), global::Google.Protobuf.Protocol.PlayerLeftRoomResponse.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerLeftRoomBrodcast), global::Google.Protobuf.Protocol.PlayerLeftRoomBrodcast.Parser, new[]{ "OtherPlayerID" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.CreatureSpawnedBrodcast), global::Google.Protobuf.Protocol.CreatureSpawnedBrodcast.Parser, new[]{ "NewCreatureInfo" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.CreatureDespawnedBrodcast), global::Google.Protobuf.Protocol.CreatureDespawnedBrodcast.Parser, new[]{ "OldObjectID" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerLeftRoomBroadcast), global::Google.Protobuf.Protocol.PlayerLeftRoomBroadcast.Parser, new[]{ "OtherPlayerID" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.CreatureSpawnedBroadcast), global::Google.Protobuf.Protocol.CreatureSpawnedBroadcast.Parser, new[]{ "NewCreatureInfo" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.CreatureDespawnedBroadcast), global::Google.Protobuf.Protocol.CreatureDespawnedBroadcast.Parser, new[]{ "OldObjectID" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PerformMoveRequest), global::Google.Protobuf.Protocol.PerformMoveRequest.Parser, new[]{ "MoveDirection", "CurPosX", "CurPosY", "TargetPosX", "TargetPosY" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PerformMoveResponse), global::Google.Protobuf.Protocol.PerformMoveResponse.Parser, new[]{ "CurPosX", "CurPosY", "TargetPosX", "TargetPosY" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PerformMoveBroadcast), global::Google.Protobuf.Protocol.PerformMoveBroadcast.Parser, new[]{ "CreatureID", "MoveDirection", "CurPosX", "CurPosY", "TargetPosX", "TargetPosY" }, null, null, null, null),
@@ -96,11 +96,11 @@ namespace Google.Protobuf.Protocol {
   #region Enums
   public enum EMessageID {
     [pbr::OriginalName("PLAYER_ENTERED_ROOM_RESPONSE")] PlayerEnteredRoomResponse = 0,
-    [pbr::OriginalName("PLAYER_ENTERED_ROOM_BRODCAST")] PlayerEnteredRoomBrodcast = 1,
+    [pbr::OriginalName("PLAYER_ENTERED_ROOM_BROADCAST")] PlayerEnteredRoomBroadcast = 1,
     [pbr::OriginalName("PLAYER_LEFT_ROOM_RESPONSE")] PlayerLeftRoomResponse = 2,
-    [pbr::OriginalName("PLAYER_LEFT_ROOM_BRODCAST")] PlayerLeftRoomBrodcast = 3,
-    [pbr::OriginalName("CREATURE_SPAWNED_BRODCAST")] CreatureSpawnedBrodcast = 4,
-    [pbr::OriginalName("CREATURE_DESPAWNED_BRODCAST")] CreatureDespawnedBrodcast = 5,
+    [pbr::OriginalName("PLAYER_LEFT_ROOM_BROADCAST")] PlayerLeftRoomBroadcast = 3,
+    [pbr::OriginalName("CREATURE_SPAWNED_BROADCAST")] CreatureSpawnedBroadcast = 4,
+    [pbr::OriginalName("CREATURE_DESPAWNED_BROADCAST")] CreatureDespawnedBroadcast = 5,
     [pbr::OriginalName("PERFORM_MOVE_REQUEST")] PerformMoveRequest = 6,
     [pbr::OriginalName("PERFORM_MOVE_RESPONSE")] PerformMoveResponse = 7,
     [pbr::OriginalName("PERFORM_MOVE_BROADCAST")] PerformMoveBroadcast = 8,
@@ -783,16 +783,16 @@ namespace Google.Protobuf.Protocol {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class PlayerEnteredRoomBrodcast : pb::IMessage<PlayerEnteredRoomBrodcast>
+  public sealed partial class PlayerEnteredRoomBroadcast : pb::IMessage<PlayerEnteredRoomBroadcast>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<PlayerEnteredRoomBrodcast> _parser = new pb::MessageParser<PlayerEnteredRoomBrodcast>(() => new PlayerEnteredRoomBrodcast());
+    private static readonly pb::MessageParser<PlayerEnteredRoomBroadcast> _parser = new pb::MessageParser<PlayerEnteredRoomBroadcast>(() => new PlayerEnteredRoomBroadcast());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<PlayerEnteredRoomBrodcast> Parser { get { return _parser; } }
+    public static pb::MessageParser<PlayerEnteredRoomBroadcast> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -808,7 +808,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PlayerEnteredRoomBrodcast() {
+    public PlayerEnteredRoomBroadcast() {
       OnConstruction();
     }
 
@@ -816,15 +816,15 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PlayerEnteredRoomBrodcast(PlayerEnteredRoomBrodcast other) : this() {
+    public PlayerEnteredRoomBroadcast(PlayerEnteredRoomBroadcast other) : this() {
       newPlayer_ = other.newPlayer_ != null ? other.newPlayer_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PlayerEnteredRoomBrodcast Clone() {
-      return new PlayerEnteredRoomBrodcast(this);
+    public PlayerEnteredRoomBroadcast Clone() {
+      return new PlayerEnteredRoomBroadcast(this);
     }
 
     /// <summary>Field number for the "newPlayer" field.</summary>
@@ -842,12 +842,12 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as PlayerEnteredRoomBrodcast);
+      return Equals(other as PlayerEnteredRoomBroadcast);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(PlayerEnteredRoomBrodcast other) {
+    public bool Equals(PlayerEnteredRoomBroadcast other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -920,7 +920,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(PlayerEnteredRoomBrodcast other) {
+    public void MergeFrom(PlayerEnteredRoomBroadcast other) {
       if (other == null) {
         return;
       }
@@ -1151,16 +1151,16 @@ namespace Google.Protobuf.Protocol {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class PlayerLeftRoomBrodcast : pb::IMessage<PlayerLeftRoomBrodcast>
+  public sealed partial class PlayerLeftRoomBroadcast : pb::IMessage<PlayerLeftRoomBroadcast>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<PlayerLeftRoomBrodcast> _parser = new pb::MessageParser<PlayerLeftRoomBrodcast>(() => new PlayerLeftRoomBrodcast());
+    private static readonly pb::MessageParser<PlayerLeftRoomBroadcast> _parser = new pb::MessageParser<PlayerLeftRoomBroadcast>(() => new PlayerLeftRoomBroadcast());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<PlayerLeftRoomBrodcast> Parser { get { return _parser; } }
+    public static pb::MessageParser<PlayerLeftRoomBroadcast> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1176,7 +1176,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PlayerLeftRoomBrodcast() {
+    public PlayerLeftRoomBroadcast() {
       OnConstruction();
     }
 
@@ -1184,15 +1184,15 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PlayerLeftRoomBrodcast(PlayerLeftRoomBrodcast other) : this() {
+    public PlayerLeftRoomBroadcast(PlayerLeftRoomBroadcast other) : this() {
       otherPlayerID_ = other.otherPlayerID_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PlayerLeftRoomBrodcast Clone() {
-      return new PlayerLeftRoomBrodcast(this);
+    public PlayerLeftRoomBroadcast Clone() {
+      return new PlayerLeftRoomBroadcast(this);
     }
 
     /// <summary>Field number for the "otherPlayerID" field.</summary>
@@ -1210,12 +1210,12 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as PlayerLeftRoomBrodcast);
+      return Equals(other as PlayerLeftRoomBroadcast);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(PlayerLeftRoomBrodcast other) {
+    public bool Equals(PlayerLeftRoomBroadcast other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1288,7 +1288,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(PlayerLeftRoomBrodcast other) {
+    public void MergeFrom(PlayerLeftRoomBroadcast other) {
       if (other == null) {
         return;
       }
@@ -1349,16 +1349,16 @@ namespace Google.Protobuf.Protocol {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class CreatureSpawnedBrodcast : pb::IMessage<CreatureSpawnedBrodcast>
+  public sealed partial class CreatureSpawnedBroadcast : pb::IMessage<CreatureSpawnedBroadcast>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<CreatureSpawnedBrodcast> _parser = new pb::MessageParser<CreatureSpawnedBrodcast>(() => new CreatureSpawnedBrodcast());
+    private static readonly pb::MessageParser<CreatureSpawnedBroadcast> _parser = new pb::MessageParser<CreatureSpawnedBroadcast>(() => new CreatureSpawnedBroadcast());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<CreatureSpawnedBrodcast> Parser { get { return _parser; } }
+    public static pb::MessageParser<CreatureSpawnedBroadcast> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1374,7 +1374,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CreatureSpawnedBrodcast() {
+    public CreatureSpawnedBroadcast() {
       OnConstruction();
     }
 
@@ -1382,15 +1382,15 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CreatureSpawnedBrodcast(CreatureSpawnedBrodcast other) : this() {
+    public CreatureSpawnedBroadcast(CreatureSpawnedBroadcast other) : this() {
       newCreatureInfo_ = other.newCreatureInfo_ != null ? other.newCreatureInfo_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CreatureSpawnedBrodcast Clone() {
-      return new CreatureSpawnedBrodcast(this);
+    public CreatureSpawnedBroadcast Clone() {
+      return new CreatureSpawnedBroadcast(this);
     }
 
     /// <summary>Field number for the "newCreatureInfo" field.</summary>
@@ -1408,12 +1408,12 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as CreatureSpawnedBrodcast);
+      return Equals(other as CreatureSpawnedBroadcast);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(CreatureSpawnedBrodcast other) {
+    public bool Equals(CreatureSpawnedBroadcast other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1486,7 +1486,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(CreatureSpawnedBrodcast other) {
+    public void MergeFrom(CreatureSpawnedBroadcast other) {
       if (other == null) {
         return;
       }
@@ -1556,16 +1556,16 @@ namespace Google.Protobuf.Protocol {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class CreatureDespawnedBrodcast : pb::IMessage<CreatureDespawnedBrodcast>
+  public sealed partial class CreatureDespawnedBroadcast : pb::IMessage<CreatureDespawnedBroadcast>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<CreatureDespawnedBrodcast> _parser = new pb::MessageParser<CreatureDespawnedBrodcast>(() => new CreatureDespawnedBrodcast());
+    private static readonly pb::MessageParser<CreatureDespawnedBroadcast> _parser = new pb::MessageParser<CreatureDespawnedBroadcast>(() => new CreatureDespawnedBroadcast());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<CreatureDespawnedBrodcast> Parser { get { return _parser; } }
+    public static pb::MessageParser<CreatureDespawnedBroadcast> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1581,7 +1581,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CreatureDespawnedBrodcast() {
+    public CreatureDespawnedBroadcast() {
       OnConstruction();
     }
 
@@ -1589,15 +1589,15 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CreatureDespawnedBrodcast(CreatureDespawnedBrodcast other) : this() {
+    public CreatureDespawnedBroadcast(CreatureDespawnedBroadcast other) : this() {
       oldObjectID_ = other.oldObjectID_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public CreatureDespawnedBrodcast Clone() {
-      return new CreatureDespawnedBrodcast(this);
+    public CreatureDespawnedBroadcast Clone() {
+      return new CreatureDespawnedBroadcast(this);
     }
 
     /// <summary>Field number for the "oldObjectID" field.</summary>
@@ -1615,12 +1615,12 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as CreatureDespawnedBrodcast);
+      return Equals(other as CreatureDespawnedBroadcast);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(CreatureDespawnedBrodcast other) {
+    public bool Equals(CreatureDespawnedBroadcast other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1693,7 +1693,7 @@ namespace Google.Protobuf.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(CreatureDespawnedBrodcast other) {
+    public void MergeFrom(CreatureDespawnedBroadcast other) {
       if (other == null) {
         return;
       }
