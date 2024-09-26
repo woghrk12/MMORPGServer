@@ -18,7 +18,7 @@ namespace Server
             GameRoom room = player.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.MoveCreature(player.ID, new Vector2Int(packet.CurPosX, packet.CurPosY), packet.MoveDirection);
+            room.MoveObject(player.ID, new Vector2Int(packet.CurPosX, packet.CurPosY), packet.MoveDirection);
         }
 
         public static void HandlePerformAttackRequest(ClientSession session, IMessage message)
@@ -46,7 +46,7 @@ namespace Server
             GameRoom room = player.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.SetCreatureState(player.ID, ECreatureState.Idle);
+            room.SetObjectState(player.ID, EObjectState.Idle);
         }
     }
 }

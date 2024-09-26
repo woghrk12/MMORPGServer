@@ -41,11 +41,11 @@ namespace Server.Game
                 playerDictionary.Add(newPlayer.ID, newPlayer);
                 newPlayer.Room = this;
 
-                map.AddCreature(newPlayer);
+                map.AddObject(newPlayer);
 
-                CreatureInfo newPlayerInfo = new()
+                ObjectInfo newPlayerInfo = new()
                 {
-                    CreatureID = newPlayer.ID,
+                    ObjectID = newPlayer.ID,
                     Name = newPlayer.Name,
                     CurState = newPlayer.CurState,
                     PosX = newPlayer.Position.X,
@@ -64,9 +64,9 @@ namespace Server.Game
                 {
                     if (newPlayer.ID == player.ID) continue;
 
-                    CreatureInfo otherPlayerInfo = new()
+                    ObjectInfo otherPlayerInfo = new()
                     {
-                        CreatureID = player.ID,
+                        ObjectID = player.ID,
                         Name = player.Name,
                         CurState = player.CurState,
                         PosX = player.Position.X,
@@ -101,7 +101,7 @@ namespace Server.Game
             {
                 if (playerDictionary.Remove(playerID, out Player leftPlayer) == false) return;
 
-                map.RemoveCreature(leftPlayer);
+                map.RemoveObject(leftPlayer);
                 leftPlayer.Room = null;
 
                 {
@@ -135,31 +135,31 @@ namespace Server.Game
             }
         }
 
-        public void MoveCreature(int creatureID, Vector2Int curCellPos, EMoveDirection moveDirection)
+        public void MoveObject(int objectID, Vector2Int curCellPos, EMoveDirection moveDirection)
         {
             lock (lockObj)
             {
-                if (playerDictionary.TryGetValue(creatureID, out Player player) == false) return;
+                if (playerDictionary.TryGetValue(objectID, out Player player) == false) return;
 
                 if (curCellPos.X != player.Position.X || curCellPos.Y != player.Position.Y) return;
 
                 if (moveDirection == EMoveDirection.None)
                 {
-                    player.CurState = ECreatureState.Idle;
+                    player.CurState = EObjectState.Idle;
                     player.MoveDirection = EMoveDirection.None;
                 }
                 else
                 {
-                    if (player.CurState != ECreatureState.Move)
+                    if (player.CurState != EObjectState.Move)
                     {
-                        player.CurState = ECreatureState.Move;
+                        player.CurState = EObjectState.Move;
                     }
 
                     player.MoveDirection = moveDirection;
                 }
 
                 Pos curPos = player.Position;
-                map.MoveCreature(player, moveDirection);
+                map.MoveObject(player, moveDirection);
                 Pos targetPos = player.Position;
 
                 PerformMoveResponse performMoveResponsePacket = new()
@@ -174,7 +174,7 @@ namespace Server.Game
 
                 PerformMoveBroadcast performMoveBroadcastPacket = new()
                 {
-                    CreatureID = player.ID,
+                    ObjectID = player.ID,
                     MoveDirection = player.MoveDirection,
                     CurPosX = curPos.X,
                     CurPosY = curPos.Y,
@@ -186,18 +186,18 @@ namespace Server.Game
             }
         }
 
-        public void PerformAttack(int creatureID, AttackInfo attackInfo)
+        public void PerformAttack(int objectID, AttackInfo attackInfo)
         {
             lock (lockObj)
             {
-                if (playerDictionary.TryGetValue(creatureID, out Player player) == false) return;
+                if (playerDictionary.TryGetValue(objectID, out Player player) == false) return;
 
                 // TODO : Certify the attack info passed by the packet
 
-                // TODO : Check whether the creature can attack
-                if (player.CurState != ECreatureState.Idle) return;
+                // TODO : Check whether the gameobject can attack
+                if (player.CurState != EObjectState.Idle) return;
 
-                player.CurState = ECreatureState.Attack;
+                player.CurState = EObjectState.Attack;
 
                 long attackStartTime = DateTime.UtcNow.Ticks;
 
@@ -211,7 +211,7 @@ namespace Server.Game
 
                 PerformAttackBroadcast performAttackBroadcastPacket = new()
                 {
-                    CreatureID = creatureID,
+                    ObjectID = objectID,
                     AttackStartTime = attackStartTime,
                     AttackInfo = new() { AttackID = 1 }
                 };
@@ -221,14 +221,14 @@ namespace Server.Game
                 // TODO : Perform the damage calculation
                 Pos attackPos = player.GetFrontPos();
 
-                if (map.Find(attackPos, out List<Creature> creatureList) == false) return;
+                if (map.Find(attackPos, out List<GameObject> objectList) == false) return;
 
-                foreach (Creature creature in creatureList)
+                foreach (GameObject gameObject in objectList)
                 {
                     HitBroadcast hitBroadcastPacket = new()
                     {
-                        AttackerID = creatureID,
-                        DefenderID = creature.ID
+                        AttackerID = objectID,
+                        DefenderID = gameObject.ID
                     };
 
                     Broadcast(hitBroadcastPacket);
@@ -236,11 +236,11 @@ namespace Server.Game
             }
         }
 
-        public void SetCreatureState(int creatureID, ECreatureState state)
+        public void SetObjectState(int objectID, EObjectState state)
         {
             lock (lockObj)
             {
-                if (playerDictionary.TryGetValue(creatureID, out Player player) == false) return;
+                if (playerDictionary.TryGetValue(objectID, out Player player) == false) return;
 
                 player.CurState = state;
             }

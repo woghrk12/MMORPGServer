@@ -2,7 +2,7 @@ using Google.Protobuf.Protocol;
 
 namespace Server.Game
 {
-    public class Creature
+    public class GameObject
     {
         #region Variables
 
@@ -17,7 +17,7 @@ namespace Server.Game
         public int ID { private set; get; } = -1;
         public string Name { set; get; } = string.Empty;
 
-        public ECreatureState CurState { set; get; }
+        public EObjectState CurState { set; get; }
         public Pos Position { set; get; }
 
         public int MoveSpeed { set; get; } = 5;
@@ -43,7 +43,7 @@ namespace Server.Game
 
         #region Constructor
 
-        public Creature(int ID)
+        public GameObject(int ID)
         {
             this.ID = ID;
         }

@@ -9,8 +9,8 @@ enum EMessageID
     PLAYER_ENTERED_ROOM_BROADCAST = 1;
     PLAYER_LEFT_ROOM_RESPONSE = 2;
     PLAYER_LEFT_ROOM_BROADCAST = 3;
-    CREATURE_SPAWNED_BROADCAST = 4;
-    CREATURE_DESPAWNED_BROADCAST = 5;
+    OBJECT_SPAWNED_BROADCAST = 4;
+    OBJECT_DESPAWNED_BROADCAST = 5;
     PERFORM_MOVE_REQUEST = 6;
     PERFORM_MOVE_RESPONSE = 7;
     PERFORM_MOVE_BROADCAST = 8;
@@ -21,7 +21,14 @@ enum EMessageID
     HIT_BROADCAST = 13;
 }
 
-enum ECreatureState
+enum EGameObjectType
+{
+    PLAYER = 0;
+    MONSTER = 1;
+    PROJECTILE = 2;
+}
+
+enum EObjectState
 {
     IDLE = 0;
     MOVE = 1;
@@ -38,11 +45,11 @@ enum EMoveDirection
     RIGHT = 8;
 }
 
-message CreatureInfo
+message ObjectInfo
 {
-    int32 creatureID = 1;
+    int32 objectID = 1;
     string name = 2;
-    ECreatureState curState = 3;
+    EObjectState curState = 3;
     int32 posX = 4;
     int32 posY = 5;
     EMoveDirection facingDirection = 6;
@@ -51,13 +58,13 @@ message CreatureInfo
 
 message PlayerEnteredRoomResponse
 {
-    CreatureInfo newPlayer = 1;
-    repeated CreatureInfo otherPlayers = 2;
+    ObjectInfo newPlayer = 1;
+    repeated ObjectInfo otherPlayers = 2;
 }
 
 message PlayerEnteredRoomBroadcast
 {
-    CreatureInfo newPlayer = 1;
+    ObjectInfo newPlayer = 1;
 }
 
 message PlayerLeftRoomResponse
@@ -70,12 +77,12 @@ message PlayerLeftRoomBroadcast
     int32 otherPlayerID = 1;
 }
 
-message CreatureSpawnedBroadcast
+message ObjectSpawnedBroadcast
 {
-    CreatureInfo newCreatureInfo = 1;
+    ObjectInfo newObjectInfo = 1;
 }
 
-message CreatureDespawnedBroadcast
+message ObjectDespawnedBroadcast
 {
     int32 oldObjectID = 1;
 }
@@ -99,7 +106,7 @@ message PerformMoveResponse
 
 message PerformMoveBroadcast
 {
-    int32 creatureID = 1;
+    int32 objectID = 1;
     EMoveDirection moveDirection = 2;
     int32 curPosX = 3;
     int32 curPosY = 4;
@@ -125,7 +132,7 @@ message PerformAttackResponse
 
 message PerformAttackBroadcast
 {
-    int32 creatureID = 1;
+    int32 objectID = 1;
     int64 attackStartTime = 2;
     AttackInfo attackInfo = 3;
 }

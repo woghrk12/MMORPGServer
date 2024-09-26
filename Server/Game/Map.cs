@@ -46,7 +46,7 @@ namespace Server.Game
     {
         #region Variables
 
-        private Dictionary<int, Creature>[,] collision = null;
+        private Dictionary<int, GameObject>[,] collision = null;
 
         private int minX = 0;
         private int maxX = 0;
@@ -75,13 +75,13 @@ namespace Server.Game
             width = maxX - minX + 1;
             height = maxY - minY + 1;
 
-            collision = new Dictionary<int, Creature>[height, width];
+            collision = new Dictionary<int, GameObject>[height, width];
             for (int y = height - 1; y >= 0; y--)
             {
                 string line = reader.ReadLine();
                 for (int x = 0; x < width; x++)
                 {
-                    collision[y, x] = new Dictionary<int, Creature>();
+                    collision[y, x] = new Dictionary<int, GameObject>();
 
                     if (line[x] == '1')
                     {
@@ -114,48 +114,48 @@ namespace Server.Game
             return true;
         }
 
-        public void AddCreature(Creature creature)
+        public void AddObject(GameObject gameObject)
         {
-            if (ReferenceEquals(creature, null) == true) return;
+            if (ReferenceEquals(gameObject, null) == true) return;
 
-            Vector2Int cellPos = ConvertPosToCell(creature.Position);
-            collision[cellPos.Y, cellPos.X].Add(creature.ID, creature);
+            Vector2Int cellPos = ConvertPosToCell(gameObject.Position);
+            collision[cellPos.Y, cellPos.X].Add(gameObject.ID, gameObject);
         }
 
-        public void RemoveCreature(Creature creature)
+        public void RemoveObject(GameObject gameObject)
         {
-            if (ReferenceEquals(creature, null) == true) return;
+            if (ReferenceEquals(gameObject, null) == true) return;
 
-            Vector2Int cellPos = ConvertPosToCell(creature.Position);
-            collision[cellPos.Y, cellPos.X].Remove(creature.ID);
+            Vector2Int cellPos = ConvertPosToCell(gameObject.Position);
+            collision[cellPos.Y, cellPos.X].Remove(gameObject.ID);
         }
 
-        public bool Find(Pos position, out List<Creature> creatureList)
+        public bool Find(Pos position, out List<GameObject> objectList)
         {
-            creatureList = null;
+            objectList = null;
 
             if (position.X < minX || position.X > maxX || position.Y < minY || position.Y > maxY) return false;
 
-            creatureList = new List<Creature>();
+            objectList = new List<GameObject>();
             Vector2Int cellPos = ConvertPosToCell(position);
 
-            foreach (Creature creature in collision[cellPos.Y, cellPos.X].Values)
+            foreach (GameObject gameObject in collision[cellPos.Y, cellPos.X].Values)
             {
-                if (ReferenceEquals(creature, null) == true) continue;
+                if (ReferenceEquals(gameObject, null) == true) continue;
 
-                creatureList.Add(creature);
+                objectList.Add(gameObject);
             }
 
-            return creatureList.Count > 0;
+            return objectList.Count > 0;
         }
 
-        public void MoveCreature(Creature creature, EMoveDirection moveDirection)
+        public void MoveObject(GameObject gameObject, EMoveDirection moveDirection)
         {
-            if (ReferenceEquals(creature, null) == true) return;
+            if (ReferenceEquals(gameObject, null) == true) return;
             if (moveDirection == EMoveDirection.None) return;
 
-            Vector2Int curCellPos = ConvertPosToCell(creature.Position);
-            if (collision[curCellPos.Y, curCellPos.X].ContainsKey(creature.ID) == false) return;
+            Vector2Int curCellPos = ConvertPosToCell(gameObject.Position);
+            if (collision[curCellPos.Y, curCellPos.X].ContainsKey(gameObject.ID) == false) return;
 
             Vector2Int targetCellPos = curCellPos;
             switch (moveDirection)
@@ -179,10 +179,10 @@ namespace Server.Game
 
             if (CheckCanMove(targetCellPos) == false) return;
 
-            collision[curCellPos.Y, curCellPos.X].Remove(creature.ID);
-            collision[targetCellPos.Y, targetCellPos.X].Add(creature.ID, creature);
+            collision[curCellPos.Y, curCellPos.X].Remove(gameObject.ID);
+            collision[targetCellPos.Y, targetCellPos.X].Add(gameObject.ID, gameObject);
 
-            creature.Position = ConvertCellToPos(targetCellPos);
+            gameObject.Position = ConvertCellToPos(targetCellPos);
         }
 
         #region A* PathFinding

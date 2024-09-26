@@ -1,6 +1,6 @@
 namespace Server.Game
 {
-    public class Player : Creature
+    public class Player : GameObject
     {
         #region Properties
 
