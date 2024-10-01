@@ -23,13 +23,14 @@ namespace Server.Game
 
         public static EGameObjectType GetObjectTypeByID(int objectID) => (EGameObjectType)(objectID >> 24 & 0x7F);
 
-        public T Add<T>() where T : GameObject
+        public T Add<T>() where T : GameObject, new()
         {
             T gameObject = null;
 
             lock (lockObj)
             {
-                gameObject = Activator.CreateInstance(typeof(T), GenerateID(gameObject.ObjectType)) as T;
+                gameObject = new();
+                gameObject.ID = GenerateID(gameObject.ObjectType);
 
                 objectDictionary.Add(gameObject.ID, gameObject);
             }

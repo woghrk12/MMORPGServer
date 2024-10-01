@@ -15,7 +15,7 @@ namespace Server.Game
         public GameRoom Room { set; get; }
 
         // [UNUSED(1)][TYPE(7)][ID(24)]
-        public int ID { private set; get; } = -1;
+        public int ID { set; get; } = -1;
 
         public string Name { set; get; } = string.Empty;
 
@@ -46,15 +46,6 @@ namespace Server.Game
         public EMoveDirection FacingDirection { private set; get; } = EMoveDirection.Right;
 
         #endregion Properties
-
-        #region Constructor
-
-        public GameObject(int ID)
-        {
-            this.ID = ID;
-        }
-
-        #endregion Constructor
 
         #region Methods
 
