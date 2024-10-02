@@ -7,5 +7,14 @@ namespace Server.Game
         public ClientSession Session { set; get; }
 
         #endregion Properties
+
+        #region Constructor
+
+        public Projectile()
+        {
+            IsCollidable = false;
+        }
+
+        #endregion Constructor
     }
 }

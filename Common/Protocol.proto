@@ -53,6 +53,7 @@ message ObjectInfo
     EMoveDirection moveDirection = 6;
     EMoveDirection facingDirection = 7;
     int32 moveSpeed = 8;
+    bool isCollidable = 9;
 }
 
 message PlayerEnteredRoomResponse

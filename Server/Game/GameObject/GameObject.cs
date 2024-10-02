@@ -45,6 +45,8 @@ namespace Server.Game
 
         public EMoveDirection FacingDirection { private set; get; } = EMoveDirection.Right;
 
+        public bool IsCollidable { set; get; }
+
         #endregion Properties
 
         #region Methods

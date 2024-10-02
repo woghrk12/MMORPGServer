@@ -91,29 +91,6 @@ namespace Server.Game
             }
         }
 
-        public bool CheckCanMove(Pos position, bool isIgnoreObject = false)
-        {
-            if (position.X < minX || position.X > maxX) return false;
-            if (position.Y < minY || position.Y > maxY) return false;
-
-            Vector2Int cellPos = ConvertPosToCell(position);
-
-            if (collision[cellPos.Y, cellPos.X].ContainsKey(-1) == true) return false;
-            if (isIgnoreObject == false && collision[cellPos.Y, cellPos.X].Count > 0) return false;
-
-            return true;
-        }
-
-        public bool CheckCanMove(Vector2Int cellPos, bool isIgnoreObject = false)
-        {
-            if (cellPos.X < 0 || cellPos.X >= width || cellPos.Y < 0 || cellPos.Y >= height) return false;
-
-            if (collision[cellPos.Y, cellPos.X].ContainsKey(-1) == true) return false;
-            if (isIgnoreObject == false && collision[cellPos.Y, cellPos.X].Count > 0) return false;
-
-            return true;
-        }
-
         public void AddObject(GameObject gameObject)
         {
             if (ReferenceEquals(gameObject, null) == true) return;
@@ -183,6 +160,19 @@ namespace Server.Game
             collision[targetCellPos.Y, targetCellPos.X].Add(gameObject.ID, gameObject);
 
             gameObject.Position = ConvertCellToPos(targetCellPos);
+        }
+
+        private bool CheckCanMove(Vector2Int cellPos, bool isIgnoreWall = false, bool isIgnoreObject = false)
+        {
+            if (cellPos.X < 0 || cellPos.X >= width || cellPos.Y < 0 || cellPos.Y >= height) return false;
+
+            foreach (KeyValuePair<int, GameObject> pair in collision[cellPos.Y, cellPos.X])
+            {
+                if (pair.Key == -1 && isIgnoreWall == false) return false;
+                if (pair.Value.IsCollidable == true && isIgnoreObject == false) return false;
+            }
+
+            return true;
         }
 
         #region A* PathFinding
