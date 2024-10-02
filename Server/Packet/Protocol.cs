@@ -24,50 +24,51 @@ namespace Google.Protobuf.Protocol {
     static ProtocolReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5Qcm90b2NvbC5wcm90bxIIdHV0b3JpYWwiuAEKCk9iamVjdEluZm8SEAoI",
+            "Cg5Qcm90b2NvbC5wcm90bxIIdHV0b3JpYWwi6QEKCk9iamVjdEluZm8SEAoI",
             "b2JqZWN0SUQYASABKAUSDAoEbmFtZRgCIAEoCRIoCghjdXJTdGF0ZRgDIAEo",
             "DjIWLnR1dG9yaWFsLkVPYmplY3RTdGF0ZRIMCgRwb3NYGAQgASgFEgwKBHBv",
-            "c1kYBSABKAUSMQoPZmFjaW5nRGlyZWN0aW9uGAYgASgOMhgudHV0b3JpYWwu",
-            "RU1vdmVEaXJlY3Rpb24SEQoJbW92ZVNwZWVkGAcgASgFInAKGVBsYXllckVu",
-            "dGVyZWRSb29tUmVzcG9uc2USJwoJbmV3UGxheWVyGAEgASgLMhQudHV0b3Jp",
-            "YWwuT2JqZWN0SW5mbxIqCgxvdGhlclBsYXllcnMYAiADKAsyFC50dXRvcmlh",
-            "bC5PYmplY3RJbmZvIkUKGlBsYXllckVudGVyZWRSb29tQnJvYWRjYXN0EicK",
-            "CW5ld1BsYXllchgBIAEoCzIULnR1dG9yaWFsLk9iamVjdEluZm8iGAoWUGxh",
-            "eWVyTGVmdFJvb21SZXNwb25zZSIwChdQbGF5ZXJMZWZ0Um9vbUJyb2FkY2Fz",
-            "dBIVCg1vdGhlclBsYXllcklEGAEgASgFIkUKFk9iamVjdFNwYXduZWRCcm9h",
-            "ZGNhc3QSKwoNbmV3T2JqZWN0SW5mbxgBIAEoCzIULnR1dG9yaWFsLk9iamVj",
-            "dEluZm8iLwoYT2JqZWN0RGVzcGF3bmVkQnJvYWRjYXN0EhMKC29sZE9iamVj",
-            "dElEGAEgASgFIo8BChJQZXJmb3JtTW92ZVJlcXVlc3QSLwoNbW92ZURpcmVj",
-            "dGlvbhgBIAEoDjIYLnR1dG9yaWFsLkVNb3ZlRGlyZWN0aW9uEg8KB2N1clBv",
-            "c1gYAiABKAUSDwoHY3VyUG9zWRgDIAEoBRISCgp0YXJnZXRQb3NYGAQgASgF",
-            "EhIKCnRhcmdldFBvc1kYBSABKAUiowEKFFBlcmZvcm1Nb3ZlQnJvYWRjYXN0",
-            "EhAKCG9iamVjdElEGAEgASgFEi8KDW1vdmVEaXJlY3Rpb24YAiABKA4yGC50",
-            "dXRvcmlhbC5FTW92ZURpcmVjdGlvbhIPCgdjdXJQb3NYGAMgASgFEg8KB2N1",
-            "clBvc1kYBCABKAUSEgoKdGFyZ2V0UG9zWBgFIAEoBRISCgp0YXJnZXRQb3NZ",
-            "GAYgASgFIh4KCkF0dGFja0luZm8SEAoIYXR0YWNrSUQYASABKAUiQAoUUGVy",
-            "Zm9ybUF0dGFja1JlcXVlc3QSKAoKYXR0YWNrSW5mbxgBIAEoCzIULnR1dG9y",
-            "aWFsLkF0dGFja0luZm8ibQoWUGVyZm9ybUF0dGFja0Jyb2FkY2FzdBIQCghv",
-            "YmplY3RJRBgBIAEoBRIXCg9hdHRhY2tTdGFydFRpbWUYAiABKAMSKAoKYXR0",
-            "YWNrSW5mbxgDIAEoCzIULnR1dG9yaWFsLkF0dGFja0luZm8iFwoVQXR0YWNr",
-            "Q29tcGxldGVSZXF1ZXN0IjYKDEhpdEJyb2FkY2FzdBISCgphdHRhY2tlcklE",
-            "GAEgASgFEhIKCmRlZmVuZGVySUQYAiABKAUq7gIKCkVNZXNzYWdlSUQSIAoc",
-            "UExBWUVSX0VOVEVSRURfUk9PTV9SRVNQT05TRRAAEiEKHVBMQVlFUl9FTlRF",
-            "UkVEX1JPT01fQlJPQURDQVNUEAESHQoZUExBWUVSX0xFRlRfUk9PTV9SRVNQ",
-            "T05TRRACEh4KGlBMQVlFUl9MRUZUX1JPT01fQlJPQURDQVNUEAMSHAoYT0JK",
-            "RUNUX1NQQVdORURfQlJPQURDQVNUEAQSHgoaT0JKRUNUX0RFU1BBV05FRF9C",
-            "Uk9BRENBU1QQBRIYChRQRVJGT1JNX01PVkVfUkVRVUVTVBAGEhoKFlBFUkZP",
-            "Uk1fTU9WRV9CUk9BRENBU1QQBxIaChZQRVJGT1JNX0FUVEFDS19SRVFVRVNU",
-            "EAgSHAoYUEVSRk9STV9BVFRBQ0tfQlJPQURDQVNUEAkSGwoXQVRUQUNLX0NP",
-            "TVBMRVRFX1JFUVVFU1QQChIRCg1ISVRfQlJPQURDQVNUEAsqOgoPRUdhbWVP",
-            "YmplY3RUeXBlEgoKBlBMQVlFUhAAEgsKB01PTlNURVIQARIOCgpQUk9KRUNU",
-            "SUxFEAIqOAoMRU9iamVjdFN0YXRlEggKBElETEUQABIICgRNT1ZFEAESCgoG",
-            "QVRUQUNLEAISCAoEREVBRBADKkEKDkVNb3ZlRGlyZWN0aW9uEggKBE5PTkUQ",
-            "ABIGCgJVUBABEggKBERPV04QAhIICgRMRUZUEAQSCQoFUklHSFQQCEIbqgIY",
-            "R29vZ2xlLlByb3RvYnVmLlByb3RvY29sYgZwcm90bzM="));
+            "c1kYBSABKAUSLwoNbW92ZURpcmVjdGlvbhgGIAEoDjIYLnR1dG9yaWFsLkVN",
+            "b3ZlRGlyZWN0aW9uEjEKD2ZhY2luZ0RpcmVjdGlvbhgHIAEoDjIYLnR1dG9y",
+            "aWFsLkVNb3ZlRGlyZWN0aW9uEhEKCW1vdmVTcGVlZBgIIAEoBSJwChlQbGF5",
+            "ZXJFbnRlcmVkUm9vbVJlc3BvbnNlEicKCW5ld1BsYXllchgBIAEoCzIULnR1",
+            "dG9yaWFsLk9iamVjdEluZm8SKgoMb3RoZXJQbGF5ZXJzGAIgAygLMhQudHV0",
+            "b3JpYWwuT2JqZWN0SW5mbyJFChpQbGF5ZXJFbnRlcmVkUm9vbUJyb2FkY2Fz",
+            "dBInCgluZXdQbGF5ZXIYASABKAsyFC50dXRvcmlhbC5PYmplY3RJbmZvIhgK",
+            "FlBsYXllckxlZnRSb29tUmVzcG9uc2UiMAoXUGxheWVyTGVmdFJvb21Ccm9h",
+            "ZGNhc3QSFQoNb3RoZXJQbGF5ZXJJRBgBIAEoBSJFChZPYmplY3RTcGF3bmVk",
+            "QnJvYWRjYXN0EisKDW5ld09iamVjdEluZm8YASABKAsyFC50dXRvcmlhbC5P",
+            "YmplY3RJbmZvIi8KGE9iamVjdERlc3Bhd25lZEJyb2FkY2FzdBITCgtvbGRP",
+            "YmplY3RJRBgBIAEoBSKPAQoSUGVyZm9ybU1vdmVSZXF1ZXN0Ei8KDW1vdmVE",
+            "aXJlY3Rpb24YASABKA4yGC50dXRvcmlhbC5FTW92ZURpcmVjdGlvbhIPCgdj",
+            "dXJQb3NYGAIgASgFEg8KB2N1clBvc1kYAyABKAUSEgoKdGFyZ2V0UG9zWBgE",
+            "IAEoBRISCgp0YXJnZXRQb3NZGAUgASgFIqMBChRQZXJmb3JtTW92ZUJyb2Fk",
+            "Y2FzdBIQCghvYmplY3RJRBgBIAEoBRIvCg1tb3ZlRGlyZWN0aW9uGAIgASgO",
+            "MhgudHV0b3JpYWwuRU1vdmVEaXJlY3Rpb24SDwoHY3VyUG9zWBgDIAEoBRIP",
+            "CgdjdXJQb3NZGAQgASgFEhIKCnRhcmdldFBvc1gYBSABKAUSEgoKdGFyZ2V0",
+            "UG9zWRgGIAEoBSIeCgpBdHRhY2tJbmZvEhAKCGF0dGFja0lEGAEgASgFIkAK",
+            "FFBlcmZvcm1BdHRhY2tSZXF1ZXN0EigKCmF0dGFja0luZm8YASABKAsyFC50",
+            "dXRvcmlhbC5BdHRhY2tJbmZvIm0KFlBlcmZvcm1BdHRhY2tCcm9hZGNhc3QS",
+            "EAoIb2JqZWN0SUQYASABKAUSFwoPYXR0YWNrU3RhcnRUaW1lGAIgASgDEigK",
+            "CmF0dGFja0luZm8YAyABKAsyFC50dXRvcmlhbC5BdHRhY2tJbmZvIhcKFUF0",
+            "dGFja0NvbXBsZXRlUmVxdWVzdCI2CgxIaXRCcm9hZGNhc3QSEgoKYXR0YWNr",
+            "ZXJJRBgBIAEoBRISCgpkZWZlbmRlcklEGAIgASgFKu4CCgpFTWVzc2FnZUlE",
+            "EiAKHFBMQVlFUl9FTlRFUkVEX1JPT01fUkVTUE9OU0UQABIhCh1QTEFZRVJf",
+            "RU5URVJFRF9ST09NX0JST0FEQ0FTVBABEh0KGVBMQVlFUl9MRUZUX1JPT01f",
+            "UkVTUE9OU0UQAhIeChpQTEFZRVJfTEVGVF9ST09NX0JST0FEQ0FTVBADEhwK",
+            "GE9CSkVDVF9TUEFXTkVEX0JST0FEQ0FTVBAEEh4KGk9CSkVDVF9ERVNQQVdO",
+            "RURfQlJPQURDQVNUEAUSGAoUUEVSRk9STV9NT1ZFX1JFUVVFU1QQBhIaChZQ",
+            "RVJGT1JNX01PVkVfQlJPQURDQVNUEAcSGgoWUEVSRk9STV9BVFRBQ0tfUkVR",
+            "VUVTVBAIEhwKGFBFUkZPUk1fQVRUQUNLX0JST0FEQ0FTVBAJEhsKF0FUVEFD",
+            "S19DT01QTEVURV9SRVFVRVNUEAoSEQoNSElUX0JST0FEQ0FTVBALKjoKD0VH",
+            "YW1lT2JqZWN0VHlwZRIKCgZQTEFZRVIQABILCgdNT05TVEVSEAESDgoKUFJP",
+            "SkVDVElMRRACKjgKDEVPYmplY3RTdGF0ZRIICgRJRExFEAASCAoETU9WRRAB",
+            "EgoKBkFUVEFDSxACEggKBERFQUQQAypBCg5FTW92ZURpcmVjdGlvbhIICgRO",
+            "T05FEAASBgoCVVAQARIICgRET1dOEAISCAoETEVGVBAEEgkKBVJJR0hUEAhC",
+            "G6oCGEdvb2dsZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.EMessageID), typeof(global::Google.Protobuf.Protocol.EGameObjectType), typeof(global::Google.Protobuf.Protocol.EObjectState), typeof(global::Google.Protobuf.Protocol.EMoveDirection), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.ObjectInfo), global::Google.Protobuf.Protocol.ObjectInfo.Parser, new[]{ "ObjectID", "Name", "CurState", "PosX", "PosY", "FacingDirection", "MoveSpeed" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.ObjectInfo), global::Google.Protobuf.Protocol.ObjectInfo.Parser, new[]{ "ObjectID", "Name", "CurState", "PosX", "PosY", "MoveDirection", "FacingDirection", "MoveSpeed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerEnteredRoomResponse), global::Google.Protobuf.Protocol.PlayerEnteredRoomResponse.Parser, new[]{ "NewPlayer", "OtherPlayers" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerEnteredRoomBroadcast), global::Google.Protobuf.Protocol.PlayerEnteredRoomBroadcast.Parser, new[]{ "NewPlayer" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerLeftRoomResponse), global::Google.Protobuf.Protocol.PlayerLeftRoomResponse.Parser, null, null, null, null, null),
@@ -166,6 +167,7 @@ namespace Google.Protobuf.Protocol {
       curState_ = other.curState_;
       posX_ = other.posX_;
       posY_ = other.posY_;
+      moveDirection_ = other.moveDirection_;
       facingDirection_ = other.facingDirection_;
       moveSpeed_ = other.moveSpeed_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -237,8 +239,20 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
+    /// <summary>Field number for the "moveDirection" field.</summary>
+    public const int MoveDirectionFieldNumber = 6;
+    private global::Google.Protobuf.Protocol.EMoveDirection moveDirection_ = global::Google.Protobuf.Protocol.EMoveDirection.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Google.Protobuf.Protocol.EMoveDirection MoveDirection {
+      get { return moveDirection_; }
+      set {
+        moveDirection_ = value;
+      }
+    }
+
     /// <summary>Field number for the "facingDirection" field.</summary>
-    public const int FacingDirectionFieldNumber = 6;
+    public const int FacingDirectionFieldNumber = 7;
     private global::Google.Protobuf.Protocol.EMoveDirection facingDirection_ = global::Google.Protobuf.Protocol.EMoveDirection.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -250,7 +264,7 @@ namespace Google.Protobuf.Protocol {
     }
 
     /// <summary>Field number for the "moveSpeed" field.</summary>
-    public const int MoveSpeedFieldNumber = 7;
+    public const int MoveSpeedFieldNumber = 8;
     private int moveSpeed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -281,6 +295,7 @@ namespace Google.Protobuf.Protocol {
       if (CurState != other.CurState) return false;
       if (PosX != other.PosX) return false;
       if (PosY != other.PosY) return false;
+      if (MoveDirection != other.MoveDirection) return false;
       if (FacingDirection != other.FacingDirection) return false;
       if (MoveSpeed != other.MoveSpeed) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -295,6 +310,7 @@ namespace Google.Protobuf.Protocol {
       if (CurState != global::Google.Protobuf.Protocol.EObjectState.Idle) hash ^= CurState.GetHashCode();
       if (PosX != 0) hash ^= PosX.GetHashCode();
       if (PosY != 0) hash ^= PosY.GetHashCode();
+      if (MoveDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) hash ^= MoveDirection.GetHashCode();
       if (FacingDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) hash ^= FacingDirection.GetHashCode();
       if (MoveSpeed != 0) hash ^= MoveSpeed.GetHashCode();
       if (_unknownFields != null) {
@@ -335,12 +351,16 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(40);
         output.WriteInt32(PosY);
       }
-      if (FacingDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
+      if (MoveDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
         output.WriteRawTag(48);
+        output.WriteEnum((int) MoveDirection);
+      }
+      if (FacingDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
+        output.WriteRawTag(56);
         output.WriteEnum((int) FacingDirection);
       }
       if (MoveSpeed != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteInt32(MoveSpeed);
       }
       if (_unknownFields != null) {
@@ -373,12 +393,16 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(40);
         output.WriteInt32(PosY);
       }
-      if (FacingDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
+      if (MoveDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
         output.WriteRawTag(48);
+        output.WriteEnum((int) MoveDirection);
+      }
+      if (FacingDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
+        output.WriteRawTag(56);
         output.WriteEnum((int) FacingDirection);
       }
       if (MoveSpeed != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteInt32(MoveSpeed);
       }
       if (_unknownFields != null) {
@@ -405,6 +429,9 @@ namespace Google.Protobuf.Protocol {
       }
       if (PosY != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(PosY);
+      }
+      if (MoveDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) MoveDirection);
       }
       if (FacingDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) FacingDirection);
@@ -438,6 +465,9 @@ namespace Google.Protobuf.Protocol {
       }
       if (other.PosY != 0) {
         PosY = other.PosY;
+      }
+      if (other.MoveDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
+        MoveDirection = other.MoveDirection;
       }
       if (other.FacingDirection != global::Google.Protobuf.Protocol.EMoveDirection.None) {
         FacingDirection = other.FacingDirection;
@@ -485,10 +515,14 @@ namespace Google.Protobuf.Protocol {
             break;
           }
           case 48: {
-            FacingDirection = (global::Google.Protobuf.Protocol.EMoveDirection) input.ReadEnum();
+            MoveDirection = (global::Google.Protobuf.Protocol.EMoveDirection) input.ReadEnum();
             break;
           }
           case 56: {
+            FacingDirection = (global::Google.Protobuf.Protocol.EMoveDirection) input.ReadEnum();
+            break;
+          }
+          case 64: {
             MoveSpeed = input.ReadInt32();
             break;
           }
@@ -532,10 +566,14 @@ namespace Google.Protobuf.Protocol {
             break;
           }
           case 48: {
-            FacingDirection = (global::Google.Protobuf.Protocol.EMoveDirection) input.ReadEnum();
+            MoveDirection = (global::Google.Protobuf.Protocol.EMoveDirection) input.ReadEnum();
             break;
           }
           case 56: {
+            FacingDirection = (global::Google.Protobuf.Protocol.EMoveDirection) input.ReadEnum();
+            break;
+          }
+          case 64: {
             MoveSpeed = input.ReadInt32();
             break;
           }

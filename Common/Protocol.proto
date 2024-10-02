@@ -50,8 +50,9 @@ message ObjectInfo
     EObjectState curState = 3;
     int32 posX = 4;
     int32 posY = 5;
-    EMoveDirection facingDirection = 6;
-    int32 moveSpeed = 7;
+    EMoveDirection moveDirection = 6;
+    EMoveDirection facingDirection = 7;
+    int32 moveSpeed = 8;
 }
 
 message PlayerEnteredRoomResponse

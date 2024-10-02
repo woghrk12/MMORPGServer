@@ -112,7 +112,8 @@ namespace Server.Game
                     CurState = newPlayer.CurState,
                     PosX = newPlayer.Position.X,
                     PosY = newPlayer.Position.Y,
-                    FacingDirection = newPlayer.MoveDirection,
+                    MoveDirection = newPlayer.MoveDirection,
+                    FacingDirection = newPlayer.FacingDirection,
                     MoveSpeed = 5
                 };
 
@@ -133,7 +134,8 @@ namespace Server.Game
                         CurState = player.CurState,
                         PosX = player.Position.X,
                         PosY = player.Position.Y,
-                        FacingDirection = player.MoveDirection,
+                        MoveDirection = player.MoveDirection,
+                        FacingDirection = player.FacingDirection,
                         MoveSpeed = 5
                     };
 
