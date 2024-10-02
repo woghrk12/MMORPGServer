@@ -181,7 +181,7 @@ namespace Server.Game
         private int[] dy = { 0, 0, -1, 1 };
         private int[] cost = { 10, 10, 10, 10 };
 
-        public bool FindPath(Vector2Int startCellPos, Vector2Int destCellPos, out List<Vector2Int> path)
+        public bool FindPath(Pos startPos, Pos destPos, out List<Pos> path)
         {
             bool[,] closedArray = new bool[height, width];
             int[,] openArray = new int[height, width];
@@ -198,63 +198,63 @@ namespace Server.Game
                 }
             }
 
-            Pos start = ConvertCellToPos(startCellPos);
-            Pos dest = ConvertCellToPos(destCellPos);
+            Vector2Int startCellPos = ConvertPosToCell(startPos);
+            Vector2Int destCellPos = ConvertPosToCell(destPos);
 
-            openArray[start.Y, start.X] = Utility.CalculateDistance(start, dest);
+            openArray[startCellPos.Y, startCellPos.X] = Utility.CalculateDistance(startCellPos, destCellPos);
 
-            pq.Push(new PQNode() { F = openArray[start.Y, start.X], G = 0, X = start.X, Y = start.Y });
+            pq.Push(new PQNode() { F = openArray[startCellPos.Y, startCellPos.X], G = 0, X = startCellPos.X, Y = startCellPos.Y });
 
             while (pq.Count > 0)
             {
                 PQNode node = pq.Pop();
 
-                if (node.X == dest.X && node.Y == dest.Y) break;
+                if (node.X == destCellPos.X && node.Y == destCellPos.Y) break;
                 if (closedArray[node.Y, node.X] == true) continue;
 
                 closedArray[node.Y, node.X] = true;
 
                 for (int i = 0; i < dx.Length; i++)
                 {
-                    Pos next = new Pos(node.X + dx[i], node.Y + dy[i]);
+                    Vector2Int nextCellPos = new Vector2Int(node.X + dx[i], node.Y + dy[i]);
 
-                    if (next.X == dest.X && next.Y == dest.Y)
+                    if (nextCellPos.X == destCellPos.X && nextCellPos.Y == destCellPos.Y)
                     {
-                        pq.Push(new PQNode() { F = 0, G = 0, X = next.X, Y = next.Y });
-                        parentArray[next.Y, next.X] = new Pos(node.X, node.Y);
+                        pq.Push(new PQNode() { F = 0, G = 0, X = nextCellPos.X, Y = nextCellPos.Y });
+                        parentArray[nextCellPos.Y, nextCellPos.X] = new Pos(node.X, node.Y);
                         break;
                     }
 
-                    if (CheckCanMove(next, true) == false) continue;
-                    if (closedArray[next.Y, next.X] == true) continue;
+                    if (CheckCanMove(nextCellPos, true) == false) continue;
+                    if (closedArray[nextCellPos.Y, nextCellPos.X] == true) continue;
 
                     int g = node.G + cost[i];
-                    int h = Utility.CalculateDistance(next, dest);
+                    int h = Utility.CalculateDistance(nextCellPos, destCellPos);
 
-                    if (openArray[next.Y, next.X] < g + h) continue;
+                    if (openArray[nextCellPos.Y, nextCellPos.X] < g + h) continue;
 
-                    openArray[dest.Y, dest.X] = g + h;
-                    pq.Push(new PQNode() { F = g + h, G = g, X = next.X, Y = next.Y });
-                    parentArray[next.Y, next.X] = new Pos(node.X, node.Y);
+                    openArray[destCellPos.Y, destCellPos.X] = g + h;
+                    pq.Push(new PQNode() { F = g + h, G = g, X = nextCellPos.X, Y = nextCellPos.Y });
+                    parentArray[nextCellPos.Y, nextCellPos.X] = new Pos(node.X, node.Y);
                 }
             }
 
-            path = new List<Vector2Int>();
-            int tx = dest.X;
-            int ty = dest.Y;
+            path = new List<Pos>();
+            int tx = destCellPos.X;
+            int ty = destCellPos.Y;
 
             while (parentArray[ty, tx].X >= 0 && parentArray[ty, tx].Y >= 0)
             {
-                path.Add(ConvertPosToCell(new Pos(tx, ty)));
+                path.Add(ConvertCellToPos(new Vector2Int(tx, ty)));
 
                 Pos parent = parentArray[ty, tx];
                 tx = parent.X;
                 ty = parent.Y;
             }
 
-            if (tx != start.X || ty != start.Y) return false;
+            if (tx != startCellPos.X || ty != startCellPos.Y) return false;
 
-            path.Add(ConvertPosToCell(new Pos(tx, ty)));
+            path.Add(ConvertCellToPos(new Vector2Int(tx, ty)));
             path.Reverse();
 
             return true;
