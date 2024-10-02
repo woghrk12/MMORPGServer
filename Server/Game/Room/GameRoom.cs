@@ -227,16 +227,6 @@ namespace Server.Game
                 map.MoveObject(gameObject, moveDirection);
                 Pos targetPos = gameObject.Position;
 
-                PerformMoveResponse performMoveResponsePacket = new()
-                {
-                    CurPosX = curPos.X,
-                    CurPosY = curPos.Y,
-                    TargetPosX = targetPos.X,
-                    TargetPosY = targetPos.Y
-                };
-
-                (gameObject as Player).Session.Send(performMoveResponsePacket);
-
                 PerformMoveBroadcast performMoveBroadcastPacket = new()
                 {
                     ObjectID = gameObject.ID,
@@ -268,14 +258,6 @@ namespace Server.Game
                 gameObject.CurState = EObjectState.Attack;
 
                 long attackStartTime = DateTime.UtcNow.Ticks;
-
-                PerformAttackResponse performAttackResponsePacket = new()
-                {
-                    AttackStartTime = attackStartTime,
-                    AttackInfo = new() { AttackID = 1 }
-                };
-
-                (gameObject as Player).Session.Send(performAttackResponsePacket);
 
                 PerformAttackBroadcast performAttackBroadcastPacket = new()
                 {
