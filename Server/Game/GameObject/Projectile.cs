@@ -1,10 +1,12 @@
+using Google.Protobuf.Protocol;
+
 namespace Server.Game
 {
     public class Projectile : GameObject
     {
         #region Properties
 
-        public ClientSession Session { set; get; }
+        public GameObject Owner { set; get; }
 
         #endregion Properties
 
@@ -12,6 +14,7 @@ namespace Server.Game
 
         public Projectile()
         {
+            ObjectType = EGameObjectType.Projectile;
             IsCollidable = false;
         }
 

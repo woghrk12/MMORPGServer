@@ -9,8 +9,6 @@ namespace Server.Game
 
         private object lockObj = new();
 
-        private Map map = new();
-
         private Dictionary<EGameObjectType, Dictionary<int, GameObject>> objectDictionary = new();
 
         #endregion Variables
@@ -18,6 +16,8 @@ namespace Server.Game
         #region Properties
 
         public int RoomID { set; get; }
+
+        public Map Map { private set; get; } = new();
 
         public Dictionary<int, GameObject> PlayerDictionary => objectDictionary[EGameObjectType.Player];
         public Dictionary<int, GameObject> MonsterDictionary => objectDictionary[EGameObjectType.Monster];
@@ -29,7 +29,7 @@ namespace Server.Game
 
         public GameRoom(int mapID)
         {
-            map.LoadMap(mapID);
+            Map.LoadMap(mapID);
 
             Array types = Enum.GetValues(typeof(EGameObjectType));
             foreach (EGameObjectType type in types)
@@ -42,6 +42,20 @@ namespace Server.Game
 
         #region Methods
 
+        public void Update()
+        {
+            lock (lockObj)
+            {
+                foreach (Dictionary<int, GameObject> dictionary in objectDictionary.Values)
+                {
+                    foreach (GameObject gameObject in dictionary.Values)
+                    {
+                        gameObject.OnUpdate();
+                    }
+                }
+            }
+        }
+
         public void AddObject(GameObject gameObject)
         {
             if (ReferenceEquals(gameObject, null) == true) return;
@@ -51,7 +65,7 @@ namespace Server.Game
                 objectDictionary[gameObject.ObjectType].Add(gameObject.ID, gameObject);
                 gameObject.Room = this;
 
-                map.AddObject(gameObject);
+                Map.AddObject(gameObject);
 
                 ObjectInfo newObjectInfo = new()
                 {
@@ -83,7 +97,7 @@ namespace Server.Game
                 if (objectDictionary.TryGetValue(type, out Dictionary<int, GameObject> dictionary) == false) return;
                 if (dictionary.TryGetValue(oldObjectID, out GameObject gameObject) == false) return;
 
-                map.RemoveObject(gameObject);
+                Map.RemoveObject(gameObject);
                 gameObject.Room = null;
 
                 ObjectDespawnedBroadcast packet = new()
@@ -104,7 +118,7 @@ namespace Server.Game
                 PlayerDictionary.Add(newPlayer.ID, newPlayer);
                 newPlayer.Room = this;
 
-                map.AddObject(newPlayer);
+                Map.AddObject(newPlayer);
 
                 ObjectInfo newPlayerInfo = new()
                 {
@@ -168,7 +182,7 @@ namespace Server.Game
             {
                 if (PlayerDictionary.Remove(playerID, out GameObject leftPlayerObject) == false) return;
 
-                map.RemoveObject(leftPlayerObject);
+                Map.RemoveObject(leftPlayerObject);
                 leftPlayerObject.Room = null;
 
                 {
@@ -229,7 +243,7 @@ namespace Server.Game
                 }
 
                 Pos curPos = gameObject.Position;
-                map.MoveObject(gameObject, moveDirection);
+                Map.MoveObject(gameObject, moveDirection);
                 Pos targetPos = gameObject.Position;
 
                 PerformMoveBroadcast performMoveBroadcastPacket = new()
@@ -268,25 +282,46 @@ namespace Server.Game
                 {
                     ObjectID = objectID,
                     AttackStartTime = attackStartTime,
-                    AttackInfo = new() { AttackID = 1 }
+                    AttackInfo = new() { AttackID = attackInfo.AttackID }
                 };
 
                 Broadcast(performAttackBroadcastPacket);
 
                 // TODO : Perform the damage calculation
-                Pos attackPos = gameObject.GetFrontPos();
 
-                if (map.Find(attackPos, out List<GameObject> objectList) == false) return;
-
-                foreach (GameObject obj in objectList)
+                // Melee Attack
+                if (attackInfo.AttackID == 1)
                 {
-                    HitBroadcast hitBroadcastPacket = new()
-                    {
-                        AttackerID = objectID,
-                        DefenderID = obj.ID
-                    };
+                    Pos attackPos = gameObject.GetFrontPos();
 
-                    Broadcast(hitBroadcastPacket);
+                    if (Map.Find(attackPos, out List<GameObject> objectList) == false) return;
+
+                    foreach (GameObject obj in objectList)
+                    {
+                        HitBroadcast hitBroadcastPacket = new()
+                        {
+                            AttackerID = objectID,
+                            DefenderID = obj.ID
+                        };
+
+                        Broadcast(hitBroadcastPacket);
+                    }
+                }
+                else if (attackInfo.AttackID == 2)
+                {
+                    Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+
+                    if (ReferenceEquals(arrow, null) == true) return;
+
+                    arrow.Owner = gameObject;
+                    arrow.Name = "Arrow";
+                    arrow.CurState = EObjectState.Move;
+                    arrow.Position = new Pos(gameObject.Position.X, gameObject.Position.Y);
+                    arrow.MoveDirection = gameObject.FacingDirection;
+                    arrow.MoveSpeed = 10;
+                    arrow.IsCollidable = false;
+
+                    AddObject(arrow);
                 }
             }
         }

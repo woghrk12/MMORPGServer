@@ -24,6 +24,9 @@ namespace Server
 
             while (true)
             {
+                RoomManager.Instance.Find(1).Update();
+
+                Thread.Sleep(100);
             }
         }
     }

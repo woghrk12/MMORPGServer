@@ -162,7 +162,22 @@ namespace Server.Game
             gameObject.Position = ConvertCellToPos(targetCellPos);
         }
 
-        private bool CheckCanMove(Vector2Int cellPos, bool isIgnoreWall = false, bool isIgnoreObject = false)
+        public bool CheckCanMove(Pos position, bool isIgnoreWall = false, bool isIgnoreObject = false)
+        {
+            if (position.X < minX || position.X > maxX || position.Y < minY || position.Y > maxY) return false;
+
+            Vector2Int cellPos = ConvertPosToCell(position);
+
+            foreach (KeyValuePair<int, GameObject> pair in collision[cellPos.Y, cellPos.X])
+            {
+                if (pair.Key == -1 && isIgnoreWall == false) return false;
+                if (pair.Value.IsCollidable == true && isIgnoreObject == false) return false;
+            }
+
+            return true;
+        }
+
+        public bool CheckCanMove(Vector2Int cellPos, bool isIgnoreWall = false, bool isIgnoreObject = false)
         {
             if (cellPos.X < 0 || cellPos.X >= width || cellPos.Y < 0 || cellPos.Y >= height) return false;
 

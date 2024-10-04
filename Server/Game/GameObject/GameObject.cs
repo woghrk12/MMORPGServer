@@ -8,6 +8,8 @@ namespace Server.Game
 
         private EMoveDirection moveDirection = EMoveDirection.None;
 
+        private event Action updated = null;
+
         #endregion Variables
 
         #region Properties
@@ -47,6 +49,18 @@ namespace Server.Game
 
         public bool IsCollidable { set; get; }
 
+        public event Action Updated
+        {
+            add
+            {
+                updated += value;
+            }
+            remove
+            {
+                updated -= value;
+            }
+        }
+
         #endregion Properties
 
         #region Methods
@@ -76,6 +90,15 @@ namespace Server.Game
 
             return frontPos;
         }
+
+        #region Events
+
+        public void OnUpdate()
+        {
+            updated?.Invoke();
+        }
+
+        #endregion Events
 
         #endregion Methods
     }

@@ -1,3 +1,5 @@
+using Google.Protobuf.Protocol;
+
 namespace Server.Game
 {
     public class Player : GameObject
@@ -12,6 +14,7 @@ namespace Server.Game
 
         public Player()
         {
+            ObjectType = EGameObjectType.Player;
             IsCollidable = true;
         }
 
