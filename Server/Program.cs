@@ -1,4 +1,5 @@
 using System.Net;
+using Server.Data;
 using Server.Game;
 
 namespace Server
@@ -13,11 +14,13 @@ namespace Server
 
         private static void Main(string[] args)
         {
+            ConfigManager.LoadConfig();
+
             RoomManager.Instance.Add(1);
 
             // DNS (Domain Name System)
-            IPAddress ipAddr = IPAddress.Parse(GlobalDefine.IP_ADDRESS);
-            IPEndPoint endPoint = new IPEndPoint(ipAddr, GlobalDefine.PORT_NUMBER);
+            IPAddress ipAddr = IPAddress.Parse(ConfigManager.Config.IPAddress);
+            IPEndPoint endPoint = new IPEndPoint(ipAddr, ConfigManager.Config.PortNumber);
 
             listener.Init(endPoint, SessionManager.Instance.Generate);
             Console.WriteLine("Listening...");
