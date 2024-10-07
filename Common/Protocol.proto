@@ -16,7 +16,7 @@ enum EMessageID
     PERFORM_MOVE_BROADCAST = 8;
     PERFORM_ATTACK_REQUEST = 9;
     PERFORM_ATTACK_BROADCAST = 10;
-    ATTACK_COMPLETE_REQUEST = 11;
+    ATTACK_COMPLETE_BROADCAST = 11;
     HIT_BROADCAST = 12;
 }
 
@@ -126,26 +126,20 @@ enum EAttackType
     RANGE = 1;
 }
 
-message AttackInfo
-{
-    int32 attackID = 1;
-}
-
 message PerformAttackRequest
 {
-    AttackInfo attackInfo = 1;
+    int32 attackID = 1;
 }
 
 message PerformAttackBroadcast
 {
     int32 objectID = 1;
-    int64 attackStartTime = 2;
-    AttackInfo attackInfo = 3;
+    int32 attackID = 2;
 }
 
-message AttackCompleteRequest
+message AttackCompleteBroadcast
 {
-
+    int32 objectID = 1;
 }
 
 message HitBroadcast

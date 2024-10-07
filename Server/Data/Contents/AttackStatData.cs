@@ -7,7 +7,9 @@ namespace Server.Data
     {
         public int ID;
         public string Name;
+        public string AnimationKey;
         public float Cooldown;
+        public float PostDelay;
         public Dictionary<int, float> CoeffDictionary;
         public EAttackType AttackType;
         public int Range;

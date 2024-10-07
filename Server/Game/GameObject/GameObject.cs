@@ -10,6 +10,8 @@ namespace Server.Game
 
         private event Action updated = null;
 
+        private long attackEndTicks = 0;
+
         #endregion Variables
 
         #region Properties
@@ -89,6 +91,32 @@ namespace Server.Game
             }
 
             return frontPos;
+        }
+
+        public void BeginAttackPostDelayCheck(long attackEndTicks)
+        {
+            this.attackEndTicks = attackEndTicks;
+
+            updated += CheckAttackPostDelay;
+        }
+
+        private void CheckAttackPostDelay()
+        {
+            if (attackEndTicks > Environment.TickCount64) return;
+
+            CurState = EObjectState.Idle;
+
+            AttackCompleteBroadcast packet = new()
+            {
+                ObjectID = ID
+            };
+
+            foreach (Player player in Room.PlayerDictionary.Values)
+            {
+                player.Session.Send(packet);
+            }
+
+            updated -= CheckAttackPostDelay;
         }
 
         #region Events

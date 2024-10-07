@@ -262,7 +262,7 @@ namespace Server.Game
             }
         }
 
-        public void PerformAttack(int objectID, AttackInfo attackInfo)
+        public void PerformAttack(int objectID, int attackID)
         {
             lock (lockObj)
             {
@@ -278,18 +278,17 @@ namespace Server.Game
 
                 gameObject.CurState = EObjectState.Attack;
 
-                long attackStartTime = DateTime.UtcNow.Ticks;
+                long attackStartTime = Environment.TickCount64;
 
                 PerformAttackBroadcast performAttackBroadcastPacket = new()
                 {
                     ObjectID = objectID,
-                    AttackStartTime = attackStartTime,
-                    AttackInfo = new() { AttackID = attackInfo.AttackID }
+                    AttackID = attackID
                 };
 
                 Broadcast(performAttackBroadcastPacket);
 
-                if (DataManager.AttacklStatDictionary.TryGetValue(attackInfo.AttackID, out Data.AttackStat attackStat) == false) return;
+                if (DataManager.AttacklStatDictionary.TryGetValue(attackID, out Data.AttackStat attackStat) == false) return;
 
                 switch (attackStat.AttackType)
                 {
@@ -333,6 +332,8 @@ namespace Server.Game
 
                         break;
                 }
+
+                gameObject.BeginAttackPostDelayCheck(attackStartTime + (long)(1000 * attackStat.PostDelay));
             }
         }
 

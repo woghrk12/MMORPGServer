@@ -25,7 +25,7 @@ namespace Server
         {
             PerformAttackRequest packet = message as PerformAttackRequest;
 
-            Console.WriteLine($"PerformAttackRequest. Session ID : {session.SessionID} Attack ID : {packet.AttackInfo.AttackID}");
+            Console.WriteLine($"PerformAttackRequest. Session ID : {session.SessionID} Attack ID : {packet.AttackID}");
 
             Player player = session.Player;
             if (ReferenceEquals(player, null) == true) return;
@@ -33,20 +33,7 @@ namespace Server
             GameRoom room = player.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.PerformAttack(player.ID, packet.AttackInfo);
-        }
-
-        public static void HandleAttackCompleteRequest(ClientSession session, IMessage message)
-        {
-            AttackCompleteRequest packet = message as AttackCompleteRequest;
-
-            Player player = session.Player;
-            if (ReferenceEquals(player, null) == true) return;
-
-            GameRoom room = player.Room;
-            if (ReferenceEquals(room, null) == true) return;
-
-            room.SetObjectState(player.ID, EObjectState.Idle);
+            room.PerformAttack(player.ID, packet.AttackID);
         }
     }
 }
