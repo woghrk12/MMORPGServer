@@ -63,6 +63,8 @@ namespace Server.Game
             }
         }
 
+        public ObjectStat Stat { private set; get; } = new();
+
         #endregion Properties
 
         #region Methods

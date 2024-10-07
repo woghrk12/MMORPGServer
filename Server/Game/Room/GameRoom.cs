@@ -76,7 +76,8 @@ namespace Server.Game
                     PosY = gameObject.Position.Y,
                     FacingDirection = gameObject.FacingDirection,
                     MoveSpeed = gameObject.MoveSpeed,
-                    IsCollidable = gameObject.IsCollidable
+                    IsCollidable = gameObject.IsCollidable,
+                    ObjectStat = gameObject.Stat
                 };
 
                 ObjectSpawnedBroadcast packet = new()
@@ -132,7 +133,8 @@ namespace Server.Game
                     MoveDirection = newPlayer.MoveDirection,
                     FacingDirection = newPlayer.FacingDirection,
                     MoveSpeed = 5,
-                    IsCollidable = newPlayer.IsCollidable
+                    IsCollidable = newPlayer.IsCollidable,
+                    ObjectStat = newPlayer.Stat
                 };
 
                 // Send the packets to the player who has just enterend the room
@@ -155,7 +157,8 @@ namespace Server.Game
                         MoveDirection = player.MoveDirection,
                         FacingDirection = player.FacingDirection,
                         MoveSpeed = 5,
-                        IsCollidable = player.IsCollidable
+                        IsCollidable = player.IsCollidable,
+                        ObjectStat = player.Stat
                     };
 
                     playerEnteredRoomResponse.OtherPlayers.Add(otherPlayerInfo);
