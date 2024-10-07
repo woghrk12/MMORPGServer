@@ -10,7 +10,7 @@ namespace Server.Data
         public string AnimationKey;
         public float Cooldown;
         public float PostDelay;
-        public Dictionary<int, float> CoeffDictionary;
+        public Dictionary<int, int> CoeffDictionary;
         public EAttackType AttackType;
         public int Range;
         public int ProjectileID;
