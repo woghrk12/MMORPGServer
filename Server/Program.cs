@@ -15,6 +15,7 @@ namespace Server
         private static void Main(string[] args)
         {
             ConfigManager.LoadConfig();
+            DataManager.LoadData();
 
             RoomManager.Instance.Add(1);
 
@@ -29,7 +30,7 @@ namespace Server
             {
                 RoomManager.Instance.Find(1).Update();
 
-                Thread.Sleep(100);
+                //Thread.Sleep(100);
             }
         }
     }

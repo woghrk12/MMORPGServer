@@ -23,10 +23,10 @@ namespace Server.Game
 
         public void Move()
         {
-            if (ReferenceEquals(Room, null) == true || ReferenceEquals(Owner, null) == true) return;
+            if (ReferenceEquals(Room, null) == true || ReferenceEquals(Owner, null) == true || ReferenceEquals(AttackStat, null) == true) return;
             if (nextMoveTicks >= Environment.TickCount64) return;
 
-            nextMoveTicks = Environment.TickCount64 + 50;
+            nextMoveTicks = Environment.TickCount64 + (long)(1000f / MoveSpeed);
 
             Pos destPos = GetFrontPos();
             if (Room.Map.CheckCanMove(destPos) == true)

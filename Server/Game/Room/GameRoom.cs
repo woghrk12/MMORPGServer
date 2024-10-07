@@ -115,6 +115,8 @@ namespace Server.Game
 
             lock (lockObj)
             {
+                DataManager.SendData(newPlayer);
+
                 PlayerDictionary.Add(newPlayer.ID, newPlayer);
                 newPlayer.Room = this;
 
@@ -287,41 +289,49 @@ namespace Server.Game
 
                 Broadcast(performAttackBroadcastPacket);
 
-                // TODO : Perform the damage calculation
+                if (DataManager.AttacklStatDictionary.TryGetValue(attackInfo.AttackID, out Data.AttackStat attackStat) == false) return;
 
-                // Melee Attack
-                if (attackInfo.AttackID == 1)
+                switch (attackStat.AttackType)
                 {
-                    Pos attackPos = gameObject.GetFrontPos();
-
-                    if (Map.Find(attackPos, out List<GameObject> objectList) == false) return;
-
-                    foreach (GameObject obj in objectList)
-                    {
-                        HitBroadcast hitBroadcastPacket = new()
+                    case EAttackType.Melee:
+                        for (int i = 1; i <= attackStat.Range; i++)
                         {
-                            AttackerID = objectID,
-                            DefenderID = obj.ID
-                        };
+                            Pos attackPos = gameObject.GetFrontPos(i);
 
-                        Broadcast(hitBroadcastPacket);
-                    }
-                }
-                else if (attackInfo.AttackID == 2)
-                {
-                    Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+                            if (Map.Find(attackPos, out List<GameObject> objectList) == false) continue;
 
-                    if (ReferenceEquals(arrow, null) == true) return;
+                            foreach (GameObject obj in objectList)
+                            {
+                                HitBroadcast hitBroadcastPacket = new()
+                                {
+                                    AttackerID = objectID,
+                                    DefenderID = obj.ID
+                                };
 
-                    arrow.Owner = gameObject;
-                    arrow.Name = "Arrow";
-                    arrow.CurState = EObjectState.Move;
-                    arrow.Position = new Pos(gameObject.Position.X, gameObject.Position.Y);
-                    arrow.MoveDirection = gameObject.FacingDirection;
-                    arrow.MoveSpeed = 10;
-                    arrow.IsCollidable = false;
+                                Broadcast(hitBroadcastPacket);
+                            }
+                        }
 
-                    AddObject(arrow);
+                        break;
+
+                    case EAttackType.Range:
+                        if (DataManager.ProjectileStatDictionary.TryGetValue(attackStat.ProjectileID, out Data.ProjectileStat projectileStat) == false) return;
+
+                        // TODO : Add the logic to generate different projectiles based on attack data
+                        Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+
+                        arrow.Owner = gameObject;
+                        arrow.AttackStat = attackStat;
+                        arrow.Name = projectileStat.Name;
+                        arrow.CurState = EObjectState.Move;
+                        arrow.Position = new Pos(gameObject.Position.X, gameObject.Position.Y);
+                        arrow.MoveDirection = gameObject.FacingDirection;
+                        arrow.MoveSpeed = projectileStat.Speed;
+                        arrow.IsCollidable = false;
+
+                        AddObject(arrow);
+
+                        break;
                 }
             }
         }

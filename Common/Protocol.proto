@@ -5,18 +5,32 @@ option csharp_namespace = "Google.Protobuf.Protocol";
 
 enum EMessageID
 {
-    PLAYER_ENTERED_ROOM_RESPONSE = 0;
-    PLAYER_ENTERED_ROOM_BROADCAST = 1;
-    PLAYER_LEFT_ROOM_RESPONSE = 2;
-    PLAYER_LEFT_ROOM_BROADCAST = 3;
-    OBJECT_SPAWNED_BROADCAST = 4;
-    OBJECT_DESPAWNED_BROADCAST = 5;
-    PERFORM_MOVE_REQUEST = 6;
-    PERFORM_MOVE_BROADCAST = 7;
-    PERFORM_ATTACK_REQUEST = 8;
-    PERFORM_ATTACK_BROADCAST = 9;
-    ATTACK_COMPLETE_REQUEST = 10;
-    HIT_BROADCAST = 11;
+    STAT_DATA_BROADCAST = 0;
+    PLAYER_ENTERED_ROOM_RESPONSE = 1;
+    PLAYER_ENTERED_ROOM_BROADCAST = 2;
+    PLAYER_LEFT_ROOM_RESPONSE = 3;
+    PLAYER_LEFT_ROOM_BROADCAST = 4;
+    OBJECT_SPAWNED_BROADCAST = 5;
+    OBJECT_DESPAWNED_BROADCAST = 6;
+    PERFORM_MOVE_REQUEST = 7;
+    PERFORM_MOVE_BROADCAST = 8;
+    PERFORM_ATTACK_REQUEST = 9;
+    PERFORM_ATTACK_BROADCAST = 10;
+    ATTACK_COMPLETE_REQUEST = 11;
+    HIT_BROADCAST = 12;
+}
+
+enum EStatType
+{
+    OBJECT_DATA = 0;
+    ATTACK_DATA = 1;
+    PROJECTILE_DATA = 2;
+}
+
+message StatDataBroadcast
+{
+    EStatType dataType = 1;
+    string data = 2;
 }
 
 enum EGameObjectType
@@ -104,6 +118,12 @@ message PerformMoveBroadcast
     int32 curPosY = 4;
     int32 targetPosX = 5;
     int32 targetPosY = 6;
+}
+
+enum EAttackType
+{
+    MELEE = 0;
+    RANGE = 1;
 }
 
 message AttackInfo

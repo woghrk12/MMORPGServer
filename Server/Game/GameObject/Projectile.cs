@@ -6,7 +6,9 @@ namespace Server.Game
     {
         #region Properties
 
-        public GameObject Owner { set; get; }
+        public GameObject Owner { set; get; } = null;
+
+        public Data.AttackStat AttackStat { set; get; } = null;
 
         #endregion Properties
 
