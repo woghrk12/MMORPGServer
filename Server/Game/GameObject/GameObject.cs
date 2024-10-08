@@ -128,6 +128,29 @@ namespace Server.Game
             updated?.Invoke();
         }
 
+        public virtual void OnDamaged(GameObject attacker, int damage)
+        {
+            Stat.CurHP -= damage;
+
+            if (Stat.CurHP < 0)
+            {
+                Stat.CurHP = 0;
+
+                OnDead(attacker);
+            }
+
+            HitBroadcast packet = new()
+            {
+                ObjectID = ID,
+                CurHp = Stat.CurHP,
+                Damage = damage
+            };
+
+            Room.Broadcast(packet);
+        }
+
+        public virtual void OnDead(GameObject attacker) { }
+
         #endregion Events
 
         #endregion Methods

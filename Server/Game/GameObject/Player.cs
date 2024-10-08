@@ -25,5 +25,18 @@ namespace Server.Game
         }
 
         #endregion Constructor
+
+        #region Methods
+
+        #region Events
+
+        public override void OnDamaged(GameObject attacker, int damage)
+        {
+            base.OnDamaged(attacker, damage);
+        }
+
+        #endregion Events
+
+        #endregion Methods
     }
 }

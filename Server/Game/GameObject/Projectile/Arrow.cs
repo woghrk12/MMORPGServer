@@ -52,7 +52,8 @@ namespace Server.Game
 
                     foreach (GameObject damagable in damagableList)
                     {
-                        // TODO : hit detection
+                        // TODO : The attack coefficient needs to be adjusted based on the attacker's level
+                        damagable.OnDamaged(Owner, Owner.Stat.AttackPower * AttackStat.CoeffDictionary[1]);
                     }
                 }
 

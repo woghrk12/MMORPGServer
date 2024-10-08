@@ -302,15 +302,12 @@ namespace Server.Game
 
                             if (Map.Find(attackPos, out List<GameObject> objectList) == false) continue;
 
-                            foreach (GameObject obj in objectList)
-                            {
-                                HitBroadcast hitBroadcastPacket = new()
-                                {
-                                    AttackerID = objectID,
-                                    DefenderID = obj.ID
-                                };
+                            List<GameObject> damagableList = objectList.FindAll((obj) => obj.ObjectType != EGameObjectType.Projectile);
 
-                                Broadcast(hitBroadcastPacket);
+                            foreach (GameObject damagable in damagableList)
+                            {
+                                // TODO : The attack coefficient needs to be adjusted based on the attacker's level
+                                damagable.OnDamaged(gameObject, gameObject.Stat.AttackPower * attackStat.CoeffDictionary[1]);
                             }
                         }
 

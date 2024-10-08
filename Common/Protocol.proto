@@ -153,8 +153,9 @@ message ObjectStat
 
 message HitBroadcast
 {
-    int32 attackerID = 1;
-    int32 defenderID = 2;
+    int32 objectID = 1;
+    int32 curHp = 2;
+    int32 damage = 3;
 }
 
 message UpdateObjectStatBroadcast
