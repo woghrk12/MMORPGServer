@@ -35,5 +35,20 @@ namespace Server
 
             room.PerformAttack(player.ID, packet.AttackID);
         }
+
+        public static void HandleObjectReviveRequest(ClientSession session, IMessage message)
+        {
+            ObjectReviveRequest packet = message as ObjectReviveRequest;
+
+            Console.WriteLine($"ObjectReviveRequest. Session ID : {session.SessionID}, Object ID : {packet.ObjectID}");
+
+            Player player = session.Player;
+            if (ReferenceEquals(player, null) == true) return;
+
+            GameRoom room = player.Room;
+            if (ReferenceEquals(room, null) == true) return;
+
+            room.ReviveObject(packet.ObjectID, new Pos(0, 0));
+        }
     }
 }

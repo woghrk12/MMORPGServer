@@ -306,6 +306,8 @@ namespace Server.Game
 
                             foreach (GameObject damagable in damagableList)
                             {
+                                if (damagable.CurState == EObjectState.Dead) continue;
+
                                 // TODO : The attack coefficient needs to be adjusted based on the attacker's level
                                 damagable.OnDamaged(gameObject, gameObject.Stat.AttackPower * attackStat.CoeffDictionary[1]);
                             }
@@ -337,16 +339,31 @@ namespace Server.Game
             }
         }
 
-        public void SetObjectState(int objectID, EObjectState state)
+        public void ReviveObject(int objectID, Pos revivePos)
         {
             lock (lockObj)
             {
                 EGameObjectType type = ObjectManager.GetObjectTypeByID(objectID);
 
+                if (type == EGameObjectType.Projectile) return;
                 if (objectDictionary.TryGetValue(type, out Dictionary<int, GameObject> dictionary) == false) return;
                 if (dictionary.TryGetValue(objectID, out GameObject gameObject) == false) return;
 
-                gameObject.CurState = state;
+                gameObject.CurState = EObjectState.Idle;
+                gameObject.MoveDirection = EMoveDirection.None;
+                gameObject.IsCollidable = true;
+                gameObject.Stat.CurHP = gameObject.Stat.MaxHP;
+
+                Map.MoveObject(gameObject, revivePos);
+
+                ObjectReviveBroadcast packet = new()
+                {
+                    ObjectID = gameObject.ID,
+                    RevivePosX = gameObject.Position.X,
+                    RevivePosY = gameObject.Position.Y
+                };
+
+                Broadcast(packet);
             }
         }
 

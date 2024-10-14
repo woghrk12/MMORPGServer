@@ -18,7 +18,9 @@ enum EMessageID
     PERFORM_ATTACK_BROADCAST = 10;
     ATTACK_COMPLETE_BROADCAST = 11;
     HIT_BROADCAST = 12;
-    UPDATE_OBJECT_STAT_BROADCAST = 13;
+    OBJECT_DEAD_BROADCAST = 13;
+    OBJECT_REVIVE_REQUEST = 14;
+    OBJECT_REVIVE_BROADCAST = 15;
 }
 
 enum EStatType
@@ -158,8 +160,20 @@ message HitBroadcast
     int32 damage = 3;
 }
 
-message UpdateObjectStatBroadcast
+message ObjectDeadBroadcast
 {
     int32 objectID = 1;
-    ObjectStat stat = 2;
+    int32 attackerID = 2;
+}
+
+message ObjectReviveRequest
+{
+    int32 objectID = 1;
+}
+
+message ObjectReviveBroadcast
+{
+    int32 objectID = 1;
+    int32 revivePosX = 2;
+    int32 revivePosY = 3;
 }

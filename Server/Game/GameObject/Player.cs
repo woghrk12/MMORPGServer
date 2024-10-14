@@ -35,6 +35,20 @@ namespace Server.Game
             base.OnDamaged(attacker, damage);
         }
 
+        public override void OnDead(GameObject attacker)
+        {
+            ObjectDeadBroadcast packet = new()
+            {
+                ObjectID = ID,
+                AttackerID = attacker.ID
+            };
+
+            Room.Broadcast(packet);
+
+            CurState = EObjectState.Dead;
+            IsCollidable = false;
+        }
+
         #endregion Events
 
         #endregion Methods

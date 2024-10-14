@@ -162,6 +162,19 @@ namespace Server.Game
             gameObject.Position = ConvertCellToPos(targetCellPos);
         }
 
+        public void MoveObject(GameObject gameObject, Pos targetPos)
+        {
+            if (ReferenceEquals(gameObject, null) == true) return;
+
+            Vector2Int curCellPos = ConvertPosToCell(gameObject.Position);
+            Vector2Int targetCellPos = ConvertPosToCell(targetPos);
+
+            collision[curCellPos.Y, curCellPos.X].Remove(gameObject.ID);
+            collision[targetCellPos.Y, targetCellPos.X].Add(gameObject.ID, gameObject);
+
+            gameObject.Position = targetPos;
+        }
+
         public bool CheckCanMove(Pos position, bool isIgnoreWall = false, bool isIgnoreObject = false)
         {
             if (position.X < minX || position.X > maxX || position.Y < minY || position.Y > maxY) return false;
