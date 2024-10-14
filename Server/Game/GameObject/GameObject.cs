@@ -132,7 +132,7 @@ namespace Server.Game
         {
             Stat.CurHP -= damage;
 
-            if (Stat.CurHP < 0)
+            if (Stat.CurHP <= 0)
             {
                 Stat.CurHP = 0;
 
