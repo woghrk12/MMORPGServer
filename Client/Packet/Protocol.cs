@@ -34,7 +34,7 @@ namespace Google.Protobuf.Protocol {
             "b24SEQoJbW92ZVNwZWVkGAggASgFEhQKDGlzQ29sbGlkYWJsZRgJIAEoCBIo",
             "CgpvYmplY3RTdGF0GAogASgLMhQudHV0b3JpYWwuT2JqZWN0U3RhdCJwChlQ",
             "bGF5ZXJFbnRlcmVkUm9vbVJlc3BvbnNlEicKCW5ld1BsYXllchgBIAEoCzIU",
-            "LnR1dG9yaWFsLk9iamVjdEluZm8SKgoMb3RoZXJQbGF5ZXJzGAIgAygLMhQu",
+            "LnR1dG9yaWFsLk9iamVjdEluZm8SKgoMb3RoZXJPYmplY3RzGAIgAygLMhQu",
             "dHV0b3JpYWwuT2JqZWN0SW5mbyJFChpQbGF5ZXJFbnRlcmVkUm9vbUJyb2Fk",
             "Y2FzdBInCgluZXdQbGF5ZXIYASABKAsyFC50dXRvcmlhbC5PYmplY3RJbmZv",
             "IhgKFlBsYXllckxlZnRSb29tUmVzcG9uc2UiMAoXUGxheWVyTGVmdFJvb21C",
@@ -82,7 +82,7 @@ namespace Google.Protobuf.Protocol {
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.EMessageID), typeof(global::Google.Protobuf.Protocol.EStatType), typeof(global::Google.Protobuf.Protocol.EGameObjectType), typeof(global::Google.Protobuf.Protocol.EObjectState), typeof(global::Google.Protobuf.Protocol.EMoveDirection), typeof(global::Google.Protobuf.Protocol.EAttackType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.StatDataBroadcast), global::Google.Protobuf.Protocol.StatDataBroadcast.Parser, new[]{ "DataType", "Data" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.ObjectInfo), global::Google.Protobuf.Protocol.ObjectInfo.Parser, new[]{ "ObjectID", "Name", "CurState", "PosX", "PosY", "MoveDirection", "FacingDirection", "MoveSpeed", "IsCollidable", "ObjectStat" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerEnteredRoomResponse), global::Google.Protobuf.Protocol.PlayerEnteredRoomResponse.Parser, new[]{ "NewPlayer", "OtherPlayers" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerEnteredRoomResponse), global::Google.Protobuf.Protocol.PlayerEnteredRoomResponse.Parser, new[]{ "NewPlayer", "OtherObjects" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerEnteredRoomBroadcast), global::Google.Protobuf.Protocol.PlayerEnteredRoomBroadcast.Parser, new[]{ "NewPlayer" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerLeftRoomResponse), global::Google.Protobuf.Protocol.PlayerLeftRoomResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.PlayerLeftRoomBroadcast), global::Google.Protobuf.Protocol.PlayerLeftRoomBroadcast.Parser, new[]{ "OtherPlayerID" }, null, null, null, null),
@@ -969,7 +969,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public PlayerEnteredRoomResponse(PlayerEnteredRoomResponse other) : this() {
       newPlayer_ = other.newPlayer_ != null ? other.newPlayer_.Clone() : null;
-      otherPlayers_ = other.otherPlayers_.Clone();
+      otherObjects_ = other.otherObjects_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -991,15 +991,15 @@ namespace Google.Protobuf.Protocol {
       }
     }
 
-    /// <summary>Field number for the "otherPlayers" field.</summary>
-    public const int OtherPlayersFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Google.Protobuf.Protocol.ObjectInfo> _repeated_otherPlayers_codec
+    /// <summary>Field number for the "otherObjects" field.</summary>
+    public const int OtherObjectsFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::Google.Protobuf.Protocol.ObjectInfo> _repeated_otherObjects_codec
         = pb::FieldCodec.ForMessage(18, global::Google.Protobuf.Protocol.ObjectInfo.Parser);
-    private readonly pbc::RepeatedField<global::Google.Protobuf.Protocol.ObjectInfo> otherPlayers_ = new pbc::RepeatedField<global::Google.Protobuf.Protocol.ObjectInfo>();
+    private readonly pbc::RepeatedField<global::Google.Protobuf.Protocol.ObjectInfo> otherObjects_ = new pbc::RepeatedField<global::Google.Protobuf.Protocol.ObjectInfo>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Google.Protobuf.Protocol.ObjectInfo> OtherPlayers {
-      get { return otherPlayers_; }
+    public pbc::RepeatedField<global::Google.Protobuf.Protocol.ObjectInfo> OtherObjects {
+      get { return otherObjects_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1018,7 +1018,7 @@ namespace Google.Protobuf.Protocol {
         return true;
       }
       if (!object.Equals(NewPlayer, other.NewPlayer)) return false;
-      if(!otherPlayers_.Equals(other.otherPlayers_)) return false;
+      if(!otherObjects_.Equals(other.otherObjects_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1027,7 +1027,7 @@ namespace Google.Protobuf.Protocol {
     public override int GetHashCode() {
       int hash = 1;
       if (newPlayer_ != null) hash ^= NewPlayer.GetHashCode();
-      hash ^= otherPlayers_.GetHashCode();
+      hash ^= otherObjects_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1050,7 +1050,7 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(NewPlayer);
       }
-      otherPlayers_.WriteTo(output, _repeated_otherPlayers_codec);
+      otherObjects_.WriteTo(output, _repeated_otherObjects_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1065,7 +1065,7 @@ namespace Google.Protobuf.Protocol {
         output.WriteRawTag(10);
         output.WriteMessage(NewPlayer);
       }
-      otherPlayers_.WriteTo(ref output, _repeated_otherPlayers_codec);
+      otherObjects_.WriteTo(ref output, _repeated_otherObjects_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1079,7 +1079,7 @@ namespace Google.Protobuf.Protocol {
       if (newPlayer_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(NewPlayer);
       }
-      size += otherPlayers_.CalculateSize(_repeated_otherPlayers_codec);
+      size += otherObjects_.CalculateSize(_repeated_otherObjects_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -1098,7 +1098,7 @@ namespace Google.Protobuf.Protocol {
         }
         NewPlayer.MergeFrom(other.NewPlayer);
       }
-      otherPlayers_.Add(other.otherPlayers_);
+      otherObjects_.Add(other.otherObjects_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1126,7 +1126,7 @@ namespace Google.Protobuf.Protocol {
             break;
           }
           case 18: {
-            otherPlayers_.AddEntriesFrom(input, _repeated_otherPlayers_codec);
+            otherObjects_.AddEntriesFrom(input, _repeated_otherObjects_codec);
             break;
           }
         }
@@ -1156,7 +1156,7 @@ namespace Google.Protobuf.Protocol {
             break;
           }
           case 18: {
-            otherPlayers_.AddEntriesFrom(ref input, _repeated_otherPlayers_codec);
+            otherObjects_.AddEntriesFrom(ref input, _repeated_otherObjects_codec);
             break;
           }
         }

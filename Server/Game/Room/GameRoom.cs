@@ -143,25 +143,28 @@ namespace Server.Game
                     NewPlayer = newPlayerInfo
                 };
 
-                foreach (Player player in PlayerDictionary.Values)
+                foreach (Dictionary<int, GameObject> dictionary in objectDictionary.Values)
                 {
-                    if (newPlayer.ID == player.ID) continue;
-
-                    ObjectInfo otherPlayerInfo = new()
+                    foreach (GameObject gameObject in dictionary.Values)
                     {
-                        ObjectID = player.ID,
-                        Name = player.Name,
-                        CurState = player.CurState,
-                        PosX = player.Position.X,
-                        PosY = player.Position.Y,
-                        MoveDirection = player.MoveDirection,
-                        FacingDirection = player.FacingDirection,
-                        MoveSpeed = 5,
-                        IsCollidable = player.IsCollidable,
-                        ObjectStat = player.Stat
-                    };
+                        if (newPlayer.ID == gameObject.ID) continue;
 
-                    playerEnteredRoomResponse.OtherPlayers.Add(otherPlayerInfo);
+                        ObjectInfo otherObjectInfo = new()
+                        {
+                            ObjectID = gameObject.ID,
+                            Name = gameObject.Name,
+                            CurState = gameObject.CurState,
+                            PosX = gameObject.Position.X,
+                            PosY = gameObject.Position.Y,
+                            MoveDirection = gameObject.MoveDirection,
+                            FacingDirection = gameObject.FacingDirection,
+                            MoveSpeed = gameObject.MoveSpeed,
+                            IsCollidable = gameObject.IsCollidable,
+                            ObjectStat = gameObject.Stat
+                        };
+
+                        playerEnteredRoomResponse.OtherObjects.Add(otherObjectInfo);
+                    }
                 }
 
                 newPlayer.Session.Send(playerEnteredRoomResponse);

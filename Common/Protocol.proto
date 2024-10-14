@@ -77,7 +77,7 @@ message ObjectInfo
 message PlayerEnteredRoomResponse
 {
     ObjectInfo newPlayer = 1;
-    repeated ObjectInfo otherPlayers = 2;
+    repeated ObjectInfo otherObjects = 2;
 }
 
 message PlayerEnteredRoomBroadcast
