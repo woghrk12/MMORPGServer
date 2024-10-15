@@ -133,6 +133,9 @@ namespace Server.Game
             };
 
             Broadcast(packet);
+
+            dictionary.Remove(gameObject.ID);
+            ObjectManager.Instance.Remove(gameObject.ID);
         }
 
         private void EnterRoom_T(Player newPlayer)
