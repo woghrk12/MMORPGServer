@@ -21,7 +21,8 @@ namespace Server.Game
 
         public GameRoom Add(int mapID)
         {
-            GameRoom room = new(mapID);
+            GameRoom room = new();
+            room.Init(mapID);
 
             lock (lockObj)
             {

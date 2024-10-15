@@ -28,9 +28,10 @@ namespace Server
 
             while (true)
             {
-                RoomManager.Instance.Find(1).Update();
+                GameRoom room = RoomManager.Instance.Find(1);
 
-                //Thread.Sleep(100);
+                room.Push(room.Update);
+                Thread.Sleep(100);
             }
         }
     }

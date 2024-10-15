@@ -25,9 +25,9 @@ namespace Server.Game
 
         public EGameObjectType ObjectType { protected set; get; }
 
-        public EObjectState CurState { set; get; }
+        public EObjectState CurState { set; get; } = EObjectState.Idle;
 
-        public Pos Position { set; get; }
+        public Pos Position { set; get; } = new Pos(0, 0);
 
         public int MoveSpeed { set; get; } = 5;
 
@@ -49,7 +49,7 @@ namespace Server.Game
 
         public EMoveDirection FacingDirection { private set; get; } = EMoveDirection.Right;
 
-        public bool IsCollidable { set; get; }
+        public bool IsCollidable { set; get; } = true;
 
         public event Action Updated
         {

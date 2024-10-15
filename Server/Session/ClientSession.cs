@@ -152,7 +152,8 @@ namespace Server
             Player = ObjectManager.Instance.Add<Player>();
             Player.Session = this;
 
-            RoomManager.Instance.Find(1).EnterRoom(Player);
+            GameRoom room = RoomManager.Instance.Find(1);
+            room.Push(room.EnterRoom, Player);
         }
 
         private void OnDisconnected(EndPoint endPoint)
@@ -161,7 +162,8 @@ namespace Server
 
             SessionManager.Instance.Remove(this);
 
-            RoomManager.Instance.Find(1).LeaveRoom(Player.ID);
+            GameRoom room = RoomManager.Instance.Find(1);
+            room.Push(room.LeaveRoom, Player.ID);
         }
 
         private int OnReceive(ArraySegment<byte> buffer)
