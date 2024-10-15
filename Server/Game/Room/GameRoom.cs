@@ -241,18 +241,14 @@ namespace Server.Game
                 gameObject.MoveDirection = moveDirection;
             }
 
-            Pos pos = gameObject.Position;
             Map.MoveObject(gameObject, moveDirection);
-            Pos targetPos = gameObject.Position;
 
             PerformMoveBroadcast performMoveBroadcastPacket = new()
             {
                 ObjectID = gameObject.ID,
                 MoveDirection = gameObject.MoveDirection,
-                CurPosX = curPos.X,
-                CurPosY = curPos.Y,
-                TargetPosX = targetPos.X,
-                TargetPosY = targetPos.Y
+                TargetPosX = gameObject.Position.X,
+                TargetPosY = gameObject.Position.Y
             };
 
             Broadcast(performMoveBroadcastPacket);

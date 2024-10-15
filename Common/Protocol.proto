@@ -118,10 +118,8 @@ message PerformMoveBroadcast
 {
     int32 objectID = 1;
     EMoveDirection moveDirection = 2;
-    int32 curPosX = 3;
-    int32 curPosY = 4;
-    int32 targetPosX = 5;
-    int32 targetPosY = 6;
+    int32 targetPosX = 3;
+    int32 targetPosY = 4;
 }
 
 enum EAttackType

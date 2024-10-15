@@ -34,8 +34,6 @@ namespace Server.Game
                 PerformMoveBroadcast packet = new()
                 {
                     ObjectID = ID,
-                    CurPosX = Position.X,
-                    CurPosY = Position.Y,
                     TargetPosX = destPos.X,
                     TargetPosY = destPos.Y
                 };
