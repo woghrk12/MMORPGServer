@@ -1,15 +1,12 @@
 namespace Server.Game
 {
-    public interface ITaskQueue
-    {
-        public void Push(ITask task);
-    }
-
-    public class TaskQueue : ITaskQueue
+    public class TaskQueue
     {
         #region Variables
 
         private object lockObj = new();
+
+        private TaskTimer taskTimer = new();
 
         private Queue<ITask> taskQueue = new();
         private bool isFlush = false;
@@ -18,12 +15,63 @@ namespace Server.Game
 
         #region Methods
 
-        public void Push(Action action) { Push(new Task(action)); }
-        public void Push<P1>(Action<P1> action, P1 p1) { Push(new Task<P1>(action, p1)); }
-        public void Push<P1, P2>(Action<P1, P2> action, P1 p1, P2 p2) { Push(new Task<P1, P2>(action, p1, p2)); }
-        public void Push<P1, P2, P3>(Action<P1, P2, P3> action, P1 p1, P2 p2, P3 p3) { Push(new Task<P1, P2, P3>(action, p1, p2, p3)); }
+        public void Push(Action action, int tickAfter = 0)
+        {
+            Task task = new Task(action);
 
-        public void Push(ITask task)
+            if (tickAfter > 0)
+            {
+                PushAfter(task, tickAfter);
+            }
+            else
+            {
+                Push(task);
+            }
+        }
+
+        public void Push<P1>(Action<P1> action, P1 p1, int tickAfter = 0)
+        {
+            Task<P1> task = new Task<P1>(action, p1);
+
+            if (tickAfter > 0)
+            {
+                PushAfter(task, tickAfter);
+            }
+            else
+            {
+                Push(task);
+            }
+        }
+
+        public void Push<P1, P2>(Action<P1, P2> action, P1 p1, P2 p2, int tickAfter = 0)
+        {
+            Task<P1, P2> task = new Task<P1, P2>(action, p1, p2);
+
+            if (tickAfter > 0)
+            {
+                PushAfter(task, tickAfter);
+            }
+            else
+            {
+                Push(task);
+            }
+        }
+
+        public void Push<P1, P2, P3>(Action<P1, P2, P3> action, P1 p1, P2 p2, P3 p3, int tickAfter = 0)
+        {
+            Task<P1, P2, P3> task = new Task<P1, P2, P3>(action, p1, p2, p3);
+
+            if (tickAfter > 0)
+            {
+                PushAfter(task, tickAfter);
+            }
+            else
+            {
+                Push(task);
+            }
+        }
+
+        private void Push(ITask task)
         {
             bool isFlush = false;
 
@@ -43,7 +91,12 @@ namespace Server.Game
             }
         }
 
-        public ITask Pop()
+        private void PushAfter(ITask task, int tickAfter)
+        {
+            taskTimer.Push(task, tickAfter);
+        }
+
+        private ITask Pop()
         {
             lock (lockObj)
             {
@@ -59,11 +112,11 @@ namespace Server.Game
 
         private void Flush()
         {
-            while (true)
+            taskTimer.Flush();
+
+            while (taskQueue.Count > 0)
             {
                 ITask task = Pop();
-
-                if (ReferenceEquals(task, null)) return;
 
                 task.Execute();
             }

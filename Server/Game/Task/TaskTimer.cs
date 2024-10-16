@@ -1,13 +1,13 @@
-namespace Server
+namespace Server.Game
 {
     public struct TaskTimerElement : IComparable<TaskTimerElement>
     {
-        public int execTick;
-        public Action action;
+        public ITask task = null;
+        public int execTick = 0;
 
-        public TaskTimerElement(Action action, int execTick)
+        public TaskTimerElement(ITask task, int execTick)
         {
-            this.action = action;
+            this.task = task;
             this.execTick = execTick;
         }
 
@@ -27,21 +27,15 @@ namespace Server
 
         #endregion Variables
 
-        #region Properties
-
-        public static TaskTimer Instance { get; } = new();
-
-        #endregion Properties
-
         #region Methods
 
-        public void Push(Action action, int tickAfter = 0)
+        public void Push(ITask task, int tickAfter = 0)
         {
-            TaskTimerElement task = new(action, System.Environment.TickCount + tickAfter);
+            TaskTimerElement element = new(task, Environment.TickCount + tickAfter);
 
             lock (lockObj)
             {
-                priorityQueue.Push(task);
+                priorityQueue.Push(element);
             }
         }
 
@@ -51,20 +45,20 @@ namespace Server
             {
                 int now = Environment.TickCount;
 
-                TaskTimerElement task;
+                TaskTimerElement element;
 
                 lock (lockObj)
                 {
                     if (priorityQueue.Count == 0) break;
 
-                    task = priorityQueue.Peek();
+                    element = priorityQueue.Peek();
 
-                    if (task.execTick > now) break;
+                    if (element.execTick > now) break;
 
                     priorityQueue.Pop();
                 }
 
-                task.action.Invoke();
+                element.task.Execute();
             }
         }
 
