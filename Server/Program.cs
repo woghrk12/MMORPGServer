@@ -10,6 +10,8 @@ namespace Server
 
         private static Listener listener = new();
 
+        private static List<System.Timers.Timer> roomTimer = new();
+
         #endregion Variables
 
         private static void Main(string[] args)
@@ -17,7 +19,8 @@ namespace Server
             ConfigManager.LoadConfig();
             DataManager.LoadData();
 
-            RoomManager.Instance.Add(1);
+            GameRoom room = RoomManager.Instance.Add(1);
+            UpdateRoom(room, 50);
 
             // DNS (Domain Name System)
             IPAddress ipAddr = IPAddress.Parse(ConfigManager.Config.IPAddress);
@@ -28,11 +31,19 @@ namespace Server
 
             while (true)
             {
-                GameRoom room = RoomManager.Instance.Find(1);
-
-                room.Push(room.Update);
                 Thread.Sleep(100);
             }
+        }
+
+        private static void UpdateRoom(GameRoom room, int tick = 100)
+        {
+            var timer = new System.Timers.Timer();
+            timer.Interval = tick;
+            timer.Elapsed += (s, e) => room.Update();
+            timer.AutoReset = true;
+            timer.Enabled = true;
+
+            roomTimer.Add(timer);
         }
     }
 }

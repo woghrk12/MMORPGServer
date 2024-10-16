@@ -71,23 +71,23 @@ namespace Server.Game
             }
         }
 
+        public void Flush()
+        {
+            taskTimer.Flush();
+
+            while (taskQueue.Count > 0)
+            {
+                ITask task = Pop();
+
+                task.Execute();
+            }
+        }
+
         private void Push(ITask task)
         {
-            bool isFlush = false;
-
             lock (lockObj)
             {
                 taskQueue.Enqueue(task);
-
-                if (this.isFlush == false)
-                {
-                    isFlush = this.isFlush = true;
-                }
-            }
-
-            if (isFlush == true)
-            {
-                Flush();
             }
         }
 
@@ -107,18 +107,6 @@ namespace Server.Game
                 }
 
                 return result;
-            }
-        }
-
-        private void Flush()
-        {
-            taskTimer.Flush();
-
-            while (taskQueue.Count > 0)
-            {
-                ITask task = Pop();
-
-                task.Execute();
             }
         }
 

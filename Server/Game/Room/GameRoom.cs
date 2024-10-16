@@ -23,11 +23,35 @@ namespace Server.Game
 
         #endregion Properties
 
+        #region  Constructor
+
+        public GameRoom(int mapID)
+        {
+            Map.LoadMap(mapID);
+
+            Array types = Enum.GetValues(typeof(EGameObjectType));
+            foreach (EGameObjectType type in types)
+            {
+                objectDictionary.Add(type, new Dictionary<int, GameObject>());
+            }
+        }
+
+        #endregion Constructor
+
         #region Methods
 
-        public void Init(int mapID) => Push(Init_T, mapID);
+        public void Update()
+        {
+            foreach (Dictionary<int, GameObject> dictionary in objectDictionary.Values)
+            {
+                foreach (GameObject gameObject in dictionary.Values)
+                {
+                    gameObject.OnUpdate();
+                }
+            }
 
-        public void Update() => Push(Update_T);
+            Flush();
+        }
 
         public void Broadcast(IMessage packet, int excludedPlayerID = -1) => Push(Broadcast_T, packet, excludedPlayerID);
 
@@ -46,28 +70,6 @@ namespace Server.Game
         public void PerformAttack(int objectID, int attackID) => Push(PerformAttack_T, objectID, attackID);
 
         public void ReviveObject(int objectID, Pos revivePos) => Push(ReviveObject_T, objectID, revivePos);
-
-        private void Init_T(int mapID)
-        {
-            Map.LoadMap(mapID);
-
-            Array types = Enum.GetValues(typeof(EGameObjectType));
-            foreach (EGameObjectType type in types)
-            {
-                objectDictionary.Add(type, new Dictionary<int, GameObject>());
-            }
-        }
-
-        private void Update_T()
-        {
-            foreach (Dictionary<int, GameObject> dictionary in objectDictionary.Values)
-            {
-                foreach (GameObject gameObject in dictionary.Values)
-                {
-                    gameObject.OnUpdate();
-                }
-            }
-        }
 
         private void Broadcast_T(IMessage packet, int excludedPlayerID = -1)
         {
