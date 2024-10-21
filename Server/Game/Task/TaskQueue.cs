@@ -9,7 +9,6 @@ namespace Server.Game
         private TaskTimer taskTimer = new();
 
         private Queue<ITask> taskQueue = new();
-        private bool isFlush = false;
 
         #endregion Variables
 
@@ -102,7 +101,6 @@ namespace Server.Game
             {
                 if (taskQueue.TryDequeue(out ITask result) == false)
                 {
-                    isFlush = false;
                     return null;
                 }
 
