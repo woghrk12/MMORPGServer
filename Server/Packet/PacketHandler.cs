@@ -10,7 +10,7 @@ namespace Server
         {
             PerformMoveRequest packet = message as PerformMoveRequest;
 
-            Console.WriteLine($"PerformMoveRequest. Session ID : {session.SessionID} Cell Pos : ({packet.CurPosX}, {packet.CurPosY}) Move Direction : {packet.MoveDirection}");
+            Console.WriteLine($"PerformMoveRequest. Session ID : {session.SessionID} Cur Pos : ({packet.CurPosX}, {packet.CurPosY}) Target Pos : ({packet.TargetPosX}, {packet.TargetPosY}) Move Direction : {packet.MoveDirection}");
 
             Player player = session.Player;
             if (ReferenceEquals(player, null) == true) return;
