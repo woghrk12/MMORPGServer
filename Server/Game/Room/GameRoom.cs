@@ -34,6 +34,12 @@ namespace Server.Game
             {
                 objectDictionary.Add(type, new Dictionary<int, GameObject>());
             }
+
+            // Temp
+            Monster monster = ObjectManager.Instance.Add<Monster>();
+            monster.Position = new Pos(0, 2);
+
+            AddObject(monster);
         }
 
         #endregion Constructor
@@ -70,6 +76,18 @@ namespace Server.Game
         public void PerformAttack(int objectID, int attackID) => Push(PerformAttack_T, objectID, attackID);
 
         public void ReviveObject(int objectID, Pos revivePos) => Push(ReviveObject_T, objectID, revivePos);
+
+        public Player FindPlayer(Func<GameObject, bool> condition)
+        {
+            foreach (Player player in PlayerDictionary.Values)
+            {
+                if (condition.Invoke(player) == false) continue;
+
+                return player;
+            }
+
+            return null;
+        }
 
         private void Broadcast_T(IMessage packet, int excludedPlayerID = -1)
         {

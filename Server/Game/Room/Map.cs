@@ -209,8 +209,14 @@ namespace Server.Game
         private int[] dy = { 0, 0, -1, 1 };
         private int[] cost = { 10, 10, 10, 10 };
 
-        public bool FindPath(Pos startPos, Pos destPos, out List<Pos> path)
+        public bool FindPath(Pos startPos, Pos destPos, out List<Pos> path, bool isIgnoreWall = false, bool isIgnoreObject = false)
         {
+            if (startPos == destPos)
+            {
+                path = null;
+                return false;
+            }
+
             bool[,] closedArray = new bool[height, width];
             int[,] openArray = new int[height, width];
             Pos[,] parentArray = new Pos[height, width];
@@ -253,7 +259,7 @@ namespace Server.Game
                         break;
                     }
 
-                    if (CheckCanMove(nextCellPos, true) == false) continue;
+                    if (CheckCanMove(nextCellPos, isIgnoreWall, isIgnoreObject) == false) continue;
                     if (closedArray[nextCellPos.Y, nextCellPos.X] == true) continue;
 
                     int g = node.G + cost[i];

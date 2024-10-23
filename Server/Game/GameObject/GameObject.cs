@@ -10,6 +10,9 @@ namespace Server.Game
 
         private event Action updated = null;
 
+        protected Dictionary<EObjectState, State> stateDictionary = new();
+        protected State curState = null;
+
         private long attackEndTicks = 0;
 
         #endregion Variables
@@ -24,8 +27,6 @@ namespace Server.Game
         public string Name { set; get; } = string.Empty;
 
         public EGameObjectType ObjectType { protected set; get; }
-
-        public EObjectState CurState { set; get; } = EObjectState.Idle;
 
         public Pos Position { set; get; } = new Pos(0, 0);
 
@@ -50,6 +51,24 @@ namespace Server.Game
         public EMoveDirection FacingDirection { private set; get; } = EMoveDirection.Right;
 
         public bool IsCollidable { set; get; } = true;
+
+        public EObjectState CurState
+        {
+            set
+            {
+                if (stateDictionary.ContainsKey(value) == false) return;
+                if (ReferenceEquals(curState, null) == false)
+                {
+                    if (curState.StateID == value) return;
+
+                    curState.OnExit();
+                }
+
+                curState = stateDictionary[value];
+                curState.OnEnter();
+            }
+            get => ReferenceEquals(curState, null) == false ? curState.StateID : EObjectState.Idle;
+        }
 
         public event Action Updated
         {
@@ -126,6 +145,7 @@ namespace Server.Game
         public void OnUpdate()
         {
             updated?.Invoke();
+            curState?.OnUpdate();
         }
 
         public virtual void OnDamaged(GameObject attacker, int damage)
