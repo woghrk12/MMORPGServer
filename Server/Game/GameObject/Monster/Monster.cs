@@ -5,6 +5,12 @@ namespace Server.Game
 {
     public class Monster : GameObject
     {
+        #region Variables
+
+        private long nextDetectionTicks = 0;
+
+        #endregion Variables
+
         #region Properties
 
         public int PatrolRange { private set; get; }
@@ -13,7 +19,7 @@ namespace Server.Game
 
         public int ChaseRange { private set; get; }
 
-        public Player Target { set; get; } = null;
+        public Player Target { set; get; }
 
         #endregion Properties
 
@@ -39,11 +45,32 @@ namespace Server.Game
             ChaseRange = statData.ChaseRange;
 
             CurState = EObjectState.Idle;
+
+            Updated += DetectPlayer;
         }
 
         #endregion Constructor
 
         #region Methods
+
+        private void DetectPlayer()
+        {
+            if (nextDetectionTicks > Environment.TickCount64) return;
+            nextDetectionTicks = Environment.TickCount64 + 1000;
+
+            GameRoom room = this.Room;
+            if (ReferenceEquals(room, null) == true) return;
+
+            Player target = room.FindPlayer(p =>
+            {
+                return Utility.CalculateDistance(p.Position, Position) <= DetectionRange;
+            });
+
+            if (ReferenceEquals(target, null) == true) return;
+
+            Target = target;
+            CurState = EObjectState.Move;
+        }
 
         #region Events
 

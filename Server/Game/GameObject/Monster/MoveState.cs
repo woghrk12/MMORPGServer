@@ -53,7 +53,7 @@ namespace Server.Game.MonsterState
                 return;
             }
 
-            if (room.Map.FindPath(controller.Position, target.Position, out List<Pos> path, isIgnoreObject: true) == false || path.Count > controller.ChaseRange)
+            if (room.Map.FindPath(controller.Position, target.Position, out List<Pos> path) == false || path.Count > controller.ChaseRange)
             {
                 controller.Target = null;
                 controller.CurState = EObjectState.Idle;

@@ -38,6 +38,7 @@ namespace Server.Game
             // Temp
             Monster monster = ObjectManager.Instance.Add<Monster>();
             monster.Position = new Pos(0, 2);
+            monster.MoveSpeed = 3;
 
             AddObject(monster);
         }
