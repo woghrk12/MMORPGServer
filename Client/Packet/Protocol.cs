@@ -68,14 +68,15 @@ namespace Google.Protobuf.Protocol {
             "UkZPUk1fQVRUQUNLX0JST0FEQ0FTVBAKEh0KGUFUVEFDS19DT01QTEVURV9C",
             "Uk9BRENBU1QQCxIRCg1ISVRfQlJPQURDQVNUEAwSGQoVT0JKRUNUX0RFQURf",
             "QlJPQURDQVNUEA0SGQoVT0JKRUNUX1JFVklWRV9SRVFVRVNUEA4SGwoXT0JK",
-            "RUNUX1JFVklWRV9CUk9BRENBU1QQDypCCglFU3RhdFR5cGUSDwoLT0JKRUNU",
-            "X0RBVEEQABIPCgtBVFRBQ0tfREFUQRABEhMKD1BST0pFQ1RJTEVfREFUQRAC",
-            "KjoKD0VHYW1lT2JqZWN0VHlwZRIKCgZQTEFZRVIQABILCgdNT05TVEVSEAES",
-            "DgoKUFJPSkVDVElMRRACKjgKDEVPYmplY3RTdGF0ZRIICgRJRExFEAASCAoE",
-            "TU9WRRABEgoKBkFUVEFDSxACEggKBERFQUQQAypBCg5FTW92ZURpcmVjdGlv",
-            "bhIICgROT05FEAASBgoCVVAQARIICgRET1dOEAISCAoETEVGVBAEEgkKBVJJ",
-            "R0hUEAgqIwoLRUF0dGFja1R5cGUSCQoFTUVMRUUQABIJCgVSQU5HRRABQhuq",
-            "AhhHb29nbGUuUHJvdG9idWYuUHJvdG9jb2xiBnByb3RvMw=="));
+            "RUNUX1JFVklWRV9CUk9BRENBU1QQDypUCglFU3RhdFR5cGUSDwoLT0JKRUNU",
+            "X0RBVEEQABIQCgxNT05TVEVSX0RBVEEQARIPCgtBVFRBQ0tfREFUQRACEhMK",
+            "D1BST0pFQ1RJTEVfREFUQRADKjoKD0VHYW1lT2JqZWN0VHlwZRIKCgZQTEFZ",
+            "RVIQABILCgdNT05TVEVSEAESDgoKUFJPSkVDVElMRRACKjgKDEVPYmplY3RT",
+            "dGF0ZRIICgRJRExFEAASCAoETU9WRRABEgoKBkFUVEFDSxACEggKBERFQUQQ",
+            "AypBCg5FTW92ZURpcmVjdGlvbhIICgROT05FEAASBgoCVVAQARIICgRET1dO",
+            "EAISCAoETEVGVBAEEgkKBVJJR0hUEAgqIwoLRUF0dGFja1R5cGUSCQoFTUVM",
+            "RUUQABIJCgVSQU5HRRABQhuqAhhHb29nbGUuUHJvdG9idWYuUHJvdG9jb2xi",
+            "BnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.EMessageID), typeof(global::Google.Protobuf.Protocol.EStatType), typeof(global::Google.Protobuf.Protocol.EGameObjectType), typeof(global::Google.Protobuf.Protocol.EObjectState), typeof(global::Google.Protobuf.Protocol.EMoveDirection), typeof(global::Google.Protobuf.Protocol.EAttackType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -124,8 +125,9 @@ namespace Google.Protobuf.Protocol {
 
   public enum EStatType {
     [pbr::OriginalName("OBJECT_DATA")] ObjectData = 0,
-    [pbr::OriginalName("ATTACK_DATA")] AttackData = 1,
-    [pbr::OriginalName("PROJECTILE_DATA")] ProjectileData = 2,
+    [pbr::OriginalName("MONSTER_DATA")] MonsterData = 1,
+    [pbr::OriginalName("ATTACK_DATA")] AttackData = 2,
+    [pbr::OriginalName("PROJECTILE_DATA")] ProjectileData = 3,
   }
 
   public enum EGameObjectType {

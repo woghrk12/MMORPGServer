@@ -26,8 +26,9 @@ enum EMessageID
 enum EStatType
 {
     OBJECT_DATA = 0;
-    ATTACK_DATA = 1;
-    PROJECTILE_DATA = 2;
+    MONSTER_DATA = 1;
+    ATTACK_DATA = 2;
+    PROJECTILE_DATA = 3;
 }
 
 message StatDataBroadcast

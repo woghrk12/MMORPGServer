@@ -14,6 +14,7 @@ namespace Server
         #region Properties
 
         public static Dictionary<int, Data.ObjectStat> ObjectStatDictionary { private set; get; } = new();
+        public static Dictionary<int, Data.MonsterStat> MonsterStatDictionary { private set; get; } = new();
         public static Dictionary<int, Data.AttackStat> AttacklStatDictionary { private set; get; } = new();
         public static Dictionary<int, Data.ProjectileStat> ProjectileStatDictionary { private set; get; } = new();
 
@@ -24,6 +25,7 @@ namespace Server
         public static void LoadData()
         {
             ObjectStatDictionary = LoadJson<Data.ObjectStatData, int, Data.ObjectStat>("ObjectStatData").MakeDictionary();
+            MonsterStatDictionary = LoadJson<Data.MonsterStatData, int, Data.MonsterStat>("MonsterStatData").MakeDictionary();
             AttacklStatDictionary = LoadJson<Data.AttackStatData, int, Data.AttackStat>("AttackStatData").MakeDictionary();
             ProjectileStatDictionary = LoadJson<Data.ProjectileStatData, int, Data.ProjectileStat>("ProjectileStatData").MakeDictionary();
         }
@@ -40,6 +42,17 @@ namespace Server
 
             Console.WriteLine($"Send ObjectStatData to {player.ID} player. Data Type : {EStatType.ObjectData}. Data Count : {objectStatList.Count}");
             player.Session.Send(objectStatPacket);
+
+            List<Data.MonsterStat> monsterStatList = [.. MonsterStatDictionary.Values];
+
+            StatDataBroadcast monsterStatPacket = new()
+            {
+                DataType = EStatType.MonsterData,
+                Data = JsonConvert.SerializeObject(monsterStatList)
+            };
+
+            Console.WriteLine($"Send ObjectStatData to {player.ID} player. Data Type : {EStatType.MonsterData}. Data Count : {monsterStatList.Count}");
+            player.Session.Send(monsterStatPacket);
 
             List<Data.AttackStat> attackStatList = [.. AttacklStatDictionary.Values];
 
