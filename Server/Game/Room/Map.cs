@@ -181,9 +181,11 @@ namespace Server.Game
 
             Vector2Int cellPos = ConvertPosToCell(position);
 
+            if (isIgnoreWall == false && collision[cellPos.Y, cellPos.X].ContainsKey(-1) == true) return false;
+
             foreach (KeyValuePair<int, GameObject> pair in collision[cellPos.Y, cellPos.X])
             {
-                if (pair.Key == -1 && isIgnoreWall == false) return false;
+                if (pair.Key == -1) continue;
                 if (pair.Value.IsCollidable == true && isIgnoreObject == false) return false;
             }
 
@@ -194,9 +196,11 @@ namespace Server.Game
         {
             if (cellPos.X < 0 || cellPos.X >= width || cellPos.Y < 0 || cellPos.Y >= height) return false;
 
+            if (isIgnoreWall == false && collision[cellPos.Y, cellPos.X].ContainsKey(-1) == true) return false;
+
             foreach (KeyValuePair<int, GameObject> pair in collision[cellPos.Y, cellPos.X])
             {
-                if (pair.Key == -1 && isIgnoreWall == false) return false;
+                if (pair.Key == -1) continue;
                 if (pair.Value.IsCollidable == true && isIgnoreObject == false) return false;
             }
 
@@ -211,11 +215,17 @@ namespace Server.Game
 
         public bool FindPath(Pos startPos, Pos destPos, out List<Pos> path, bool isIgnoreWall = false, bool isIgnoreObject = false)
         {
-            if (startPos == destPos)
-            {
-                path = null;
-                return false;
-            }
+            path = null;
+
+            if (startPos.X < minX || startPos.X > maxX || startPos.Y < minY || startPos.Y > maxY) return false;
+            if (destPos.X < minX || destPos.X > maxX || destPos.Y < minY || destPos.Y > maxY) return false;
+
+            if (startPos == destPos) return false;
+
+            Vector2Int startCellPos = ConvertPosToCell(startPos);
+            Vector2Int destCellPos = ConvertPosToCell(destPos);
+
+            if (isIgnoreWall == false && collision[destCellPos.Y, destCellPos.X].ContainsKey(-1) == true) return false;
 
             bool[,] closedArray = new bool[height, width];
             int[,] openArray = new int[height, width];
@@ -231,9 +241,6 @@ namespace Server.Game
                     parentArray[y, x] = new Pos(-1, -1);
                 }
             }
-
-            Vector2Int startCellPos = ConvertPosToCell(startPos);
-            Vector2Int destCellPos = ConvertPosToCell(destPos);
 
             openArray[startCellPos.Y, startCellPos.X] = Utility.CalculateDistance(startCellPos, destCellPos);
 

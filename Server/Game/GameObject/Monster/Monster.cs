@@ -14,11 +14,10 @@ namespace Server.Game
         #region Properties
 
         public int PatrolRange { private set; get; }
+        public Pos PatrolPos { set; get; }
 
         public int DetectionRange { private set; get; }
-
         public int ChaseRange { private set; get; }
-
         public Player Target { set; get; }
 
         #endregion Properties
@@ -69,7 +68,6 @@ namespace Server.Game
             if (ReferenceEquals(target, null) == true) return;
 
             Target = target;
-            CurState = EObjectState.Move;
         }
 
         #region Events

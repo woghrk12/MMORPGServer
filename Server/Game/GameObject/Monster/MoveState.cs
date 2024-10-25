@@ -6,6 +6,7 @@ namespace Server.Game.MonsterState
     {
         #region Variables
 
+        private bool isChasing = false;
         private long nextMoveTicks = 0;
 
         #endregion Variables
@@ -24,6 +25,11 @@ namespace Server.Game.MonsterState
 
         #region Methods
 
+        public override void OnEnter()
+        {
+            isChasing = ReferenceEquals(controller.Target, null) == false;
+        }
+
         public override void OnUpdate()
         {
             if (controller.MoveSpeed == 0)
@@ -33,34 +39,66 @@ namespace Server.Game.MonsterState
             }
 
             if (nextMoveTicks >= Environment.TickCount64) return;
-            nextMoveTicks = Environment.TickCount64 + (long)(1000f / controller.MoveSpeed);
 
             GameRoom room = controller.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            Player target = controller.Target;
-            if (ReferenceEquals(target, null) == true || ReferenceEquals(room, target.Room) == false)
+            Pos nextPos;
+
+            if (isChasing)
             {
-                controller.Target = null;
-                controller.CurState = EObjectState.Idle;
-                return;
+                Player target = controller.Target;
+                if (ReferenceEquals(target, null) == true)
+                {
+                    controller.Target = null;
+                    controller.CurState = EObjectState.Idle;
+                    return;
+                }
+
+                GameRoom targetRoom = target.Room;
+                if (ReferenceEquals(room, targetRoom) == false)
+                {
+                    controller.Target = null;
+                    controller.CurState = EObjectState.Idle;
+                    return;
+                }
+
+                if (Utility.CalculateDistance(controller.Position, target.Position) > controller.ChaseRange)
+                {
+                    controller.Target = null;
+                    controller.CurState = EObjectState.Idle;
+                    return;
+                }
+
+                if (room.Map.FindPath(controller.Position, target.Position, out List<Pos> path) == false || path.Count > controller.ChaseRange)
+                {
+                    controller.Target = null;
+                    controller.CurState = EObjectState.Idle;
+                    return;
+                }
+
+                nextPos = path[1];
+            }
+            else
+            {
+                Player target = controller.Target;
+
+                if (ReferenceEquals(target, null) == false)
+                {
+                    isChasing = true;
+                    return;
+                }
+
+                if (room.Map.FindPath(controller.Position, controller.PatrolPos, out List<Pos> path) == false || path.Count > controller.PatrolRange)
+                {
+                    controller.CurState = EObjectState.Idle;
+                    return;
+                }
+
+                nextPos = path[1];
             }
 
-            if (Utility.CalculateDistance(controller.Position, target.Position) > controller.ChaseRange)
-            {
-                controller.Target = null;
-                controller.CurState = EObjectState.Idle;
-                return;
-            }
-
-            if (room.Map.FindPath(controller.Position, target.Position, out List<Pos> path) == false || path.Count > controller.ChaseRange)
-            {
-                controller.Target = null;
-                controller.CurState = EObjectState.Idle;
-                return;
-            }
-
-            Vector2Int moveVector = new Vector2Int(path[1].X - controller.Position.X, path[1].Y - controller.Position.Y);
+            Vector2Int moveVector = new Vector2Int(nextPos.X - controller.Position.X, nextPos.Y - controller.Position.Y);
             EMoveDirection moveDirection = EMoveDirection.None;
 
             if (moveVector == Vector2Int.Up)
@@ -79,6 +117,8 @@ namespace Server.Game.MonsterState
             {
                 moveDirection = EMoveDirection.Right;
             }
+
+            nextMoveTicks = Environment.TickCount64 + (long)(1000f / controller.MoveSpeed);
 
             room.PerformMove(controller.ID, controller.Position, moveDirection);
         }
