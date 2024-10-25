@@ -41,7 +41,7 @@ namespace Server.Game.MonsterState
             int patrolRange = controller.PatrolRange;
             controller.PatrolPos = controller.Position + new Pos(rand.Next(-patrolRange, patrolRange), rand.Next(-patrolRange, patrolRange));
 
-            Console.WriteLine($"Patrol Pos : ({controller.PatrolPos.X}, {controller.PatrolPos.Y})");
+            Console.WriteLine($"Patrol Pos : ({controller.PatrolPos.X}, {controller.PatrolPos.Y}, {room.Map.Collision[controller.PatrolPos.Y, controller.PatrolPos.X].ContainsKey(-1)})");
             controller.CurState = EObjectState.Move;
         }
 

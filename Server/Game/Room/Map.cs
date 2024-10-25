@@ -58,6 +58,9 @@ namespace Server.Game
 
         #endregion Variables
 
+        // Temp
+        public Dictionary<int, GameObject>[,] Collision => collision;
+
         #region Methods
 
         public void LoadMap(int mapId, string pathPrefix = "../../../Resources/MapData")

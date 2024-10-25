@@ -66,6 +66,18 @@ namespace Server.Game
 
                 curState = stateDictionary[value];
                 curState.OnEnter();
+
+                GameRoom room = Room;
+                if (ReferenceEquals(room, null) == false)
+                {
+                    UpdateObjectStateBroadcast packet = new()
+                    {
+                        ObjectID = ID,
+                        NewState = curState.StateID
+                    };
+
+                    room.Broadcast(packet);
+                }
             }
             get => ReferenceEquals(curState, null) == false ? curState.StateID : EObjectState.Idle;
         }
