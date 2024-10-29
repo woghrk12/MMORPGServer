@@ -6,105 +6,67 @@ namespace Server.Game
 
         private object lockObj = new();
 
-        private TaskTimer taskTimer = new();
-
-        private Queue<ITask> taskQueue = new();
+        private PriorityQueue<TaskBase> priorityQueue = new();
 
         #endregion Variables
 
         #region Methods
 
-        public void Push(Action action, int tickAfter = 0)
+        public void Push(Action action, long execTick = 0)
         {
-            Task task = new Task(action);
+            Task task = new Task(action, execTick);
 
-            if (tickAfter > 0)
-            {
-                PushAfter(task, tickAfter);
-            }
-            else
-            {
-                Push(task);
-            }
+            Push(task);
         }
 
-        public void Push<P1>(Action<P1> action, P1 p1, int tickAfter = 0)
+        public void Push<P1>(Action<P1> action, P1 p1, long execTick = 0)
         {
-            Task<P1> task = new Task<P1>(action, p1);
+            Task<P1> task = new Task<P1>(action, p1, execTick);
 
-            if (tickAfter > 0)
-            {
-                PushAfter(task, tickAfter);
-            }
-            else
-            {
-                Push(task);
-            }
+            Push(task);
         }
 
-        public void Push<P1, P2>(Action<P1, P2> action, P1 p1, P2 p2, int tickAfter = 0)
+        public void Push<P1, P2>(Action<P1, P2> action, P1 p1, P2 p2, long execTick = 0)
         {
-            Task<P1, P2> task = new Task<P1, P2>(action, p1, p2);
+            Task<P1, P2> task = new Task<P1, P2>(action, p1, p2, execTick);
 
-            if (tickAfter > 0)
-            {
-                PushAfter(task, tickAfter);
-            }
-            else
-            {
-                Push(task);
-            }
+            Push(task);
         }
 
-        public void Push<P1, P2, P3>(Action<P1, P2, P3> action, P1 p1, P2 p2, P3 p3, int tickAfter = 0)
+        public void Push<P1, P2, P3>(Action<P1, P2, P3> action, P1 p1, P2 p2, P3 p3, long execTick = 0)
         {
-            Task<P1, P2, P3> task = new Task<P1, P2, P3>(action, p1, p2, p3);
+            Task<P1, P2, P3> task = new Task<P1, P2, P3>(action, p1, p2, p3, execTick);
 
-            if (tickAfter > 0)
-            {
-                PushAfter(task, tickAfter);
-            }
-            else
-            {
-                Push(task);
-            }
+            Push(task);
         }
 
         public void Flush()
         {
-            taskTimer.Flush();
+            TaskBase task = null;
 
-            while (taskQueue.Count > 0)
+            while (true)
             {
-                ITask task = Pop();
-
-                task.Execute();
-            }
-        }
-
-        private void Push(ITask task)
-        {
-            lock (lockObj)
-            {
-                taskQueue.Enqueue(task);
-            }
-        }
-
-        private void PushAfter(ITask task, int tickAfter)
-        {
-            taskTimer.Push(task, tickAfter);
-        }
-
-        private ITask Pop()
-        {
-            lock (lockObj)
-            {
-                if (taskQueue.TryDequeue(out ITask result) == false)
+                lock (lockObj)
                 {
-                    return null;
+                    if (priorityQueue.Count <= 0) break;
+
+                    task = priorityQueue.Peek();
+                    long now = Environment.TickCount64;
+
+                    if (task.ExecTick > now) break;
+
+                    priorityQueue.Pop();
                 }
 
-                return result;
+                task?.Execute();
+            }
+        }
+
+        private void Push(TaskBase task)
+        {
+            lock (lockObj)
+            {
+                priorityQueue.Push(task);
             }
         }
 
