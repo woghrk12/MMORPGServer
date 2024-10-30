@@ -1,3 +1,4 @@
+using Google.Protobuf.Protocol;
 using Server.Game;
 using System.Net.Sockets;
 
@@ -8,6 +9,8 @@ namespace Server
         #region Properties
 
         public int SessionID { private set; get; }
+
+        public EClientState clientState { private set; get; } = EClientState.Disconnected;
 
         public Player Player { private set; get; }
 

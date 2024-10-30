@@ -1,6 +1,5 @@
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
-using Server.DB;
 using Server.Game;
 
 namespace Server
@@ -13,28 +12,7 @@ namespace Server
 
             Console.WriteLine($"LoginRequest. ID : {packet.Id}");
 
-            // TODO : Security check
-
-            // TODO : Add error handling logic for login failures
-            using (AppDBContext db = new AppDBContext())
-            {
-                AccountDB account = db.Accounts
-                    .Where(a => a.Name == packet.Id).FirstOrDefault();
-
-                if (ReferenceEquals(account, null) == true)
-                {
-                    LoginResponse loginResponsePacket = new() { ResultCode = 1 };
-                    session.Send(loginResponsePacket);
-                }
-                else
-                {
-                    db.Accounts.Add(new AccountDB() { Name = packet.Id });
-                    db.SaveChanges();
-
-                    LoginResponse loginResponsePacket = new() { ResultCode = 1 };
-                    session.Send(loginResponsePacket);
-                }
-            }
+            session.Login(packet.Id);
         }
 
         public static void HandleCreateCharacterRequest(ClientSession session, IMessage message)
