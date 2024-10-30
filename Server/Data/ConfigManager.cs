@@ -9,6 +9,7 @@ namespace Server.Data
         public int PortNumber;
 
         public string DataPath;
+        public string ConnectionString;
     }
 
     public class ConfigManager

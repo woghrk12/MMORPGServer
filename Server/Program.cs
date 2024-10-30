@@ -1,5 +1,6 @@
 using System.Net;
 using Server.Data;
+using Server.DB;
 using Server.Game;
 
 namespace Server
@@ -18,6 +19,13 @@ namespace Server
         {
             ConfigManager.LoadConfig();
             DataManager.LoadData();
+
+            // DB Test
+            using (AppDBContext db = new AppDBContext())
+            {
+                db.Accounts.Add(new AccountDB() { Name = "TestAccount" });
+                db.SaveChanges();
+            }
 
             GameRoom room = RoomManager.Instance.Add(1);
             UpdateRoom(room, 50);
