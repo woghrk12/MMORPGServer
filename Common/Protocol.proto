@@ -8,28 +8,43 @@ enum EMessageID
     CONNECTED_RESPONSE = 0;
     LOGIN_REQUEST = 1;
     LOGIN_RESPONSE =2;
-    STAT_DATA_BROADCAST = 3;
-    PLAYER_ENTERED_ROOM_RESPONSE = 4;
-    PLAYER_ENTERED_ROOM_BROADCAST = 5;
-    PLAYER_LEFT_ROOM_RESPONSE = 6;
-    PLAYER_LEFT_ROOM_BROADCAST = 7;
-    OBJECT_SPAWNED_BROADCAST = 8;
-    OBJECT_DESPAWNED_BROADCAST = 9;
-    UPDATE_OBJECT_STATE_BROADCAST = 10;
-    PERFORM_MOVE_REQUEST = 11;
-    PERFORM_MOVE_BROADCAST = 12;
-    PERFORM_ATTACK_REQUEST = 13;
-    PERFORM_ATTACK_BROADCAST = 14;
-    ATTACK_COMPLETE_BROADCAST = 15;
-    HIT_BROADCAST = 16;
-    OBJECT_DEAD_BROADCAST = 17;
-    OBJECT_REVIVE_REQUEST = 18;
-    OBJECT_REVIVE_BROADCAST = 19;
+    CREATE_CHARACTER_REQUEST = 3;
+    CREATE_CHARACTER_RESPONSE = 4;
+    CHARACTER_ENTER_GAMEROOM_REQUEST = 5;
+    STAT_DATA_BROADCAST = 6;
+    PLAYER_ENTERED_ROOM_RESPONSE = 7;
+    PLAYER_ENTERED_ROOM_BROADCAST = 8;
+    PLAYER_LEFT_ROOM_RESPONSE = 9;
+    PLAYER_LEFT_ROOM_BROADCAST = 10;
+    OBJECT_SPAWNED_BROADCAST = 11;
+    OBJECT_DESPAWNED_BROADCAST = 12;
+    UPDATE_OBJECT_STATE_BROADCAST = 13;
+    PERFORM_MOVE_REQUEST = 14;
+    PERFORM_MOVE_BROADCAST = 15;
+    PERFORM_ATTACK_REQUEST = 16;
+    PERFORM_ATTACK_BROADCAST = 17;
+    ATTACK_COMPLETE_BROADCAST = 18;
+    HIT_BROADCAST = 19;
+    OBJECT_DEAD_BROADCAST = 20;
+    OBJECT_REVIVE_REQUEST = 21;
+    OBJECT_REVIVE_BROADCAST = 22;
+}
+
+enum EClientState
+{
+    LOGIN = 0;
+    LOBBY = 1;
+    INGAME = 2;
 }
 
 message ConnectedResponse
 {
 
+}
+
+message LobbyCharacterInfo
+{
+    string name = 1;
 }
 
 message LoginRequest
@@ -40,6 +55,23 @@ message LoginRequest
 message LoginResponse
 {
     int32 resultCode = 1;
+    repeated LobbyCharacterInfo characters = 2;
+}
+
+message CreateCharacterRequest
+{
+    string name = 1;
+}
+
+message CreateCharacterResponse
+{
+    int32 resultCode = 1;
+    LobbyCharacterInfo newCharacter = 2;
+}
+
+message CharacterEnterGameRoomRequest
+{
+    string name = 1;
 }
 
 enum EStatType

@@ -15,6 +15,7 @@ namespace Server
 
             // TODO : Security check
 
+            // TODO : Add error handling logic for login failures
             using (AppDBContext db = new AppDBContext())
             {
                 AccountDB account = db.Accounts
@@ -34,6 +35,20 @@ namespace Server
                     session.Send(loginResponsePacket);
                 }
             }
+        }
+
+        public static void HandleCreateCharacterRequest(ClientSession session, IMessage message)
+        {
+            CreateCharacterRequest packet = message as CreateCharacterRequest;
+
+            Console.WriteLine($"CreateCharacterRequest. Name : {packet.Name}");
+        }
+
+        public static void HandleCharacterEnterGameRoomRequest(ClientSession session, IMessage message)
+        {
+            CharacterEnterGameRoomRequest packet = message as CharacterEnterGameRoomRequest;
+
+            Console.WriteLine($"CharacterEnterGameRoomRequest. Name : {packet.Name}");
         }
 
         public static void HandlePerformMoveRequest(ClientSession session, IMessage message)
