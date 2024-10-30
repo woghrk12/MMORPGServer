@@ -82,16 +82,16 @@ namespace Google.Protobuf.Protocol {
             "UkVRVUVTVBAQEhwKGFBFUkZPUk1fQVRUQUNLX0JST0FEQ0FTVBAREh0KGUFU",
             "VEFDS19DT01QTEVURV9CUk9BRENBU1QQEhIRCg1ISVRfQlJPQURDQVNUEBMS",
             "GQoVT0JKRUNUX0RFQURfQlJPQURDQVNUEBQSGQoVT0JKRUNUX1JFVklWRV9S",
-            "RVFVRVNUEBUSGwoXT0JKRUNUX1JFVklWRV9CUk9BRENBU1QQFiowCgxFQ2xp",
-            "ZW50U3RhdGUSCQoFTE9HSU4QABIJCgVMT0JCWRABEgoKBklOR0FNRRACKlQK",
-            "CUVTdGF0VHlwZRIPCgtPQkpFQ1RfREFUQRAAEhAKDE1PTlNURVJfREFUQRAB",
-            "Eg8KC0FUVEFDS19EQVRBEAISEwoPUFJPSkVDVElMRV9EQVRBEAMqOgoPRUdh",
-            "bWVPYmplY3RUeXBlEgoKBlBMQVlFUhAAEgsKB01PTlNURVIQARIOCgpQUk9K",
-            "RUNUSUxFEAIqOAoMRU9iamVjdFN0YXRlEggKBElETEUQABIICgRNT1ZFEAES",
-            "CgoGQVRUQUNLEAISCAoEREVBRBADKkEKDkVNb3ZlRGlyZWN0aW9uEggKBE5P",
-            "TkUQABIGCgJVUBABEggKBERPV04QAhIICgRMRUZUEAQSCQoFUklHSFQQCCoj",
-            "CgtFQXR0YWNrVHlwZRIJCgVNRUxFRRAAEgkKBVJBTkdFEAFCG6oCGEdvb2ds",
-            "ZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
+            "RVFVRVNUEBUSGwoXT0JKRUNUX1JFVklWRV9CUk9BRENBU1QQFipCCgxFQ2xp",
+            "ZW50U3RhdGUSEAoMRElTQ09OTkVDVEVEEAASCQoFTE9HSU4QARIJCgVMT0JC",
+            "WRACEgoKBklOR0FNRRADKlQKCUVTdGF0VHlwZRIPCgtPQkpFQ1RfREFUQRAA",
+            "EhAKDE1PTlNURVJfREFUQRABEg8KC0FUVEFDS19EQVRBEAISEwoPUFJPSkVD",
+            "VElMRV9EQVRBEAMqOgoPRUdhbWVPYmplY3RUeXBlEgoKBlBMQVlFUhAAEgsK",
+            "B01PTlNURVIQARIOCgpQUk9KRUNUSUxFEAIqOAoMRU9iamVjdFN0YXRlEggK",
+            "BElETEUQABIICgRNT1ZFEAESCgoGQVRUQUNLEAISCAoEREVBRBADKkEKDkVN",
+            "b3ZlRGlyZWN0aW9uEggKBE5PTkUQABIGCgJVUBABEggKBERPV04QAhIICgRM",
+            "RUZUEAQSCQoFUklHSFQQCCojCgtFQXR0YWNrVHlwZRIJCgVNRUxFRRAAEgkK",
+            "BVJBTkdFEAFCG6oCGEdvb2dsZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.EMessageID), typeof(global::Google.Protobuf.Protocol.EClientState), typeof(global::Google.Protobuf.Protocol.EStatType), typeof(global::Google.Protobuf.Protocol.EGameObjectType), typeof(global::Google.Protobuf.Protocol.EObjectState), typeof(global::Google.Protobuf.Protocol.EMoveDirection), typeof(global::Google.Protobuf.Protocol.EAttackType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -154,9 +154,10 @@ namespace Google.Protobuf.Protocol {
   }
 
   public enum EClientState {
-    [pbr::OriginalName("LOGIN")] Login = 0,
-    [pbr::OriginalName("LOBBY")] Lobby = 1,
-    [pbr::OriginalName("INGAME")] Ingame = 2,
+    [pbr::OriginalName("DISCONNECTED")] Disconnected = 0,
+    [pbr::OriginalName("LOGIN")] Login = 1,
+    [pbr::OriginalName("LOBBY")] Lobby = 2,
+    [pbr::OriginalName("INGAME")] Ingame = 3,
   }
 
   public enum EStatType {

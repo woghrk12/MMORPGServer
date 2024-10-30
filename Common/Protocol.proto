@@ -32,9 +32,10 @@ enum EMessageID
 
 enum EClientState
 {
-    LOGIN = 0;
-    LOBBY = 1;
-    INGAME = 2;
+    DISCONNECTED = 0;
+    LOGIN = 1;
+    LOBBY = 2;
+    INGAME = 3;
 }
 
 message ConnectedResponse
