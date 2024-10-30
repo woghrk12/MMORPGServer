@@ -1,11 +1,41 @@
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
+using Server.DB;
 using Server.Game;
 
 namespace Server
 {
     public class PacketHandler
     {
+        public static void HandleLoginRequest(ClientSession session, IMessage message)
+        {
+            LoginRequest packet = message as LoginRequest;
+
+            Console.WriteLine($"LoginRequest. ID : {packet.Id}");
+
+            // TODO : Security check
+
+            using (AppDBContext db = new AppDBContext())
+            {
+                AccountDB account = db.Accounts
+                    .Where(a => a.Name == packet.Id).FirstOrDefault();
+
+                if (ReferenceEquals(account, null) == true)
+                {
+                    LoginResponse loginResponsePacket = new() { ResultCode = 1 };
+                    session.Send(loginResponsePacket);
+                }
+                else
+                {
+                    db.Accounts.Add(new AccountDB() { Name = packet.Id });
+                    db.SaveChanges();
+
+                    LoginResponse loginResponsePacket = new() { ResultCode = 1 };
+                    session.Send(loginResponsePacket);
+                }
+            }
+        }
+
         public static void HandlePerformMoveRequest(ClientSession session, IMessage message)
         {
             PerformMoveRequest packet = message as PerformMoveRequest;

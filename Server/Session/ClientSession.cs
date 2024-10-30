@@ -149,9 +149,14 @@ namespace Server
         {
             Console.WriteLine($"Session ID : {SessionID}\nOnConnected : {endPoint}");
 
+            ConnectedResponse connectedResponsePacket = new();
+            Send(connectedResponsePacket);
+
+            // TODO : Execute when selecting a character in the lobby
             Player = ObjectManager.Instance.Add<Player>();
             Player.Session = this;
 
+            // TODO : Execute when a request to enter the game room is received
             GameRoom room = RoomManager.Instance.Find(1);
             room.Push(room.EnterRoom, Player);
         }
