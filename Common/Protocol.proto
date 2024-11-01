@@ -62,7 +62,7 @@ message LoginResponse
 
 message CreateCharacterRequest
 {
-    string name = 1;
+    LobbyCharacterInfo newCharacterInfo = 1;
 }
 
 message CreateCharacterResponse

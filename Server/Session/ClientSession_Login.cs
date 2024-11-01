@@ -1,6 +1,5 @@
 using Google.Protobuf.Protocol;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using Server.DB;
 
 namespace Server
@@ -67,6 +66,58 @@ namespace Server
 
                     ClientState = EClientState.Lobby;
                 }
+            }
+        }
+
+        public void CreateCharacter(LobbyCharacterInfo newCharacterInfo)
+        {
+            if (ClientState != EClientState.Lobby) return;
+
+            using (AppDBContext db = new())
+            {
+                CreateCharacterResponse packet = new();
+
+                PlayerDB playerDB = db.Players
+                    .Where(p => p.Name == newCharacterInfo.Name).FirstOrDefault();
+
+                if (ReferenceEquals(playerDB, null) == false)
+                {
+                    packet.ResultCode = 1;
+
+                    Send(packet);
+                    return;
+                }
+
+                // TODO : Search the data sheet based on the information provided by the player
+                if (DataManager.ObjectStatDictionary.TryGetValue(1, out Data.ObjectStat stat) == false)
+                {
+                    packet.ResultCode = 2;
+
+                    Send(packet);
+                    return;
+                }
+
+                PlayerDB newCharacterDB = new()
+                {
+                    AccountID = AccountID,
+                    Name = newCharacterInfo.Name,
+                    Level = 1,
+                    CurHp = stat.MaxHpDictionary[1],
+                    MaxHp = stat.MaxHpDictionary[1],
+                    AttackPower = stat.AttackPowerDictionary[1],
+                    Speed = 5f,
+                    TotalExp = 0
+                };
+
+                db.Players.Add(newCharacterDB);
+                db.SaveChanges();
+
+                lobbyCharacterDict.Add(newCharacterDB.ID, newCharacterDB);
+
+                packet.ResultCode = 0;
+                packet.NewCharacter.MergeFrom(newCharacterInfo);
+
+                Send(packet);
             }
         }
 

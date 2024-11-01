@@ -20,11 +20,11 @@ namespace Server.DB
         [Key]
         public int ID { set; get; }
 
-        public string Name { set; get; }
-
         [ForeignKey("Account")]
         public int AccountID { set; get; }
         public AccountDB Account { set; get; }
+
+        public string Name { set; get; }
 
         public int Level { set; get; }
         public int CurHp { set; get; }
