@@ -19,9 +19,9 @@ namespace Server
         {
             CreateCharacterRequest packet = message as CreateCharacterRequest;
 
-            Console.WriteLine($"CreateCharacterRequest. Name : {packet.NewCharacterInfo.Name}");
+            Console.WriteLine($"CreateCharacterRequest. Name : {packet.Name}");
 
-            session.CreateCharacter(packet.NewCharacterInfo);
+            session.CreateCharacter(packet.Name);
         }
 
         public static void HandleCharacterEnterGameRoomRequest(ClientSession session, IMessage message)

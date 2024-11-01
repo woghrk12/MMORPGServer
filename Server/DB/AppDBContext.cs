@@ -17,7 +17,7 @@ namespace Server.DB
         #region Properties
 
         public DbSet<AccountDB> Accounts { set; get; }
-        public DbSet<PlayerDB> Players { set; get; }
+        public DbSet<CharacterDB> Characters { set; get; }
 
         #endregion Properties
 
@@ -36,8 +36,8 @@ namespace Server.DB
                 .HasIndex(a => a.Name)
                 .IsUnique();
 
-            modelBuilder.Entity<PlayerDB>()
-                .HasIndex(p => p.Name)
+            modelBuilder.Entity<CharacterDB>()
+                .HasIndex(c => c.Name)
                 .IsUnique();
         }
 

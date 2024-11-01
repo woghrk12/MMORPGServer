@@ -9,7 +9,7 @@ namespace Server
         #region Properties
 
         public int AccountID { private set; get; }
-        public Dictionary<int, PlayerDB> lobbyCharacterDict { private set; get; } = new();
+        public Dictionary<int, LobbyCharacterInfo> lobbyCharacterDict { private set; get; } = new();
 
         #endregion Properties
 
@@ -26,7 +26,7 @@ namespace Server
             using (AppDBContext db = new AppDBContext())
             {
                 AccountDB account = db.Accounts
-                    .Include(a => a.Players)
+                    .Include(a => a.Characters)
                     .Where(a => a.Name == uniqueID).FirstOrDefault();
 
                 if (ReferenceEquals(account, null) == true)
@@ -35,17 +35,17 @@ namespace Server
 
                     LoginResponse loginResponsePacket = new() { ResultCode = 1 };
 
-                    foreach (PlayerDB playerDB in account.Players)
+                    foreach (CharacterDB characterDB in account.Characters)
                     {
-                        LobbyCharacterInfo lobbyCharacterInfo = new()
+                        LobbyCharacterInfo info = new()
                         {
-                            Name = playerDB.Name,
-                            Level = playerDB.Level
+                            Name = characterDB.Name,
+                            Level = characterDB.Level
                         };
 
-                        lobbyCharacterDict.Add(playerDB.ID, playerDB);
+                        lobbyCharacterDict.Add(characterDB.ID, info);
 
-                        loginResponsePacket.Characters.Add(lobbyCharacterInfo);
+                        loginResponsePacket.Characters.Add(info);
                     }
 
                     Send(loginResponsePacket);
@@ -69,7 +69,7 @@ namespace Server
             }
         }
 
-        public void CreateCharacter(LobbyCharacterInfo newCharacterInfo)
+        public void CreateCharacter(string name)
         {
             if (ClientState != EClientState.Lobby) return;
 
@@ -77,10 +77,10 @@ namespace Server
             {
                 CreateCharacterResponse packet = new();
 
-                PlayerDB playerDB = db.Players
-                    .Where(p => p.Name == newCharacterInfo.Name).FirstOrDefault();
+                CharacterDB characterDB = db.Characters
+                    .Where(c => c.Name == name).FirstOrDefault();
 
-                if (ReferenceEquals(playerDB, null) == false)
+                if (ReferenceEquals(characterDB, null) == false)
                 {
                     packet.ResultCode = 1;
 
@@ -97,10 +97,10 @@ namespace Server
                     return;
                 }
 
-                PlayerDB newCharacterDB = new()
+                CharacterDB newCharacterDB = new()
                 {
                     AccountID = AccountID,
-                    Name = newCharacterInfo.Name,
+                    Name = name,
                     Level = 1,
                     CurHp = stat.MaxHpDictionary[1],
                     MaxHp = stat.MaxHpDictionary[1],
@@ -109,13 +109,19 @@ namespace Server
                     TotalExp = 0
                 };
 
-                db.Players.Add(newCharacterDB);
+                db.Characters.Add(newCharacterDB);
                 db.SaveChanges();
 
-                lobbyCharacterDict.Add(newCharacterDB.ID, newCharacterDB);
+                LobbyCharacterInfo newCharacterInfo = new()
+                {
+                    Name = name,
+                    Level = 1
+                };
+
+                lobbyCharacterDict.Add(newCharacterDB.ID, newCharacterInfo);
 
                 packet.ResultCode = 0;
-                packet.NewCharacter.MergeFrom(newCharacterInfo);
+                packet.NewCharacter = newCharacterInfo;
 
                 Send(packet);
             }

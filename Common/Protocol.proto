@@ -62,9 +62,13 @@ message LoginResponse
 
 message CreateCharacterRequest
 {
-    LobbyCharacterInfo newCharacterInfo = 1;
+    string name = 1;
 }
 
+// Result Code
+// 0 : Success
+// 1 : The name already exists
+// 2 : Receive information not present in the data sheet
 message CreateCharacterResponse
 {
     int32 resultCode = 1;

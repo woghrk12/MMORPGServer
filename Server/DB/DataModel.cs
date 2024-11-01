@@ -11,11 +11,11 @@ namespace Server.DB
         public int ID { set; get; }
 
         public string Name { set; get; }
-        public ICollection<PlayerDB> Players { set; get; }
+        public ICollection<CharacterDB> Characters { set; get; }
     }
 
-    [Table("Player")]
-    public class PlayerDB
+    [Table("Character")]
+    public class CharacterDB
     {
         [Key]
         public int ID { set; get; }
