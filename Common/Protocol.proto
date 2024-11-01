@@ -11,9 +11,9 @@ enum EMessageID
     CREATE_CHARACTER_REQUEST = 3;
     CREATE_CHARACTER_RESPONSE = 4;
     CHARACTER_ENTER_GAMEROOM_REQUEST = 5;
-    STAT_DATA_BROADCAST = 6;
-    PLAYER_ENTERED_ROOM_RESPONSE = 7;
-    PLAYER_ENTERED_ROOM_BROADCAST = 8;
+    CHARACTER_ENTER_GAMEROOM_RESPONSE = 6;
+    CHARACTER_ENTER_GAMEROOM_BROADCAST = 7;
+    STAT_DATA_BROADCAST = 8;
     PLAYER_LEFT_ROOM_RESPONSE = 9;
     PLAYER_LEFT_ROOM_BROADCAST = 10;
     OBJECT_SPAWNED_BROADCAST = 11;
@@ -83,6 +83,17 @@ message CharacterEnterGameRoomRequest
     string name = 1;
 }
 
+message CharacterEnterGameRoomResponse
+{
+    ObjectInfo newCharacter = 1;
+    repeated ObjectInfo otherObjects = 2;
+}
+
+message CharacterEnterGameRoomBroadcast
+{
+    ObjectInfo newCharacter = 1;
+}
+
 enum EStatType
 {
     OBJECT_DATA = 0;
@@ -133,17 +144,6 @@ message ObjectInfo
     int32 moveSpeed = 8;
     bool isCollidable = 9;
     ObjectStat objectStat = 10;
-}
-
-message PlayerEnteredRoomResponse
-{
-    ObjectInfo newPlayer = 1;
-    repeated ObjectInfo otherObjects = 2;
-}
-
-message PlayerEnteredRoomBroadcast
-{
-    ObjectInfo newPlayer = 1;
 }
 
 message PlayerLeftRoomResponse
