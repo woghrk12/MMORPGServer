@@ -83,10 +83,14 @@ message CharacterEnterGameRoomRequest
     string name = 1;
 }
 
+// Result Code
+// 0 : Success
+// 1 : Do not own a character with the specified name
 message CharacterEnterGameRoomResponse
 {
-    ObjectInfo newCharacter = 1;
-    repeated ObjectInfo otherObjects = 2;
+    int32 resultCode = 1;
+    ObjectInfo newCharacter = 2;
+    repeated ObjectInfo otherObjects = 3;
 }
 
 message CharacterEnterGameRoomBroadcast
