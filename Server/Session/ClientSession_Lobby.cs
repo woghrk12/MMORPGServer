@@ -25,6 +25,8 @@ namespace Server
             // TODO : Add error handling logic for login failures
             using (AppDBContext db = new AppDBContext())
             {
+                LoginResponse packet = new();
+
                 AccountDB account = db.Accounts
                     .Include(a => a.Characters)
                     .Where(a => a.Name == uniqueID).FirstOrDefault();
@@ -33,7 +35,7 @@ namespace Server
                 {
                     AccountID = account.ID;
 
-                    LoginResponse loginResponsePacket = new() { ResultCode = 1 };
+                    packet.ResultCode = 0;
 
                     foreach (CharacterDB characterDB in account.Characters)
                     {
@@ -45,10 +47,10 @@ namespace Server
 
                         lobbyCharacterDict.Add(characterDB.ID, info);
 
-                        loginResponsePacket.Characters.Add(info);
+                        packet.Characters.Add(info);
                     }
 
-                    Send(loginResponsePacket);
+                    Send(packet);
 
                     ClientState = EClientState.Lobby;
                 }
@@ -60,9 +62,9 @@ namespace Server
                     db.Accounts.Add(newAccount);
                     db.SaveChanges();
 
-                    LoginResponse loginResponsePacket = new() { ResultCode = 1 };
+                    packet.ResultCode = 1;
 
-                    Send(loginResponsePacket);
+                    Send(packet);
 
                     ClientState = EClientState.Lobby;
                 }

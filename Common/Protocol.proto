@@ -54,6 +54,9 @@ message LoginRequest
     string id = 1;
 }
 
+// Result Code
+// 0 : Success
+// 1 : Create a new account because no account is found for the given ID
 message LoginResponse
 {
     int32 resultCode = 1;
