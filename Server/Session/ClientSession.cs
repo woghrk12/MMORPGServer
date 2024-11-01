@@ -10,7 +10,7 @@ namespace Server
 
         public int SessionID { private set; get; }
 
-        public EClientState clientState { private set; get; } = EClientState.Disconnected;
+        public EClientState ClientState { private set; get; } = EClientState.Disconnected;
 
         public Player Player { private set; get; }
 

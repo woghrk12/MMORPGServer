@@ -33,7 +33,7 @@ enum EMessageID
 enum EClientState
 {
     DISCONNECTED = 0;
-    LOGIN = 1;
+    CONNECTED = 1;
     LOBBY = 2;
     INGAME = 3;
 }
@@ -46,6 +46,7 @@ message ConnectedResponse
 message LobbyCharacterInfo
 {
     string name = 1;
+    int32 level = 2;
 }
 
 message LoginRequest
