@@ -25,8 +25,6 @@ namespace Server
             // TODO : Add error handling logic for login failures
             using (AppDBContext db = new AppDBContext())
             {
-                LoginResponse packet = new();
-
                 AccountDB account = db.Accounts
                     .Include(a => a.Characters)
                     .Where(a => a.Name == uniqueID).FirstOrDefault();
@@ -37,11 +35,14 @@ namespace Server
                     AccountID = newAccount.ID;
 
                     db.Accounts.Add(newAccount);
-                    db.SaveChanges();
 
-                    packet.ResultCode = 1;
+                    if (db.SaveChangesEx() == false)
+                    {
+                        Send(new LoginResponse() { ResultCode = 2 });
+                        return;
+                    }
 
-                    Send(packet);
+                    Send(new LoginResponse() { ResultCode = 1 });
 
                     ClientState = EClientState.Lobby;
                 }
@@ -49,7 +50,7 @@ namespace Server
                 {
                     AccountID = account.ID;
 
-                    packet.ResultCode = 0;
+                    LoginResponse packet = new() { ResultCode = 0 };
 
                     foreach (CharacterDB characterDB in account.Characters)
                     {
@@ -77,25 +78,21 @@ namespace Server
 
             using (AppDBContext db = new())
             {
-                CreateCharacterResponse packet = new();
-
                 CharacterDB characterDB = db.Characters
                     .Where(c => c.Name == name).FirstOrDefault();
 
                 if (ReferenceEquals(characterDB, null) == false)
                 {
-                    packet.ResultCode = 1;
+                    Send(new CreateCharacterResponse() { ResultCode = 1 });
 
-                    Send(packet);
                     return;
                 }
 
                 // TODO : Search the data sheet based on the information provided by the player
                 if (DataManager.ObjectStatDictionary.TryGetValue(1, out Data.ObjectStat stat) == false)
                 {
-                    packet.ResultCode = 2;
+                    Send(new CreateCharacterResponse() { ResultCode = 2 });
 
-                    Send(packet);
                     return;
                 }
 
@@ -112,7 +109,12 @@ namespace Server
                 };
 
                 db.Characters.Add(newCharacterDB);
-                db.SaveChanges();
+                if (db.SaveChangesEx() == false)
+                {
+                    Send(new CreateCharacterResponse() { ResultCode = 3 });
+
+                    return;
+                }
 
                 LobbyCharacterInfo newCharacterInfo = new()
                 {
@@ -122,8 +124,11 @@ namespace Server
 
                 lobbyCharacterDict.Add(newCharacterDB.ID, newCharacterInfo);
 
-                packet.ResultCode = 0;
-                packet.NewCharacter = newCharacterInfo;
+                CreateCharacterResponse packet = new()
+                {
+                    ResultCode = 0,
+                    NewCharacter = newCharacterInfo
+                };
 
                 Send(packet);
             }
