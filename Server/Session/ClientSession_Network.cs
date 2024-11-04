@@ -120,6 +120,8 @@ namespace Server
         {
             Console.WriteLine($"Session ID : {SessionID}\nOnConnected : {endPoint}");
 
+            ClientState = EClientState.Connected;
+
             ConnectedResponse connectedResponsePacket = new();
             Send(connectedResponsePacket);
         }

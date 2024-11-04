@@ -18,7 +18,6 @@ namespace Server
 
         public void Login(string uniqueID)
         {
-            // TODO : Security check
             if (ClientState != EClientState.Connected) return;
 
             lobbyCharacterDict.Clear();
@@ -33,6 +32,20 @@ namespace Server
                     .Where(a => a.Name == uniqueID).FirstOrDefault();
 
                 if (ReferenceEquals(account, null) == true)
+                {
+                    AccountDB newAccount = new AccountDB() { Name = uniqueID };
+                    AccountID = newAccount.ID;
+
+                    db.Accounts.Add(newAccount);
+                    db.SaveChanges();
+
+                    packet.ResultCode = 1;
+
+                    Send(packet);
+
+                    ClientState = EClientState.Lobby;
+                }
+                else
                 {
                     AccountID = account.ID;
 
@@ -50,20 +63,6 @@ namespace Server
 
                         packet.Characters.Add(info);
                     }
-
-                    Send(packet);
-
-                    ClientState = EClientState.Lobby;
-                }
-                else
-                {
-                    AccountDB newAccount = new AccountDB() { Name = uniqueID };
-                    AccountID = newAccount.ID;
-
-                    db.Accounts.Add(newAccount);
-                    db.SaveChanges();
-
-                    packet.ResultCode = 1;
 
                     Send(packet);
 
