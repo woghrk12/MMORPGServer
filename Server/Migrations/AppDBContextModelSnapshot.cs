@@ -58,6 +58,15 @@ namespace Server.Migrations
                     b.Property<int>("CurHp")
                         .HasColumnType("int");
 
+                    b.Property<int>("CurPosX")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CurPosY")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FacingDirection")
+                        .HasColumnType("int");
+
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
@@ -67,8 +76,8 @@ namespace Server.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<float>("Speed")
-                        .HasColumnType("real");
+                    b.Property<int>("Speed")
+                        .HasColumnType("int");
 
                     b.Property<int>("TotalExp")
                         .HasColumnType("int");

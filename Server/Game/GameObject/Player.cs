@@ -16,12 +16,6 @@ namespace Server.Game
         {
             ObjectType = EGameObjectType.Player;
             IsCollidable = true;
-
-            if (DataManager.ObjectStatDictionary.TryGetValue(1, out Data.ObjectStat statData) == false) return;
-
-            // TODO : The stat needs to be adjusted based on the player's level
-            Stat.CurHP = Stat.MaxHP = statData.MaxHpDictionary[1];
-            Stat.AttackPower = statData.AttackPowerDictionary[1];
         }
 
         #endregion Constructor

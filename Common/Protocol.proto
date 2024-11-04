@@ -86,6 +86,7 @@ message CharacterEnterGameRoomRequest
 // Result Code
 // 0 : Success
 // 1 : Do not own a character with the specified name
+// 2 : No character in the database
 message CharacterEnterGameRoomResponse
 {
     int32 resultCode = 1;

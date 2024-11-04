@@ -24,22 +24,32 @@ namespace Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Player",
+                name: "Character",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountID = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AccountID = table.Column<int>(type: "int", nullable: true)
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    CurHp = table.Column<int>(type: "int", nullable: false),
+                    MaxHp = table.Column<int>(type: "int", nullable: false),
+                    AttackPower = table.Column<int>(type: "int", nullable: false),
+                    Speed = table.Column<int>(type: "int", nullable: false),
+                    TotalExp = table.Column<int>(type: "int", nullable: false),
+                    CurPosX = table.Column<int>(type: "int", nullable: false),
+                    CurPosY = table.Column<int>(type: "int", nullable: false),
+                    FacingDirection = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Player", x => x.ID);
+                    table.PrimaryKey("PK_Character", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Player_Account_AccountID",
+                        name: "FK_Character_Account_AccountID",
                         column: x => x.AccountID,
                         principalTable: "Account",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -50,13 +60,13 @@ namespace Server.Migrations
                 filter: "[Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Player_AccountID",
-                table: "Player",
+                name: "IX_Character_AccountID",
+                table: "Character",
                 column: "AccountID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Player_Name",
-                table: "Player",
+                name: "IX_Character_Name",
+                table: "Character",
                 column: "Name",
                 unique: true,
                 filter: "[Name] IS NOT NULL");
@@ -66,7 +76,7 @@ namespace Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Player");
+                name: "Character");
 
             migrationBuilder.DropTable(
                 name: "Account");

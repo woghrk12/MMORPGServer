@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Google.Protobuf.Protocol;
 
 namespace Server.DB
 {
@@ -30,7 +31,11 @@ namespace Server.DB
         public int CurHp { set; get; }
         public int MaxHp { set; get; }
         public int AttackPower { set; get; }
-        public float Speed { set; get; }
+        public int Speed { set; get; }
         public int TotalExp { set; get; }
+
+        public int CurPosX { set; get; }
+        public int CurPosY { set; get; }
+        public EMoveDirection FacingDirection { set; get; }
     }
 }

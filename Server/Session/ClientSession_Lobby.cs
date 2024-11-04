@@ -1,6 +1,7 @@
 using Google.Protobuf.Protocol;
 using Microsoft.EntityFrameworkCore;
 using Server.DB;
+using Server.Game;
 
 namespace Server
 {
@@ -107,7 +108,7 @@ namespace Server
                     CurHp = stat.MaxHpDictionary[1],
                     MaxHp = stat.MaxHpDictionary[1],
                     AttackPower = stat.AttackPowerDictionary[1],
-                    Speed = 5f,
+                    Speed = 5,
                     TotalExp = 0
                 };
 
@@ -127,6 +128,51 @@ namespace Server
 
                 Send(packet);
             }
+        }
+
+        public void EnterGameRoom(string characterName)
+        {
+            if (ClientState != EClientState.Lobby) return;
+
+            CharacterEnterGameRoomResponse responsePacket = new();
+            CharacterEnterGameRoomBroadcast broadcastPacket = new();
+
+            LobbyCharacterInfo lobbyCharacter = lobbyCharacterDict.Values.FirstOrDefault(c => c.Name.Equals(characterName));
+            if (ReferenceEquals(lobbyCharacter, null) == true)
+            {
+                responsePacket.ResultCode = 1;
+
+                Send(responsePacket);
+                return;
+            }
+
+            using (AppDBContext db = new())
+            {
+                CharacterDB characterDB = db.Characters.FirstOrDefault(c => c.Name.Equals(characterName));
+                if (ReferenceEquals(characterDB, null) == true)
+                {
+                    responsePacket.ResultCode = 2;
+
+                    Send(responsePacket);
+                    return;
+                }
+
+                Player = ObjectManager.Instance.Add<Player>();
+                Player.Session = this;
+
+                Player.Name = characterDB.Name;
+                Player.Stat.MaxHP = characterDB.MaxHp;
+                Player.Stat.CurHP = characterDB.CurHp;
+                Player.Stat.AttackPower = characterDB.AttackPower;
+                Player.MoveSpeed = characterDB.Speed;
+                Player.Position = new Pos(characterDB.CurPosX, characterDB.CurPosY);
+                Player.FacingDirection = characterDB.FacingDirection;
+            }
+
+            GameRoom room = RoomManager.Instance.Find(1);
+            room.Push(room.EnterRoom, Player);
+
+            ClientState = EClientState.Ingame;
         }
 
         #endregion Methods

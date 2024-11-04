@@ -32,9 +32,6 @@ namespace Server.Game
                 gameObject = new();
                 gameObject.ID = GenerateID(gameObject.ObjectType);
 
-                // TODO : Name needs to be set based on the nickname stored in the database or the name from the data sheet
-                gameObject.Name = gameObject.ObjectType.ToString() + "_" + gameObject.ID;
-
                 objectDictionary.Add(gameObject.ID, gameObject);
             }
 

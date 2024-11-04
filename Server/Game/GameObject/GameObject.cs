@@ -48,7 +48,7 @@ namespace Server.Game
             get => moveDirection;
         }
 
-        public EMoveDirection FacingDirection { private set; get; } = EMoveDirection.Right;
+        public EMoveDirection FacingDirection { set; get; } = EMoveDirection.Right;
 
         public bool IsCollidable { set; get; } = true;
 
