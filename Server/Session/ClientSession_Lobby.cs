@@ -134,15 +134,10 @@ namespace Server
         {
             if (ClientState != EClientState.Lobby) return;
 
-            CharacterEnterGameRoomResponse responsePacket = new();
-            CharacterEnterGameRoomBroadcast broadcastPacket = new();
-
             LobbyCharacterInfo lobbyCharacter = lobbyCharacterDict.Values.FirstOrDefault(c => c.Name.Equals(characterName));
             if (ReferenceEquals(lobbyCharacter, null) == true)
             {
-                responsePacket.ResultCode = 1;
-
-                Send(responsePacket);
+                Send(new CharacterEnterGameRoomResponse() { ResultCode = 1 });
                 return;
             }
 
@@ -151,9 +146,7 @@ namespace Server
                 CharacterDB characterDB = db.Characters.FirstOrDefault(c => c.Name.Equals(characterName));
                 if (ReferenceEquals(characterDB, null) == true)
                 {
-                    responsePacket.ResultCode = 2;
-
-                    Send(responsePacket);
+                    Send(new CharacterEnterGameRoomResponse() { ResultCode = 2 });
                     return;
                 }
 
