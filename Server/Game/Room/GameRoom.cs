@@ -185,9 +185,10 @@ namespace Server.Game
             };
 
             // Send the packets to the player who has just enterend the room
-            PlayerEnteredRoomResponse playerEnteredRoomResponse = new()
+            CharacterEnterGameRoomResponse playerEnteredRoomResponse = new()
             {
-                NewPlayer = newPlayerInfo
+                ResultCode = 0,
+                NewCharacter = newPlayerInfo
             };
 
             foreach (Dictionary<int, GameObject> dictionary in objectDictionary.Values)
@@ -217,9 +218,9 @@ namespace Server.Game
             Send(playerEnteredRoomResponse, newPlayer.ID);
 
             // Send the packets to the players who are in the room
-            PlayerEnteredRoomBroadcast playerEnteredRoomBroadcast = new()
+            CharacterEnterGameRoomBroadcast playerEnteredRoomBroadcast = new()
             {
-                NewPlayer = newPlayerInfo
+                NewCharacter = newPlayerInfo
             };
 
             Broadcast(playerEnteredRoomBroadcast, newPlayer.ID);
