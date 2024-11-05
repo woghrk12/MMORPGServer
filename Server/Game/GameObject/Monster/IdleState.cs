@@ -14,7 +14,7 @@ namespace Server.Game.MonsterState
 
         #region Properties
 
-        public sealed override EObjectState StateID => EObjectState.Idle;
+        public sealed override ECreatureState StateID => ECreatureState.Idle;
 
         #endregion Properties
 
@@ -42,7 +42,7 @@ namespace Server.Game.MonsterState
             controller.PatrolPos = controller.Position + new Pos(rand.Next(-patrolRange, patrolRange), rand.Next(-patrolRange, patrolRange));
 
             Console.WriteLine($"Patrol Pos : ({controller.PatrolPos.X}, {controller.PatrolPos.Y}, {room.Map.Collision[controller.PatrolPos.Y, controller.PatrolPos.X].ContainsKey(-1)})");
-            controller.CurState = EObjectState.Move;
+            controller.CurState = ECreatureState.Move;
         }
 
         #endregion Methods

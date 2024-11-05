@@ -29,10 +29,10 @@ namespace Server.Game
             ObjectType = EGameObjectType.Monster;
             IsCollidable = true;
 
-            stateDictionary.Add(EObjectState.Idle, new IdleState(this));
-            stateDictionary.Add(EObjectState.Move, new MoveState(this));
-            stateDictionary.Add(EObjectState.Attack, new AttackState(this));
-            stateDictionary.Add(EObjectState.Dead, new DeadState(this));
+            stateDictionary.Add(ECreatureState.Idle, new IdleState(this));
+            stateDictionary.Add(ECreatureState.Move, new MoveState(this));
+            stateDictionary.Add(ECreatureState.Attack, new AttackState(this));
+            stateDictionary.Add(ECreatureState.Dead, new DeadState(this));
 
             if (DataManager.MonsterStatDictionary.TryGetValue(1, out Data.MonsterStat statData) == false) return;
 
@@ -43,7 +43,7 @@ namespace Server.Game
             DetectionRange = statData.DetectionRange;
             ChaseRange = statData.ChaseRange;
 
-            CurState = EObjectState.Idle;
+            CurState = ECreatureState.Idle;
 
             Updated += DetectPlayer;
         }

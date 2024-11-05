@@ -39,7 +39,7 @@ namespace Server.Game
 
             Room.Broadcast(packet);
 
-            CurState = EObjectState.Dead;
+            CurState = ECreatureState.Dead;
             IsCollidable = false;
         }
 

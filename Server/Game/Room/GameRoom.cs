@@ -254,12 +254,12 @@ namespace Server.Game
 
             if (moveDirection == EMoveDirection.None)
             {
-                gameObject.CurState = EObjectState.Idle;
+                gameObject.CurState = ECreatureState.Idle;
                 gameObject.MoveDirection = EMoveDirection.None;
             }
             else
             {
-                gameObject.CurState = EObjectState.Move;
+                gameObject.CurState = ECreatureState.Move;
                 gameObject.MoveDirection = moveDirection;
             }
 
@@ -286,9 +286,9 @@ namespace Server.Game
             // TODO : Certify the attack info passed by the packet
 
             // TODO : Check whether the gameobject can attack
-            if (gameObject.CurState != EObjectState.Idle) return;
+            if (gameObject.CurState != ECreatureState.Idle) return;
 
-            gameObject.CurState = EObjectState.Attack;
+            gameObject.CurState = ECreatureState.Attack;
 
             long attackStartTime = Environment.TickCount64;
 
@@ -315,7 +315,7 @@ namespace Server.Game
 
                         foreach (GameObject damagable in damagableList)
                         {
-                            if (damagable.CurState == EObjectState.Dead) continue;
+                            if (damagable.CurState == ECreatureState.Dead) continue;
 
                             // TODO : The attack coefficient needs to be adjusted based on the attacker's level
                             damagable.OnDamaged(gameObject, gameObject.Stat.AttackPower * attackStat.CoeffDictionary[1]);
@@ -333,7 +333,7 @@ namespace Server.Game
                     arrow.Owner = gameObject;
                     arrow.AttackStat = attackStat;
                     arrow.Name = projectileStat.Name;
-                    arrow.CurState = EObjectState.Move;
+                    arrow.CurState = ECreatureState.Move;
                     arrow.Position = new Pos(gameObject.Position.X, gameObject.Position.Y);
                     arrow.MoveDirection = gameObject.FacingDirection;
                     arrow.MoveSpeed = projectileStat.Speed;
@@ -355,7 +355,7 @@ namespace Server.Game
             if (objectDictionary.TryGetValue(type, out Dictionary<int, GameObject> dictionary) == false) return;
             if (dictionary.TryGetValue(objectID, out GameObject gameObject) == false) return;
 
-            gameObject.CurState = EObjectState.Idle;
+            gameObject.CurState = ECreatureState.Idle;
             gameObject.MoveDirection = EMoveDirection.None;
             gameObject.IsCollidable = true;
             gameObject.Stat.CurHP = gameObject.Stat.MaxHP;

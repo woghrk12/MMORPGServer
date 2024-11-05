@@ -51,7 +51,7 @@ namespace Server.Game
                     foreach (GameObject damagable in damagableList)
                     {
                         if (damagable.ID == Owner.ID) continue;
-                        if (damagable.CurState == EObjectState.Dead) continue;
+                        if (damagable.CurState == ECreatureState.Dead) continue;
 
                         // TODO : The attack coefficient needs to be adjusted based on the attacker's level
                         damagable.OnDamaged(Owner, Owner.Stat.AttackPower * AttackStat.CoeffDictionary[1]);

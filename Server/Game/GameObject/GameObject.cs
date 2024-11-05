@@ -10,7 +10,7 @@ namespace Server.Game
 
         private event Action updated = null;
 
-        protected Dictionary<EObjectState, State> stateDictionary = new();
+        protected Dictionary<ECreatureState, State> stateDictionary = new();
         protected State curState = null;
 
         private long attackEndTicks = 0;
@@ -52,7 +52,7 @@ namespace Server.Game
 
         public bool IsCollidable { set; get; } = true;
 
-        public EObjectState CurState
+        public ECreatureState CurState
         {
             set
             {
@@ -79,7 +79,7 @@ namespace Server.Game
                     room.Broadcast(packet);
                 }
             }
-            get => ReferenceEquals(curState, null) == false ? curState.StateID : EObjectState.Idle;
+            get => ReferenceEquals(curState, null) == false ? curState.StateID : ECreatureState.Idle;
         }
 
         public event Action Updated
@@ -137,7 +137,7 @@ namespace Server.Game
         {
             if (attackEndTicks > Environment.TickCount64) return;
 
-            CurState = EObjectState.Idle;
+            CurState = ECreatureState.Idle;
 
             AttackCompleteBroadcast packet = new()
             {

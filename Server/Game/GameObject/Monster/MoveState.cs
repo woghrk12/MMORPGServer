@@ -14,7 +14,7 @@ namespace Server.Game.MonsterState
 
         #region Properties
 
-        public sealed override EObjectState StateID => EObjectState.Move;
+        public sealed override ECreatureState StateID => ECreatureState.Move;
 
         #endregion Properties
 
@@ -35,7 +35,7 @@ namespace Server.Game.MonsterState
         {
             if (controller.MoveSpeed == 0)
             {
-                controller.CurState = EObjectState.Idle;
+                controller.CurState = ECreatureState.Idle;
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace Server.Game.MonsterState
                 if (ReferenceEquals(target, null) == true)
                 {
                     controller.Target = null;
-                    controller.CurState = EObjectState.Idle;
+                    controller.CurState = ECreatureState.Idle;
                     return;
                 }
 
@@ -60,21 +60,21 @@ namespace Server.Game.MonsterState
                 if (ReferenceEquals(room, targetRoom) == false)
                 {
                     controller.Target = null;
-                    controller.CurState = EObjectState.Idle;
+                    controller.CurState = ECreatureState.Idle;
                     return;
                 }
 
                 if (Utility.CalculateDistance(controller.Position, target.Position) > controller.ChaseRange)
                 {
                     controller.Target = null;
-                    controller.CurState = EObjectState.Idle;
+                    controller.CurState = ECreatureState.Idle;
                     return;
                 }
 
                 if (room.Map.FindPath(controller.Position, target.Position, out List<Pos> path) == false || path.Count > controller.ChaseRange)
                 {
                     controller.Target = null;
-                    controller.CurState = EObjectState.Idle;
+                    controller.CurState = ECreatureState.Idle;
                     return;
                 }
 
@@ -92,7 +92,7 @@ namespace Server.Game.MonsterState
 
                 if (room.Map.FindPath(controller.Position, controller.PatrolPos, out List<Pos> path) == false || path.Count > controller.PatrolRange)
                 {
-                    controller.CurState = EObjectState.Idle;
+                    controller.CurState = ECreatureState.Idle;
                     return;
                 }
 
