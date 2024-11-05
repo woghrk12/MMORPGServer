@@ -154,20 +154,20 @@ namespace Server
                     return;
                 }
 
-                Player = ObjectManager.Instance.Add<Player>();
-                Player.Session = this;
+                Character = ObjectManager.Instance.Add<Character>();
+                Character.Session = this;
 
-                Player.Name = characterDB.Name;
-                Player.Stat.MaxHP = characterDB.MaxHp;
-                Player.Stat.CurHP = characterDB.CurHp;
-                Player.Stat.AttackPower = characterDB.AttackPower;
-                Player.MoveSpeed = characterDB.Speed;
-                Player.Position = new Pos(characterDB.CurPosX, characterDB.CurPosY);
-                Player.FacingDirection = characterDB.FacingDirection;
+                Character.Name = characterDB.Name;
+                Character.Stat.MaxHP = characterDB.MaxHp;
+                Character.Stat.CurHP = characterDB.CurHp;
+                Character.Stat.AttackPower = characterDB.AttackPower;
+                Character.MoveSpeed = characterDB.Speed;
+                Character.Position = new Pos(characterDB.CurPosX, characterDB.CurPosY);
+                Character.FacingDirection = characterDB.FacingDirection;
             }
 
             GameRoom room = RoomManager.Instance.Find(1);
-            room.Push(room.EnterRoom, Player);
+            room.Push(room.EnterRoom, Character);
 
             ClientState = EClientState.Ingame;
         }

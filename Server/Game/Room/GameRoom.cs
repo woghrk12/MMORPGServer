@@ -17,7 +17,7 @@ namespace Server.Game
 
         public Map Map { private set; get; } = new();
 
-        public Dictionary<int, GameObject> PlayerDictionary => objectDictionary[EGameObjectType.Player];
+        public Dictionary<int, GameObject> CharacterDictionary => objectDictionary[EGameObjectType.Character];
         public Dictionary<int, GameObject> MonsterDictionary => objectDictionary[EGameObjectType.Monster];
         public Dictionary<int, GameObject> ProjectileDictionary => objectDictionary[EGameObjectType.Projectile];
 
@@ -68,7 +68,7 @@ namespace Server.Game
 
         public void RemoveObject(int oldObjectID) => Push(RemoveObject_T, oldObjectID);
 
-        public void EnterRoom(Player newPlayer) => Push(EnterRoom_T, newPlayer);
+        public void EnterRoom(Character newCharacter) => Push(EnterRoom_T, newCharacter);
 
         public void LeaveRoom(int leftPlayerID) => Push(LeaveRoom_T, leftPlayerID);
 
@@ -78,34 +78,34 @@ namespace Server.Game
 
         public void ReviveObject(int objectID, Pos revivePos) => Push(ReviveObject_T, objectID, revivePos);
 
-        public Player FindPlayer(Func<GameObject, bool> condition)
+        public Character FindCharacter(Func<GameObject, bool> condition)
         {
-            foreach (Player player in PlayerDictionary.Values)
+            foreach (Character character in CharacterDictionary.Values)
             {
-                if (condition.Invoke(player) == false) continue;
+                if (condition.Invoke(character) == false) continue;
 
-                return player;
+                return character;
             }
 
             return null;
         }
 
-        private void Broadcast_T(IMessage packet, int excludedPlayerID = -1)
+        private void Broadcast_T(IMessage packet, int excludedCharacterID = -1)
         {
-            foreach (Player player in PlayerDictionary.Values)
+            foreach (Character character in CharacterDictionary.Values)
             {
-                if (player.ID == excludedPlayerID) continue;
+                if (character.ID == excludedCharacterID) continue;
 
-                player.Session.Send(packet);
+                character.Session.Send(packet);
             }
         }
 
         private void Send_T(IMessage packet, int targetPlayerID)
         {
-            if (PlayerDictionary.TryGetValue(targetPlayerID, out GameObject gameObject) == false) return;
-            if (gameObject.ObjectType != EGameObjectType.Player) return;
+            if (CharacterDictionary.TryGetValue(targetPlayerID, out GameObject gameObject) == false) return;
+            if (gameObject.ObjectType != EGameObjectType.Character) return;
 
-            (gameObject as Player).Session.Send(packet);
+            (gameObject as Character).Session.Send(packet);
         }
 
         private void AddObject_T(GameObject gameObject)
@@ -159,29 +159,29 @@ namespace Server.Game
             ObjectManager.Instance.Remove(gameObject.ID);
         }
 
-        private void EnterRoom_T(Player newPlayer)
+        private void EnterRoom_T(Character newCharacter)
         {
-            if (ReferenceEquals(newPlayer, null) == true) return;
+            if (ReferenceEquals(newCharacter, null) == true) return;
 
-            DataManager.SendData(newPlayer);
+            DataManager.SendData(newCharacter);
 
-            PlayerDictionary.Add(newPlayer.ID, newPlayer);
-            newPlayer.Room = this;
+            CharacterDictionary.Add(newCharacter.ID, newCharacter);
+            newCharacter.Room = this;
 
-            Map.AddObject(newPlayer);
+            Map.AddObject(newCharacter);
 
             ObjectInfo newPlayerInfo = new()
             {
-                ObjectID = newPlayer.ID,
-                Name = newPlayer.Name,
-                CurState = newPlayer.CurState,
-                PosX = newPlayer.Position.X,
-                PosY = newPlayer.Position.Y,
-                MoveDirection = newPlayer.MoveDirection,
-                FacingDirection = newPlayer.FacingDirection,
+                ObjectID = newCharacter.ID,
+                Name = newCharacter.Name,
+                CurState = newCharacter.CurState,
+                PosX = newCharacter.Position.X,
+                PosY = newCharacter.Position.Y,
+                MoveDirection = newCharacter.MoveDirection,
+                FacingDirection = newCharacter.FacingDirection,
                 MoveSpeed = 5,
-                IsCollidable = newPlayer.IsCollidable,
-                ObjectStat = newPlayer.Stat
+                IsCollidable = newCharacter.IsCollidable,
+                ObjectStat = newCharacter.Stat
             };
 
             // Send the packets to the player who has just enterend the room
@@ -195,7 +195,7 @@ namespace Server.Game
             {
                 foreach (GameObject gameObject in dictionary.Values)
                 {
-                    if (newPlayer.ID == gameObject.ID) continue;
+                    if (newCharacter.ID == gameObject.ID) continue;
 
                     ObjectInfo otherObjectInfo = new()
                     {
@@ -215,7 +215,7 @@ namespace Server.Game
                 }
             }
 
-            Send(playerEnteredRoomResponse, newPlayer.ID);
+            Send(playerEnteredRoomResponse, newCharacter.ID);
 
             // Send the packets to the players who are in the room
             CharacterEnterGameRoomBroadcast playerEnteredRoomBroadcast = new()
@@ -223,26 +223,26 @@ namespace Server.Game
                 NewCharacter = newPlayerInfo
             };
 
-            Broadcast(playerEnteredRoomBroadcast, newPlayer.ID);
+            Broadcast(playerEnteredRoomBroadcast, newCharacter.ID);
         }
 
-        private void LeaveRoom_T(int leftPlayerID)
+        private void LeaveRoom_T(int leftCharacterID)
         {
-            if (PlayerDictionary.Remove(leftPlayerID, out GameObject leftPlayerObject) == false) return;
+            if (CharacterDictionary.Remove(leftCharacterID, out GameObject leftCharacterObject) == false) return;
 
-            Map.RemoveObject(leftPlayerObject);
-            leftPlayerObject.Room = null;
+            Map.RemoveObject(leftCharacterObject);
+            leftCharacterObject.Room = null;
 
             PlayerLeftRoomResponse playerLeftRoomResponsePacket = new();
 
-            Send(playerLeftRoomResponsePacket, leftPlayerObject.ID);
+            Send(playerLeftRoomResponsePacket, leftCharacterObject.ID);
 
             PlayerLeftRoomBroadcast playerLeftRoomBroadcastPacket = new()
             {
-                OtherPlayerID = leftPlayerObject.ID
+                OtherPlayerID = leftCharacterObject.ID
             };
 
-            Broadcast(playerLeftRoomBroadcastPacket, leftPlayerObject.ID);
+            Broadcast(playerLeftRoomBroadcastPacket, leftCharacterObject.ID);
         }
 
         private void PerformMove_T(int objectID, Pos curPos, EMoveDirection moveDirection)

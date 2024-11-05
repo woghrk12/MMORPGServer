@@ -87,13 +87,13 @@ namespace Google.Protobuf.Protocol {
             "X0JST0FEQ0FTVBAWKkYKDEVDbGllbnRTdGF0ZRIQCgxESVNDT05ORUNURUQQ",
             "ABINCglDT05ORUNURUQQARIJCgVMT0JCWRACEgoKBklOR0FNRRADKlQKCUVT",
             "dGF0VHlwZRIPCgtPQkpFQ1RfREFUQRAAEhAKDE1PTlNURVJfREFUQRABEg8K",
-            "C0FUVEFDS19EQVRBEAISEwoPUFJPSkVDVElMRV9EQVRBEAMqOgoPRUdhbWVP",
-            "YmplY3RUeXBlEgoKBlBMQVlFUhAAEgsKB01PTlNURVIQARIOCgpQUk9KRUNU",
-            "SUxFEAIqOAoMRU9iamVjdFN0YXRlEggKBElETEUQABIICgRNT1ZFEAESCgoG",
-            "QVRUQUNLEAISCAoEREVBRBADKkEKDkVNb3ZlRGlyZWN0aW9uEggKBE5PTkUQ",
-            "ABIGCgJVUBABEggKBERPV04QAhIICgRMRUZUEAQSCQoFUklHSFQQCCojCgtF",
-            "QXR0YWNrVHlwZRIJCgVNRUxFRRAAEgkKBVJBTkdFEAFCG6oCGEdvb2dsZS5Q",
-            "cm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
+            "C0FUVEFDS19EQVRBEAISEwoPUFJPSkVDVElMRV9EQVRBEAMqPQoPRUdhbWVP",
+            "YmplY3RUeXBlEg0KCUNIQVJBQ1RFUhAAEgsKB01PTlNURVIQARIOCgpQUk9K",
+            "RUNUSUxFEAIqOAoMRU9iamVjdFN0YXRlEggKBElETEUQABIICgRNT1ZFEAES",
+            "CgoGQVRUQUNLEAISCAoEREVBRBADKkEKDkVNb3ZlRGlyZWN0aW9uEggKBE5P",
+            "TkUQABIGCgJVUBABEggKBERPV04QAhIICgRMRUZUEAQSCQoFUklHSFQQCCoj",
+            "CgtFQXR0YWNrVHlwZRIJCgVNRUxFRRAAEgkKBVJBTkdFEAFCG6oCGEdvb2ds",
+            "ZS5Qcm90b2J1Zi5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.EMessageID), typeof(global::Google.Protobuf.Protocol.EClientState), typeof(global::Google.Protobuf.Protocol.EStatType), typeof(global::Google.Protobuf.Protocol.EGameObjectType), typeof(global::Google.Protobuf.Protocol.EObjectState), typeof(global::Google.Protobuf.Protocol.EMoveDirection), typeof(global::Google.Protobuf.Protocol.EAttackType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -170,7 +170,7 @@ namespace Google.Protobuf.Protocol {
   }
 
   public enum EGameObjectType {
-    [pbr::OriginalName("PLAYER")] Player = 0,
+    [pbr::OriginalName("CHARACTER")] Character = 0,
     [pbr::OriginalName("MONSTER")] Monster = 1,
     [pbr::OriginalName("PROJECTILE")] Projectile = 2,
   }
@@ -796,6 +796,7 @@ namespace Google.Protobuf.Protocol {
   /// Result Code
   /// 0 : Success
   /// 1 : Create a new account because no account is found for the given ID
+  /// 2 : Database error
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class LoginResponse : pb::IMessage<LoginResponse>
@@ -1224,6 +1225,7 @@ namespace Google.Protobuf.Protocol {
   /// 0 : Success
   /// 1 : The name already exists
   /// 2 : Receive information not present in the data sheet
+  /// 3 : Database error
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CreateCharacterResponse : pb::IMessage<CreateCharacterResponse>

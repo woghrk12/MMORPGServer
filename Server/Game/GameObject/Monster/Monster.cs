@@ -18,7 +18,7 @@ namespace Server.Game
 
         public int DetectionRange { private set; get; }
         public int ChaseRange { private set; get; }
-        public Player Target { set; get; }
+        public Character Target { set; get; }
 
         #endregion Properties
 
@@ -60,7 +60,7 @@ namespace Server.Game
             GameRoom room = this.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            Player target = room.FindPlayer(p =>
+            Character target = room.FindCharacter(p =>
             {
                 return Utility.CalculateDistance(p.Position, Position) <= DetectionRange;
             });

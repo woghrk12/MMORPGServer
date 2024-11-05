@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Google.Protobuf.Protocol;
 
 namespace Server.Game.MonsterState
@@ -47,7 +48,7 @@ namespace Server.Game.MonsterState
 
             if (isChasing)
             {
-                Player target = controller.Target;
+                Character target = controller.Target;
                 if (ReferenceEquals(target, null) == true)
                 {
                     controller.Target = null;
@@ -81,7 +82,7 @@ namespace Server.Game.MonsterState
             }
             else
             {
-                Player target = controller.Target;
+                Character target = controller.Target;
 
                 if (ReferenceEquals(target, null) == false)
                 {

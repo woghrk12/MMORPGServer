@@ -133,7 +133,7 @@ namespace Server
             SessionManager.Instance.Remove(this);
 
             GameRoom room = RoomManager.Instance.Find(1);
-            room.Push(room.LeaveRoom, Player.ID);
+            room.Push(room.LeaveRoom, Character.ID);
         }
 
         private int OnReceive(ArraySegment<byte> buffer)

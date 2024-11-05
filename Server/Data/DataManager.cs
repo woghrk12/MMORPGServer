@@ -30,7 +30,7 @@ namespace Server
             ProjectileStatDictionary = LoadJson<Data.ProjectileStatData, int, Data.ProjectileStat>("ProjectileStatData").MakeDictionary();
         }
 
-        public static void SendData(Player player)
+        public static void SendData(Character character)
         {
             List<Data.ObjectStat> objectStatList = [.. ObjectStatDictionary.Values];
 
@@ -40,8 +40,8 @@ namespace Server
                 Data = JsonConvert.SerializeObject(objectStatList)
             };
 
-            Console.WriteLine($"Send ObjectStatData to {player.ID} player. Data Type : {EStatType.ObjectData}. Data Count : {objectStatList.Count}");
-            player.Session.Send(objectStatPacket);
+            Console.WriteLine($"Send ObjectStatData to {character.ID} player. Data Type : {EStatType.ObjectData}. Data Count : {objectStatList.Count}");
+            character.Session.Send(objectStatPacket);
 
             List<Data.MonsterStat> monsterStatList = [.. MonsterStatDictionary.Values];
 
@@ -51,8 +51,8 @@ namespace Server
                 Data = JsonConvert.SerializeObject(monsterStatList)
             };
 
-            Console.WriteLine($"Send ObjectStatData to {player.ID} player. Data Type : {EStatType.MonsterData}. Data Count : {monsterStatList.Count}");
-            player.Session.Send(monsterStatPacket);
+            Console.WriteLine($"Send ObjectStatData to {character.ID} player. Data Type : {EStatType.MonsterData}. Data Count : {monsterStatList.Count}");
+            character.Session.Send(monsterStatPacket);
 
             List<Data.AttackStat> attackStatList = [.. AttacklStatDictionary.Values];
 
@@ -62,8 +62,8 @@ namespace Server
                 Data = JsonConvert.SerializeObject(attackStatList)
             };
 
-            Console.WriteLine($"Send ObjectStatData to {player.ID} player. Data Type : {EStatType.AttackData}. Data Count : {attackStatList.Count}");
-            player.Session.Send(attackStatPacket);
+            Console.WriteLine($"Send ObjectStatData to {character.ID} player. Data Type : {EStatType.AttackData}. Data Count : {attackStatList.Count}");
+            character.Session.Send(attackStatPacket);
 
             List<Data.ProjectileStat> projectileStatList = [.. ProjectileStatDictionary.Values];
 
@@ -73,8 +73,8 @@ namespace Server
                 Data = JsonConvert.SerializeObject(projectileStatList)
             };
 
-            Console.WriteLine($"Send ObjectStatData to {player.ID} player. Data Type : {EStatType.ProjectileData}. Data Count : {projectileStatList.Count}");
-            player.Session.Send(projectileStatPacket);
+            Console.WriteLine($"Send ObjectStatData to {character.ID} player. Data Type : {EStatType.ProjectileData}. Data Count : {projectileStatList.Count}");
+            character.Session.Send(projectileStatPacket);
         }
 
         private static Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

@@ -57,6 +57,7 @@ message LoginRequest
 // Result Code
 // 0 : Success
 // 1 : Create a new account because no account is found for the given ID
+// 2 : Database error
 message LoginResponse
 {
     int32 resultCode = 1;
@@ -72,6 +73,7 @@ message CreateCharacterRequest
 // 0 : Success
 // 1 : The name already exists
 // 2 : Receive information not present in the data sheet
+// 3 : Database error
 message CreateCharacterResponse
 {
     int32 resultCode = 1;
@@ -115,7 +117,7 @@ message StatDataBroadcast
 
 enum EGameObjectType
 {
-    PLAYER = 0;
+    CHARACTER = 0;
     MONSTER = 1;
     PROJECTILE = 2;
 }

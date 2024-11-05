@@ -144,9 +144,9 @@ namespace Server.Game
                 ObjectID = ID
             };
 
-            foreach (Player player in Room.PlayerDictionary.Values)
+            foreach (Character character in Room.CharacterDictionary.Values)
             {
-                player.Session.Send(packet);
+                character.Session.Send(packet);
             }
 
             updated -= CheckAttackPostDelay;

@@ -12,7 +12,7 @@ namespace Server
 
         public EClientState ClientState { private set; get; } = EClientState.Disconnected;
 
-        public Player Player { private set; get; }
+        public Character Character { private set; get; }
 
         #endregion Properties
 

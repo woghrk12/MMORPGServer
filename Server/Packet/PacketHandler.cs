@@ -39,13 +39,13 @@ namespace Server
 
             Console.WriteLine($"PerformMoveRequest. Session ID : {session.SessionID} Cur Pos : ({packet.CurPosX}, {packet.CurPosY}) Target Pos : ({packet.TargetPosX}, {packet.TargetPosY}) Move Direction : {packet.MoveDirection}");
 
-            Player player = session.Player;
-            if (ReferenceEquals(player, null) == true) return;
+            Character character = session.Character;
+            if (ReferenceEquals(character, null) == true) return;
 
-            GameRoom room = player.Room;
+            GameRoom room = character.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.PerformMove(player.ID, new Pos(packet.CurPosX, packet.CurPosY), packet.MoveDirection);
+            room.PerformMove(character.ID, new Pos(packet.CurPosX, packet.CurPosY), packet.MoveDirection);
         }
 
         public static void HandlePerformAttackRequest(ClientSession session, IMessage message)
@@ -54,13 +54,13 @@ namespace Server
 
             Console.WriteLine($"PerformAttackRequest. Session ID : {session.SessionID} Attack ID : {packet.AttackID}");
 
-            Player player = session.Player;
-            if (ReferenceEquals(player, null) == true) return;
+            Character character = session.Character;
+            if (ReferenceEquals(character, null) == true) return;
 
-            GameRoom room = player.Room;
+            GameRoom room = character.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.PerformAttack(player.ID, packet.AttackID);
+            room.PerformAttack(character.ID, packet.AttackID);
         }
 
         public static void HandleObjectReviveRequest(ClientSession session, IMessage message)
@@ -69,10 +69,10 @@ namespace Server
 
             Console.WriteLine($"ObjectReviveRequest. Session ID : {session.SessionID}, Object ID : {packet.ObjectID}");
 
-            Player player = session.Player;
-            if (ReferenceEquals(player, null) == true) return;
+            Character character = session.Character;
+            if (ReferenceEquals(character, null) == true) return;
 
-            GameRoom room = player.Room;
+            GameRoom room = character.Room;
             if (ReferenceEquals(room, null) == true) return;
 
             room.ReviveObject(packet.ObjectID, new Pos(0, 0));

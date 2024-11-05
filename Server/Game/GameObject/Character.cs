@@ -2,7 +2,7 @@ using Google.Protobuf.Protocol;
 
 namespace Server.Game
 {
-    public class Player : GameObject
+    public class Character : GameObject
     {
         #region Properties
 
@@ -12,9 +12,9 @@ namespace Server.Game
 
         #region Constructor
 
-        public Player()
+        public Character()
         {
-            ObjectType = EGameObjectType.Player;
+            ObjectType = EGameObjectType.Character;
             IsCollidable = true;
         }
 
