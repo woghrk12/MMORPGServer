@@ -1,4 +1,5 @@
 using Google.Protobuf.Protocol;
+using Server.Data;
 
 namespace Server.Game
 {
@@ -11,7 +12,8 @@ namespace Server.Game
 
         private EMoveDirection moveDirection = EMoveDirection.None;
 
-        private ObjectStat stat = new();
+        private CreatureStat stat = new();
+        private event Action<int> levelModified = null;
         private event Action<int> curHpModified = null;
         private event Action<int> maxHpModified = null;
         private event Action<int> attackPowerModified = null;
@@ -52,8 +54,6 @@ namespace Server.Game
             get => ReferenceEquals(curState, null) == false ? curState.StateID : ECreatureState.Idle;
         }
 
-        public int MoveSpeed { set; get; } = 5;
-
         public EMoveDirection MoveDirection
         {
             set
@@ -71,6 +71,20 @@ namespace Server.Game
         }
 
         public EMoveDirection FacingDirection { set; get; } = EMoveDirection.Right;
+
+        public int MoveSpeed { set; get; } = 5;
+
+        public int Level
+        {
+            set
+            {
+                stat.Level = Math.Max(value, 1);
+                levelModified?.Invoke(stat.Level);
+            }
+            get => stat.Level;
+        }
+
+        public event Action<int> LevelModified { add { levelModified += value; } remove { levelModified -= value; } }
 
         public int CurHp
         {
@@ -107,6 +121,8 @@ namespace Server.Game
         }
 
         public event Action<int> AttackPowerModified { add { attackPowerModified += value; } remove { attackPowerModified -= value; } }
+
+        public AttackStat AttackStat { set; get; } = null;
 
         #endregion Properties
 

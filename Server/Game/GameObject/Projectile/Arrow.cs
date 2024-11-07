@@ -28,7 +28,8 @@ namespace Server.Game
 
             nextMoveTicks = Environment.TickCount64 + (long)(1000f / MoveSpeed);
 
-            Pos destPos = GetFrontPos();
+            Pos destPos = Utility.GetFrontPos(Position, MoveDirection);
+
             if (Room.Map.CheckCanMove(destPos) == true)
             {
                 PerformMoveBroadcast packet = new()
@@ -46,15 +47,17 @@ namespace Server.Game
             {
                 if (Room.Map.Find(destPos, out List<GameObject> objectList) == true)
                 {
-                    List<GameObject> damagableList = objectList.FindAll((obj) => obj.ObjectType != EGameObjectType.Projectile);
-
-                    foreach (GameObject damagable in damagableList)
+                    foreach (GameObject obj in objectList)
                     {
-                        if (damagable.ID == Owner.ID) continue;
+                        if (obj.ID == Owner.ID) continue;
+
+                        Creature damagable = obj as Creature;
+
+                        if (ReferenceEquals(damagable, null) == true) continue;
                         if (damagable.CurState == ECreatureState.Dead) continue;
 
                         // TODO : The attack coefficient needs to be adjusted based on the attacker's level
-                        damagable.OnDamaged(Owner, Owner.Stat.AttackPower * AttackStat.CoeffDictionary[1]);
+                        damagable.OnDamaged(Owner, Owner.AttackPower * AttackStat.CoeffDictionary[1]);
                     }
                 }
 

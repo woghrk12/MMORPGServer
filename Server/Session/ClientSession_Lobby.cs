@@ -158,9 +158,9 @@ namespace Server
                 Character.Session = this;
 
                 Character.Name = characterDB.Name;
-                Character.Stat.MaxHP = characterDB.MaxHp;
-                Character.Stat.CurHP = characterDB.CurHp;
-                Character.Stat.AttackPower = characterDB.AttackPower;
+                Character.MaxHp = characterDB.MaxHp;
+                Character.CurHp = characterDB.CurHp;
+                Character.AttackPower = characterDB.AttackPower;
                 Character.MoveSpeed = characterDB.Speed;
                 Character.Position = new Pos(characterDB.CurPosX, characterDB.CurPosY);
                 Character.FacingDirection = characterDB.FacingDirection;

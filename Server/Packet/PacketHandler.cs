@@ -75,7 +75,7 @@ namespace Server
             GameRoom room = character.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.ReviveObject(packet.ObjectID, new Pos(0, 0));
+            room.ReviveCreature(packet.ObjectID, new Pos(0, 0));
         }
     }
 }

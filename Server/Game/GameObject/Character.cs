@@ -2,7 +2,7 @@ using Google.Protobuf.Protocol;
 
 namespace Server.Game
 {
-    public class Character : GameObject
+    public class Character : Creature
     {
         #region Properties
 

@@ -3,7 +3,7 @@ using Server.Game.MonsterState;
 
 namespace Server.Game
 {
-    public class Monster : GameObject
+    public class Monster : Creature
     {
         #region Variables
 
@@ -37,8 +37,8 @@ namespace Server.Game
             if (DataManager.MonsterStatDictionary.TryGetValue(1, out Data.MonsterStat statData) == false) return;
 
             // TODO : The stat needs to be adjusted based on the monster's level
-            Stat.CurHP = Stat.MaxHP = statData.MaxHpDictionary[1];
-            Stat.AttackPower = statData.AttackPowerDictionary[1];
+            CurHp = MaxHp = statData.MaxHpDictionary[1];
+            AttackPower = statData.AttackPowerDictionary[1];
             PatrolRange = statData.PatrolRange;
             DetectionRange = statData.DetectionRange;
             ChaseRange = statData.ChaseRange;
@@ -57,7 +57,7 @@ namespace Server.Game
             if (nextDetectionTicks > Environment.TickCount64) return;
             nextDetectionTicks = Environment.TickCount64 + 1000;
 
-            GameRoom room = this.Room;
+            GameRoom room = Room;
             if (ReferenceEquals(room, null) == true) return;
 
             Character target = room.FindCharacter(p =>

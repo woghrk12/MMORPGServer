@@ -6,28 +6,29 @@ option csharp_namespace = "Google.Protobuf.Protocol";
 enum EMessageID
 {
     CONNECTED_RESPONSE = 0;
-    LOGIN_REQUEST = 1;
-    LOGIN_RESPONSE =2;
-    CREATE_CHARACTER_REQUEST = 3;
-    CREATE_CHARACTER_RESPONSE = 4;
-    CHARACTER_ENTER_GAME_ROOM_REQUEST = 5;
-    CHARACTER_ENTER_GAME_ROOM_RESPONSE = 6;
-    CHARACTER_ENTER_GAME_ROOM_BROADCAST = 7;
-    STAT_DATA_BROADCAST = 8;
-    PLAYER_LEFT_ROOM_RESPONSE = 9;
-    PLAYER_LEFT_ROOM_BROADCAST = 10;
-    OBJECT_SPAWNED_BROADCAST = 11;
-    OBJECT_DESPAWNED_BROADCAST = 12;
-    UPDATE_OBJECT_STATE_BROADCAST = 13;
-    PERFORM_MOVE_REQUEST = 14;
-    PERFORM_MOVE_BROADCAST = 15;
-    PERFORM_ATTACK_REQUEST = 16;
-    PERFORM_ATTACK_BROADCAST = 17;
-    ATTACK_COMPLETE_BROADCAST = 18;
-    HIT_BROADCAST = 19;
-    OBJECT_DEAD_BROADCAST = 20;
-    OBJECT_REVIVE_REQUEST = 21;
-    OBJECT_REVIVE_BROADCAST = 22;
+    STAT_DATA_BROADCAST = 1;
+    LOGIN_REQUEST = 2;
+    LOGIN_RESPONSE = 3;
+    CREATE_CHARACTER_REQUEST = 4;
+    CREATE_CHARACTER_RESPONSE = 5;
+    CHARACTER_ENTER_GAME_ROOM_REQUEST = 6;
+    CHARACTER_ENTER_GAME_ROOM_RESPONSE = 7;
+    CHARACTER_ENTER_GAME_ROOM_BROADCAST = 8;
+    CHARACTER_LEFT_GAME_ROOM_REQUEST = 9;
+    CHARACTER_LEFT_GAME_ROOM_RESPONSE = 10;
+    CHARACTER_LEFT_GAME_ROOM_BROADCAST = 11;
+    OBJECT_SPAWNED_BROADCAST = 12;
+    OBJECT_DESPAWNED_BROADCAST = 13;
+    UPDATE_OBJECT_STATE_BROADCAST = 14;
+    PERFORM_MOVE_REQUEST = 15;
+    PERFORM_MOVE_BROADCAST = 16;
+    PERFORM_ATTACK_REQUEST = 17;
+    PERFORM_ATTACK_BROADCAST = 18;
+    ATTACK_COMPLETE_BROADCAST = 19;
+    HIT_BROADCAST = 20;
+    OBJECT_DEAD_BROADCAST = 21;
+    OBJECT_REVIVE_REQUEST = 22;
+    OBJECT_REVIVE_BROADCAST = 23;
 }
 
 enum EClientState
@@ -38,15 +39,90 @@ enum EClientState
     INGAME = 3;
 }
 
-message ConnectedResponse
+enum EStatType
 {
+    OBJECT_DATA = 0;
+    MONSTER_DATA = 1;
+    ATTACK_DATA = 2;
+    PROJECTILE_DATA = 3;
+}
 
+enum EGameObjectType
+{
+    CHARACTER = 0;
+    MONSTER = 1;
+    PROJECTILE = 2;
+}
+
+enum ECreatureState
+{
+    IDLE = 0;
+    MOVE = 1;
+    ATTACK = 2;
+    DEAD = 3;
+}
+
+enum EMoveDirection
+{
+    NONE = 0;
+    UP = 1;
+    DOWN = 2;
+    LEFT = 4;
+    RIGHT = 8;
 }
 
 message LobbyCharacterInfo
 {
     string name = 1;
     int32 level = 2;
+}
+
+message CreatureStat
+{
+    int32 level = 1;
+    int32 maxHP = 2;
+    int32 curHP = 3;
+    int32 attackPower = 4;
+}
+
+message CreatureInfo
+{
+    ECreatureState curState = 1;
+    EMoveDirection moveDirection = 2;
+    EMoveDirection facingDirection = 3;
+    int32 moveSpeed = 4;
+    CreatureStat stat = 5;
+}
+
+message ProjectileInfo
+{
+    EMoveDirection moveDirection = 1;
+    int32 moveSpeed = 2;
+}
+
+message ObjectInfo
+{
+    int32 objectID = 1;
+    string name = 2;
+    int32 posX = 3;
+    int32 posY = 4;
+    bool isCollidable = 5;
+    oneof objectType
+    {
+        CreatureInfo creatureInfo = 6;
+        ProjectileInfo projectileInfo = 7;
+    }
+}
+
+message ConnectedResponse
+{
+
+}
+
+message StatDataBroadcast
+{
+    EStatType dataType = 1;
+    string data = 2;
 }
 
 message LoginRequest
@@ -101,66 +177,19 @@ message CharacterEnterGameRoomBroadcast
     ObjectInfo newCharacter = 1;
 }
 
-enum EStatType
-{
-    OBJECT_DATA = 0;
-    MONSTER_DATA = 1;
-    ATTACK_DATA = 2;
-    PROJECTILE_DATA = 3;
-}
-
-message StatDataBroadcast
-{
-    EStatType dataType = 1;
-    string data = 2;
-}
-
-enum EGameObjectType
-{
-    CHARACTER = 0;
-    MONSTER = 1;
-    PROJECTILE = 2;
-}
-
-enum ECreatureState
-{
-    IDLE = 0;
-    MOVE = 1;
-    ATTACK = 2;
-    DEAD = 3;
-}
-
-enum EMoveDirection
-{
-    NONE = 0;
-    UP = 1;
-    DOWN = 2;
-    LEFT = 4;
-    RIGHT = 8;
-}
-
-message ObjectInfo
-{
-    int32 objectID = 1;
-    string name = 2;
-    ECreatureState curState = 3;
-    int32 posX = 4;
-    int32 posY = 5;
-    EMoveDirection moveDirection = 6;
-    EMoveDirection facingDirection = 7;
-    int32 moveSpeed = 8;
-    bool isCollidable = 9;
-    ObjectStat objectStat = 10;
-}
-
-message PlayerLeftRoomResponse
+message CharacterLeftGameRoomRequest
 {
 
 }
 
-message PlayerLeftRoomBroadcast
+message CharacterLeftGameRoomResponse
 {
-    int32 otherPlayerID = 1;
+
+}
+
+message CharacterLeftGameRoomBroadcast
+{
+    int32 leftCharacterID = 1;
 }
 
 message ObjectSpawnedBroadcast
@@ -216,13 +245,6 @@ message PerformAttackBroadcast
 message AttackCompleteBroadcast
 {
     int32 objectID = 1;
-}
-
-message ObjectStat
-{
-    int32 maxHP = 1;
-    int32 curHP = 2;
-    int32 attackPower = 3;
 }
 
 message HitBroadcast

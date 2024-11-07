@@ -5,21 +5,15 @@ namespace Server.Game
 {
     public class GameRoom : TaskQueue
     {
-        #region Variables
-
-        private Dictionary<EGameObjectType, Dictionary<int, GameObject>> objectDictionary = new();
-
-        #endregion Variables
-
         #region Properties
 
         public int RoomID { set; get; }
 
         public Map Map { private set; get; } = new();
 
-        public Dictionary<int, GameObject> CharacterDictionary => objectDictionary[EGameObjectType.Character];
-        public Dictionary<int, GameObject> MonsterDictionary => objectDictionary[EGameObjectType.Monster];
-        public Dictionary<int, GameObject> ProjectileDictionary => objectDictionary[EGameObjectType.Projectile];
+        public Dictionary<int, Character> CharacterDictionary { private set; get; } = new();
+        public Dictionary<int, Monster> MonsterDictionary { private set; get; } = new();
+        public Dictionary<int, Projectile> ProjectileDictionary { private set; get; } = new();
 
         #endregion Properties
 
@@ -28,12 +22,6 @@ namespace Server.Game
         public GameRoom(int mapID)
         {
             Map.LoadMap(mapID);
-
-            Array types = Enum.GetValues(typeof(EGameObjectType));
-            foreach (EGameObjectType type in types)
-            {
-                objectDictionary.Add(type, new Dictionary<int, GameObject>());
-            }
 
             // Temp
             Monster monster = ObjectManager.Instance.Add<Monster>();
@@ -49,12 +37,19 @@ namespace Server.Game
 
         public void Update()
         {
-            foreach (Dictionary<int, GameObject> dictionary in objectDictionary.Values)
+            foreach (Character character in CharacterDictionary.Values)
             {
-                foreach (GameObject gameObject in dictionary.Values)
-                {
-                    gameObject.OnUpdate();
-                }
+                character.OnUpdate();
+            }
+
+            foreach (Monster monster in MonsterDictionary.Values)
+            {
+                monster.OnUpdate();
+            }
+
+            foreach (Projectile projectile in ProjectileDictionary.Values)
+            {
+                projectile.OnUpdate();
             }
 
             Flush();
@@ -64,19 +59,19 @@ namespace Server.Game
 
         public void Send(IMessage packet, int targetPlayerID) => Push(Send_T, packet, targetPlayerID);
 
-        public void AddObject(GameObject gameObject) => Push(AddObject_T, gameObject);
-
-        public void RemoveObject(int oldObjectID) => Push(RemoveObject_T, oldObjectID);
-
         public void EnterRoom(Character newCharacter) => Push(EnterRoom_T, newCharacter);
 
         public void LeaveRoom(int leftPlayerID) => Push(LeaveRoom_T, leftPlayerID);
 
+        public void AddObject(GameObject gameObject) => Push(AddObject_T, gameObject);
+
+        public void RemoveObject(int oldObjectID) => Push(RemoveObject_T, oldObjectID);
+
         public void PerformMove(int objectID, Pos curPos, EMoveDirection moveDirection) => Push(PerformMove_T, objectID, curPos, moveDirection);
 
-        public void PerformAttack(int objectID, int attackID) => Push(PerformAttack_T, objectID, attackID);
+        public void PerformAttack(int creatureID, int attackID) => Push(PerformAttack_T, creatureID, attackID);
 
-        public void ReviveObject(int objectID, Pos revivePos) => Push(ReviveObject_T, objectID, revivePos);
+        public void ReviveCreature(int creatureID, Pos revivePos) => Push(ReviveCreature_T, creatureID, revivePos);
 
         public Character FindCharacter(Func<GameObject, bool> condition)
         {
@@ -100,63 +95,11 @@ namespace Server.Game
             }
         }
 
-        private void Send_T(IMessage packet, int targetPlayerID)
+        private void Send_T(IMessage packet, int targetCharacterID)
         {
-            if (CharacterDictionary.TryGetValue(targetPlayerID, out GameObject gameObject) == false) return;
-            if (gameObject.ObjectType != EGameObjectType.Character) return;
+            if (CharacterDictionary.TryGetValue(targetCharacterID, out Character character) == false) return;
 
-            (gameObject as Character).Session.Send(packet);
-        }
-
-        private void AddObject_T(GameObject gameObject)
-        {
-            if (ReferenceEquals(gameObject, null) == true) return;
-
-            objectDictionary[gameObject.ObjectType].Add(gameObject.ID, gameObject);
-            gameObject.Room = this;
-
-            Map.AddObject(gameObject);
-
-            ObjectInfo newObjectInfo = new()
-            {
-                ObjectID = gameObject.ID,
-                Name = gameObject.Name,
-                CurState = gameObject.CurState,
-                PosX = gameObject.Position.X,
-                PosY = gameObject.Position.Y,
-                FacingDirection = gameObject.FacingDirection,
-                MoveSpeed = gameObject.MoveSpeed,
-                IsCollidable = gameObject.IsCollidable,
-                ObjectStat = gameObject.Stat
-            };
-
-            ObjectSpawnedBroadcast packet = new()
-            {
-                NewObjectInfo = newObjectInfo
-            };
-
-            Broadcast(packet);
-        }
-
-        private void RemoveObject_T(int oldObjectID)
-        {
-            EGameObjectType type = ObjectManager.GetObjectTypeByID(oldObjectID);
-
-            if (objectDictionary.TryGetValue(type, out Dictionary<int, GameObject> dictionary) == false) return;
-            if (dictionary.TryGetValue(oldObjectID, out GameObject gameObject) == false) return;
-
-            Map.RemoveObject(gameObject);
-            gameObject.Room = null;
-
-            ObjectDespawnedBroadcast packet = new()
-            {
-                OldObjectID = oldObjectID
-            };
-
-            Broadcast(packet);
-
-            dictionary.Remove(gameObject.ID);
-            ObjectManager.Instance.Remove(gameObject.ID);
+            character.Session.Send(packet);
         }
 
         private void EnterRoom_T(Character newCharacter)
@@ -170,97 +113,313 @@ namespace Server.Game
 
             Map.AddObject(newCharacter);
 
-            ObjectInfo newPlayerInfo = new()
+            ObjectInfo newCharacterInfo = new()
             {
                 ObjectID = newCharacter.ID,
                 Name = newCharacter.Name,
-                CurState = newCharacter.CurState,
                 PosX = newCharacter.Position.X,
                 PosY = newCharacter.Position.Y,
-                MoveDirection = newCharacter.MoveDirection,
-                FacingDirection = newCharacter.FacingDirection,
-                MoveSpeed = 5,
                 IsCollidable = newCharacter.IsCollidable,
-                ObjectStat = newCharacter.Stat
+                CreatureInfo = new CreatureInfo()
+                {
+                    CurState = newCharacter.CurState,
+                    MoveDirection = newCharacter.MoveDirection,
+                    FacingDirection = newCharacter.FacingDirection,
+                    MoveSpeed = newCharacter.MoveSpeed,
+                    Stat = new CreatureStat()
+                    {
+                        MaxHP = newCharacter.MaxHp,
+                        CurHP = newCharacter.CurHp,
+                        AttackPower = newCharacter.AttackPower
+                    }
+                }
             };
 
             // Send the packets to the player who has just enterend the room
-            CharacterEnterGameRoomResponse playerEnteredRoomResponse = new()
+            CharacterEnterGameRoomResponse characterEnteredRoomResponsePacket = new()
             {
                 ResultCode = 0,
-                NewCharacter = newPlayerInfo
+                NewCharacter = newCharacterInfo
             };
 
-            foreach (Dictionary<int, GameObject> dictionary in objectDictionary.Values)
+            foreach (Character character in CharacterDictionary.Values)
             {
-                foreach (GameObject gameObject in dictionary.Values)
+                if (newCharacter.ID == character.ID) continue;
+
+                ObjectInfo characterInfo = new()
                 {
-                    if (newCharacter.ID == gameObject.ID) continue;
-
-                    ObjectInfo otherObjectInfo = new()
+                    ObjectID = character.ID,
+                    Name = character.Name,
+                    PosX = character.Position.X,
+                    PosY = character.Position.Y,
+                    IsCollidable = character.IsCollidable,
+                    CreatureInfo = new CreatureInfo()
                     {
-                        ObjectID = gameObject.ID,
-                        Name = gameObject.Name,
-                        CurState = gameObject.CurState,
-                        PosX = gameObject.Position.X,
-                        PosY = gameObject.Position.Y,
-                        MoveDirection = gameObject.MoveDirection,
-                        FacingDirection = gameObject.FacingDirection,
-                        MoveSpeed = gameObject.MoveSpeed,
-                        IsCollidable = gameObject.IsCollidable,
-                        ObjectStat = gameObject.Stat
-                    };
+                        CurState = character.CurState,
+                        MoveDirection = character.MoveDirection,
+                        FacingDirection = character.FacingDirection,
+                        MoveSpeed = character.MoveSpeed,
+                        Stat = new CreatureStat()
+                        {
+                            MaxHP = character.MaxHp,
+                            CurHP = character.CurHp,
+                            AttackPower = character.AttackPower
+                        }
+                    }
+                };
 
-                    playerEnteredRoomResponse.OtherObjects.Add(otherObjectInfo);
-                }
+                characterEnteredRoomResponsePacket.OtherObjects.Add(characterInfo);
             }
 
-            Send(playerEnteredRoomResponse, newCharacter.ID);
+            foreach (Monster monster in MonsterDictionary.Values)
+            {
+                ObjectInfo monsterInfo = new()
+                {
+                    ObjectID = monster.ID,
+                    Name = monster.Name,
+                    PosX = monster.Position.X,
+                    PosY = monster.Position.Y,
+                    IsCollidable = monster.IsCollidable,
+                    CreatureInfo = new CreatureInfo()
+                    {
+                        CurState = monster.CurState,
+                        MoveDirection = monster.MoveDirection,
+                        FacingDirection = monster.FacingDirection,
+                        MoveSpeed = monster.MoveSpeed,
+                        Stat = new CreatureStat()
+                        {
+                            MaxHP = monster.MaxHp,
+                            CurHP = monster.CurHp,
+                            AttackPower = monster.AttackPower
+                        }
+                    }
+                };
+
+                characterEnteredRoomResponsePacket.OtherObjects.Add(monsterInfo);
+            }
+
+            foreach (Projectile projectile in ProjectileDictionary.Values)
+            {
+                ObjectInfo projectileInfo = new()
+                {
+                    ObjectID = projectile.ID,
+                    Name = projectile.Name,
+                    PosX = projectile.Position.X,
+                    PosY = projectile.Position.Y,
+                    IsCollidable = projectile.IsCollidable,
+                    ProjectileInfo = new ProjectileInfo()
+                    {
+                        MoveDirection = projectile.MoveDirection,
+                        MoveSpeed = projectile.MoveSpeed
+                    }
+                };
+
+                characterEnteredRoomResponsePacket.OtherObjects.Add(projectileInfo);
+            }
+
+            Send(characterEnteredRoomResponsePacket, newCharacter.ID);
 
             // Send the packets to the players who are in the room
-            CharacterEnterGameRoomBroadcast playerEnteredRoomBroadcast = new()
+            CharacterEnterGameRoomBroadcast characterEnteredRoomBroadcast = new()
             {
-                NewCharacter = newPlayerInfo
+                NewCharacter = newCharacterInfo
             };
 
-            Broadcast(playerEnteredRoomBroadcast, newCharacter.ID);
+            Broadcast(characterEnteredRoomBroadcast, newCharacter.ID);
         }
 
         private void LeaveRoom_T(int leftCharacterID)
         {
-            if (CharacterDictionary.Remove(leftCharacterID, out GameObject leftCharacterObject) == false) return;
+            if (CharacterDictionary.Remove(leftCharacterID, out Character leftCharacter) == false) return;
 
-            Map.RemoveObject(leftCharacterObject);
-            leftCharacterObject.Room = null;
+            Map.RemoveObject(leftCharacter);
+            leftCharacter.Room = null;
 
-            PlayerLeftRoomResponse playerLeftRoomResponsePacket = new();
+            Send(new CharacterLeftGameRoomResponse(), leftCharacterID);
+            Broadcast(new CharacterLeftGameRoomBroadcast() { LeftCharacterID = leftCharacterID }, leftCharacterID);
+        }
 
-            Send(playerLeftRoomResponsePacket, leftCharacterObject.ID);
+        private void AddObject_T(GameObject gameObject)
+        {
+            if (ReferenceEquals(gameObject, null) == true) return;
 
-            PlayerLeftRoomBroadcast playerLeftRoomBroadcastPacket = new()
+            gameObject.Room = this;
+            Map.AddObject(gameObject);
+
+            ObjectSpawnedBroadcast packet = new();
+
+            switch (gameObject.ObjectType)
             {
-                OtherPlayerID = leftCharacterObject.ID
-            };
+                case EGameObjectType.Character:
+                    Character newCharacter = gameObject as Character;
 
-            Broadcast(playerLeftRoomBroadcastPacket, leftCharacterObject.ID);
+                    CharacterDictionary.Add(newCharacter.ID, newCharacter);
+
+                    ObjectInfo newCharacterInfo = new()
+                    {
+                        ObjectID = newCharacter.ID,
+                        Name = newCharacter.Name,
+                        PosX = newCharacter.Position.X,
+                        PosY = newCharacter.Position.Y,
+                        IsCollidable = newCharacter.IsCollidable,
+                        CreatureInfo = new CreatureInfo()
+                        {
+                            CurState = newCharacter.CurState,
+                            MoveDirection = newCharacter.MoveDirection,
+                            FacingDirection = newCharacter.FacingDirection,
+                            MoveSpeed = newCharacter.MoveSpeed,
+                            Stat = new CreatureStat()
+                            {
+                                MaxHP = newCharacter.MaxHp,
+                                CurHP = newCharacter.CurHp,
+                                AttackPower = newCharacter.AttackPower
+                            }
+                        }
+                    };
+
+                    packet.NewObjectInfo = newCharacterInfo;
+
+                    break;
+
+                case EGameObjectType.Monster:
+                    Monster newMonster = gameObject as Monster;
+
+                    MonsterDictionary.Add(newMonster.ID, newMonster);
+
+                    ObjectInfo newMonsterInfo = new()
+                    {
+                        ObjectID = newMonster.ID,
+                        Name = newMonster.Name,
+                        PosX = newMonster.Position.X,
+                        PosY = newMonster.Position.Y,
+                        IsCollidable = newMonster.IsCollidable,
+                        CreatureInfo = new CreatureInfo()
+                        {
+                            CurState = newMonster.CurState,
+                            MoveDirection = newMonster.MoveDirection,
+                            FacingDirection = newMonster.FacingDirection,
+                            MoveSpeed = newMonster.MoveSpeed,
+                            Stat = new CreatureStat()
+                            {
+                                MaxHP = newMonster.MaxHp,
+                                CurHP = newMonster.CurHp,
+                                AttackPower = newMonster.AttackPower
+                            }
+                        }
+                    };
+
+                    packet.NewObjectInfo = newMonsterInfo;
+
+                    break;
+
+                case EGameObjectType.Projectile:
+                    Projectile newProjectile = gameObject as Projectile;
+
+                    ProjectileDictionary.Add(newProjectile.ID, newProjectile);
+
+                    ObjectInfo newProjectileInfo = new()
+                    {
+                        ObjectID = newProjectile.ID,
+                        Name = newProjectile.Name,
+                        PosX = newProjectile.Position.X,
+                        PosY = newProjectile.Position.Y,
+                        IsCollidable = newProjectile.IsCollidable,
+                        ProjectileInfo = new ProjectileInfo()
+                        {
+                            MoveDirection = newProjectile.MoveDirection,
+                            MoveSpeed = newProjectile.MoveSpeed
+                        }
+                    };
+
+                    packet.NewObjectInfo = newProjectileInfo;
+
+                    break;
+
+                default:
+                    Console.WriteLine($"Undefined Object Type. ID : {gameObject.ID} Type : {gameObject.ObjectType}");
+                    return;
+            }
+
+            Broadcast(packet);
+        }
+
+        private void RemoveObject_T(int oldObjectID)
+        {
+            EGameObjectType type = ObjectManager.GetObjectTypeByID(oldObjectID);
+
+            switch (type)
+            {
+                case EGameObjectType.Character:
+                    if (CharacterDictionary.TryGetValue(oldObjectID, out Character character) == false) return;
+
+                    Map.RemoveObject(character);
+                    character.Room = null;
+                    break;
+
+                case EGameObjectType.Monster:
+                    if (MonsterDictionary.TryGetValue(oldObjectID, out Monster monster) == false) return;
+
+                    Map.RemoveObject(monster);
+                    monster.Room = null;
+                    break;
+
+                case EGameObjectType.Projectile:
+                    if (ProjectileDictionary.TryGetValue(oldObjectID, out Projectile projectile) == false) return;
+
+                    Map.RemoveObject(projectile);
+                    projectile.Room = null;
+                    break;
+
+                default:
+                    Console.WriteLine($"Undefined Object Type. {type}");
+                    return;
+            }
+
+            Broadcast(new ObjectDespawnedBroadcast() { OldObjectID = oldObjectID });
+            ObjectManager.Instance.Remove(oldObjectID);
         }
 
         private void PerformMove_T(int objectID, Pos curPos, EMoveDirection moveDirection)
         {
             EGameObjectType type = ObjectManager.GetObjectTypeByID(objectID);
 
-            if (objectDictionary.TryGetValue(type, out Dictionary<int, GameObject> dictionary) == false) return;
-            if (dictionary.TryGetValue(objectID, out GameObject gameObject) == false) return;
+            GameObject gameObject;
 
-            if (moveDirection == EMoveDirection.None)
+            switch (type)
             {
-                gameObject.CurState = ECreatureState.Idle;
-                gameObject.MoveDirection = EMoveDirection.None;
-            }
-            else
-            {
-                gameObject.CurState = ECreatureState.Move;
-                gameObject.MoveDirection = moveDirection;
+                case EGameObjectType.Character:
+                    if (CharacterDictionary.TryGetValue(objectID, out Character character) == false) return;
+
+                    character.CurState = moveDirection != EMoveDirection.None ? ECreatureState.Move : ECreatureState.Idle;
+                    character.MoveDirection = moveDirection;
+
+                    gameObject = character;
+
+                    break;
+
+                case EGameObjectType.Monster:
+                    if (MonsterDictionary.TryGetValue(objectID, out Monster monster) == false) return;
+
+                    monster.CurState = moveDirection != EMoveDirection.None ? ECreatureState.Move : ECreatureState.Idle;
+                    monster.MoveDirection = moveDirection;
+
+                    gameObject = monster;
+
+                    break;
+
+                case EGameObjectType.Projectile:
+                    if (ProjectileDictionary.TryGetValue(objectID, out Projectile projectile) == false) return;
+
+                    projectile.MoveDirection = moveDirection;
+
+                    gameObject = projectile;
+
+                    break;
+
+                default:
+                    Console.WriteLine($"Unmovable GameObject Type. ID : {objectID} Type : {type}");
+
+                    return;
             }
 
             Map.MoveObject(gameObject, moveDirection);
@@ -268,7 +427,7 @@ namespace Server.Game
             PerformMoveBroadcast performMoveBroadcastPacket = new()
             {
                 ObjectID = gameObject.ID,
-                MoveDirection = gameObject.MoveDirection,
+                MoveDirection = moveDirection,
                 TargetPosX = gameObject.Position.X,
                 TargetPosY = gameObject.Position.Y
             };
@@ -276,49 +435,65 @@ namespace Server.Game
             Broadcast(performMoveBroadcastPacket);
         }
 
-        private void PerformAttack_T(int objectID, int attackID)
+        private void PerformAttack_T(int creatureID, int attackID)
         {
-            EGameObjectType type = ObjectManager.GetObjectTypeByID(objectID);
+            EGameObjectType type = ObjectManager.GetObjectTypeByID(creatureID);
 
-            if (objectDictionary.TryGetValue(type, out Dictionary<int, GameObject> dictionary) == false) return;
-            if (dictionary.TryGetValue(objectID, out GameObject gameObject) == false) return;
+            Creature attacker;
 
-            // TODO : Certify the attack info passed by the packet
+            switch (type)
+            {
+                case EGameObjectType.Character:
+                    if (CharacterDictionary.TryGetValue(creatureID, out Character character) == false) return;
 
-            // TODO : Check whether the gameobject can attack
-            if (gameObject.CurState != ECreatureState.Idle) return;
+                    attacker = character;
 
-            gameObject.CurState = ECreatureState.Attack;
+                    break;
 
-            long attackStartTime = Environment.TickCount64;
+                case EGameObjectType.Monster:
+                    if (MonsterDictionary.TryGetValue(creatureID, out Monster monster) == false) return;
+
+                    attacker = monster;
+
+                    break;
+
+                default:
+                    Console.WriteLine($"Unattackable GameObject Type. ID : {creatureID} Type : {type}");
+
+                    return;
+            }
+
+            if (attacker.CurState != ECreatureState.Idle) return;
+
+            if (DataManager.AttackStatDictionary.TryGetValue(attackID, out Data.AttackStat attackStat) == false) return;
+
+            attacker.CurState = ECreatureState.Attack;
+            attacker.AttackStat = attackStat;
 
             PerformAttackBroadcast performAttackBroadcastPacket = new()
             {
-                ObjectID = objectID,
+                ObjectID = attacker.ID,
                 AttackID = attackID
             };
 
             Broadcast(performAttackBroadcastPacket);
-
-            if (DataManager.AttacklStatDictionary.TryGetValue(attackID, out Data.AttackStat attackStat) == false) return;
 
             switch (attackStat.AttackType)
             {
                 case EAttackType.Melee:
                     for (int i = 1; i <= attackStat.Range; i++)
                     {
-                        Pos attackPos = gameObject.GetFrontPos(i);
+                        Pos attackPos = Utility.GetFrontPos(attacker.Position, attacker.FacingDirection, i);
 
                         if (Map.Find(attackPos, out List<GameObject> objectList) == false) continue;
 
-                        List<GameObject> damagableList = objectList.FindAll((obj) => obj.ObjectType != EGameObjectType.Projectile);
-
-                        foreach (GameObject damagable in damagableList)
+                        foreach (GameObject obj in objectList)
                         {
-                            if (damagable.CurState == ECreatureState.Dead) continue;
+                            Creature damagable = obj as Creature;
 
-                            // TODO : The attack coefficient needs to be adjusted based on the attacker's level
-                            damagable.OnDamaged(gameObject, gameObject.Stat.AttackPower * attackStat.CoeffDictionary[1]);
+                            if (ReferenceEquals(damagable, null) == true) continue;
+
+                            damagable.OnDamaged(attacker, attacker.AttackPower * attackStat.CoeffDictionary[attacker.Level]);
                         }
                     }
 
@@ -330,12 +505,11 @@ namespace Server.Game
                     // TODO : Add the logic to generate different projectiles based on attack data
                     Arrow arrow = ObjectManager.Instance.Add<Arrow>();
 
-                    arrow.Owner = gameObject;
+                    arrow.Owner = attacker;
                     arrow.AttackStat = attackStat;
                     arrow.Name = projectileStat.Name;
-                    arrow.CurState = ECreatureState.Move;
-                    arrow.Position = new Pos(gameObject.Position.X, gameObject.Position.Y);
-                    arrow.MoveDirection = gameObject.FacingDirection;
+                    arrow.Position = new Pos(attacker.Position.X, attacker.Position.Y);
+                    arrow.MoveDirection = attacker.FacingDirection;
                     arrow.MoveSpeed = projectileStat.Speed;
                     arrow.IsCollidable = false;
 
@@ -343,30 +517,50 @@ namespace Server.Game
 
                     break;
             }
-
-            gameObject.BeginAttackPostDelayCheck(attackStartTime + (long)(1000 * attackStat.PostDelay));
         }
 
-        private void ReviveObject_T(int objectID, Pos revivePos)
+        private void ReviveCreature_T(int creatureID, Pos revivePos)
         {
-            EGameObjectType type = ObjectManager.GetObjectTypeByID(objectID);
+            EGameObjectType type = ObjectManager.GetObjectTypeByID(creatureID);
 
-            if (type == EGameObjectType.Projectile) return;
-            if (objectDictionary.TryGetValue(type, out Dictionary<int, GameObject> dictionary) == false) return;
-            if (dictionary.TryGetValue(objectID, out GameObject gameObject) == false) return;
+            Creature creature;
 
-            gameObject.CurState = ECreatureState.Idle;
-            gameObject.MoveDirection = EMoveDirection.None;
-            gameObject.IsCollidable = true;
-            gameObject.Stat.CurHP = gameObject.Stat.MaxHP;
+            switch (type)
+            {
+                case EGameObjectType.Character:
+                    if (CharacterDictionary.TryGetValue(creatureID, out Character character) == false) return;
 
-            Map.MoveObject(gameObject, revivePos);
+                    creature = character;
+
+                    break;
+
+                case EGameObjectType.Monster:
+                    if (MonsterDictionary.TryGetValue(creatureID, out Monster monster) == false) return;
+
+                    creature = monster;
+
+                    break;
+
+                default:
+                    Console.WriteLine($"Unrevivable GameObject Type. ID : {creatureID} Type : {type}");
+
+                    return;
+            }
+
+            if (creature.CurState != ECreatureState.Dead) return;
+
+            creature.CurState = ECreatureState.Idle;
+            creature.MoveDirection = EMoveDirection.None;
+            creature.IsCollidable = true;
+            creature.CurHp = creature.MaxHp;
+
+            Map.MoveObject(creature, revivePos);
 
             ObjectReviveBroadcast packet = new()
             {
-                ObjectID = gameObject.ID,
-                RevivePosX = gameObject.Position.X,
-                RevivePosY = gameObject.Position.Y
+                ObjectID = creature.ID,
+                RevivePosX = creature.Position.X,
+                RevivePosY = creature.Position.Y
             };
 
             Broadcast(packet);
