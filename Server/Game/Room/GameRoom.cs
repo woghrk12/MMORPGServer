@@ -106,8 +106,6 @@ namespace Server.Game
         {
             if (ReferenceEquals(newCharacter, null) == true) return;
 
-            DataManager.SendData(newCharacter);
-
             CharacterDictionary.Add(newCharacter.ID, newCharacter);
             newCharacter.Room = this;
 

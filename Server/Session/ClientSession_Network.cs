@@ -1,5 +1,6 @@
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
+using Newtonsoft.Json;
 using Server.Game;
 using System.Net;
 using System.Net.Sockets;
@@ -122,8 +123,17 @@ namespace Server
 
             ClientState = EClientState.Connected;
 
-            ConnectedResponse connectedResponsePacket = new();
-            Send(connectedResponsePacket);
+            ConnectedResponse packet = new();
+            List<Data.ObjectStat> objectStatList = [.. DataManager.ObjectStatDictionary.Values];
+            packet.Stats.Add(new StatData() { StatType = EStatType.ObjectData, Data = JsonConvert.SerializeObject(objectStatList) });
+            List<Data.MonsterStat> monsterStatList = [.. DataManager.MonsterStatDictionary.Values];
+            packet.Stats.Add(new StatData() { StatType = EStatType.MonsterData, Data = JsonConvert.SerializeObject(monsterStatList) });
+            List<Data.AttackStat> attackStatList = [.. DataManager.AttackStatDictionary.Values];
+            packet.Stats.Add(new StatData() { StatType = EStatType.AttackData, Data = JsonConvert.SerializeObject(attackStatList) });
+            List<Data.ProjectileStat> projectileStatList = [.. DataManager.ProjectileStatDictionary.Values];
+            packet.Stats.Add(new StatData() { StatType = EStatType.ProjectileData, Data = JsonConvert.SerializeObject(projectileStatList) });
+
+            Send(packet);
         }
 
         private void OnDisconnected(EndPoint endPoint)
