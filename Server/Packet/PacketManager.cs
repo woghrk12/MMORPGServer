@@ -29,14 +29,14 @@ namespace Server
             receivedPacketHandlerDict.Add((ushort)EMessageID.CharacterEnterGameRoomRequest, MakePacket<CharacterEnterGameRoomRequest>);
             receivedPacketHandlerDict.Add((ushort)EMessageID.PerformMoveRequest, MakePacket<PerformMoveRequest>);
             receivedPacketHandlerDict.Add((ushort)EMessageID.PerformAttackRequest, MakePacket<PerformAttackRequest>);
-            receivedPacketHandlerDict.Add((ushort)EMessageID.ObjectReviveRequest, MakePacket<ObjectReviveRequest>);
+            receivedPacketHandlerDict.Add((ushort)EMessageID.CharacterReviveRequest, MakePacket<CharacterReviveRequest>);
 
             handlerDict.Add((ushort)EMessageID.LoginRequest, PacketHandler.HandleLoginRequest);
             handlerDict.Add((ushort)EMessageID.CreateCharacterRequest, PacketHandler.HandleCreateCharacterRequest);
             handlerDict.Add((ushort)EMessageID.CharacterEnterGameRoomRequest, PacketHandler.HandleCharacterEnterGameRoomRequest);
             handlerDict.Add((ushort)EMessageID.PerformMoveRequest, PacketHandler.HandlePerformMoveRequest);
             handlerDict.Add((ushort)EMessageID.PerformAttackRequest, PacketHandler.HandlePerformAttackRequest);
-            handlerDict.Add((ushort)EMessageID.ObjectReviveRequest, PacketHandler.HandleObjectReviveRequest);
+            handlerDict.Add((ushort)EMessageID.CharacterReviveRequest, PacketHandler.HandleCharacterReviveRequest);
         }
 
         #endregion Constructor

@@ -31,9 +31,9 @@ namespace Server.Game
 
         public override void OnDead(GameObject attacker)
         {
-            ObjectDeadBroadcast packet = new()
+            CreatureDeadBroadcast packet = new()
             {
-                ObjectID = ID,
+                CreatureID = ID,
                 AttackerID = attacker.ID
             };
 

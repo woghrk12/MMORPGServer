@@ -43,9 +43,9 @@ namespace Server.Game
                 GameRoom room = Room;
                 if (ReferenceEquals(room, null) == true) return;
 
-                UpdateObjectStateBroadcast packet = new()
+                UpdateCreatureStateBroadcast packet = new()
                 {
-                    ObjectID = ID,
+                    CreatureID = ID,
                     NewState = curState.StateID
                 };
 
@@ -143,7 +143,7 @@ namespace Server.Game
 
             AttackCompleteBroadcast packet = new()
             {
-                ObjectID = ID
+                CreatureID = ID
             };
 
             foreach (Character character in Room.CharacterDictionary.Values)
@@ -172,8 +172,9 @@ namespace Server.Game
             {
                 HitBroadcast packet = new()
                 {
-                    ObjectID = ID,
-                    CurHp = CurHp,
+                    AttackerID = attacker.ID,
+                    DefenderID = ID,
+                    RemainHp = CurHp,
                     Damage = damage
                 };
 

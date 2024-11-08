@@ -63,11 +63,11 @@ namespace Server
             room.PerformAttack(character.ID, packet.AttackID);
         }
 
-        public static void HandleObjectReviveRequest(ClientSession session, IMessage message)
+        public static void HandleCharacterReviveRequest(ClientSession session, IMessage message)
         {
-            ObjectReviveRequest packet = message as ObjectReviveRequest;
+            CharacterReviveRequest packet = message as CharacterReviveRequest;
 
-            Console.WriteLine($"ObjectReviveRequest. Session ID : {session.SessionID}, Object ID : {packet.ObjectID}");
+            Console.WriteLine($"ObjectReviveRequest. Session ID : {session.SessionID}, Object ID : {packet.CharacterID}");
 
             Character character = session.Character;
             if (ReferenceEquals(character, null) == true) return;
@@ -75,7 +75,7 @@ namespace Server
             GameRoom room = character.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.ReviveCreature(packet.ObjectID, new Pos(0, 0));
+            room.ReviveCreature(packet.CharacterID, new Pos(0, 0));
         }
     }
 }

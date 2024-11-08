@@ -18,16 +18,16 @@ enum EMessageID
     CHARACTER_LEFT_GAME_ROOM_BROADCAST = 10;
     OBJECT_SPAWNED_BROADCAST = 11;
     OBJECT_DESPAWNED_BROADCAST = 12;
-    UPDATE_OBJECT_STATE_BROADCAST = 13;
+    UPDATE_CREATURE_STATE_BROADCAST = 13;
     PERFORM_MOVE_REQUEST = 14;
     PERFORM_MOVE_BROADCAST = 15;
     PERFORM_ATTACK_REQUEST = 16;
     PERFORM_ATTACK_BROADCAST = 17;
     ATTACK_COMPLETE_BROADCAST = 18;
     HIT_BROADCAST = 19;
-    OBJECT_DEAD_BROADCAST = 20;
-    OBJECT_REVIVE_REQUEST = 21;
-    OBJECT_REVIVE_BROADCAST = 22;
+    CREATURE_DEAD_BROADCAST = 20;
+    CHARACTER_REVIVE_REQUEST = 21;
+    CHARACTER_REVIVE_BROADCAST = 22;
 }
 
 enum EClientState
@@ -201,9 +201,9 @@ message ObjectDespawnedBroadcast
     int32 oldObjectID = 1;
 }
 
-message UpdateObjectStateBroadcast
+message UpdateCreatureStateBroadcast
 {
-    int32 objectID = 1;
+    int32 creatureID = 1;
     ECreatureState newState = 2;
 }
 
@@ -232,41 +232,42 @@ enum EAttackType
 
 message PerformAttackRequest
 {
-    int32 attackID = 1;
+    int32 AttackID = 1;
 }
 
 message PerformAttackBroadcast
 {
-    int32 objectID = 1;
+    int32 creatureID = 1;
     int32 attackID = 2;
 }
 
 message AttackCompleteBroadcast
 {
-    int32 objectID = 1;
+    int32 creatureID = 1;
 }
 
 message HitBroadcast
 {
-    int32 objectID = 1;
-    int32 curHp = 2;
-    int32 damage = 3;
+    int32 attackerID = 1;
+    int32 defenderID = 2;
+    int32 remainHp = 3;
+    int32 damage = 4;
 }
 
-message ObjectDeadBroadcast
+message CreatureDeadBroadcast
 {
-    int32 objectID = 1;
+    int32 creatureID = 1;
     int32 attackerID = 2;
 }
 
-message ObjectReviveRequest
+message CharacterReviveRequest
 {
-    int32 objectID = 1;
+    int32 characterID = 1;
 }
 
-message ObjectReviveBroadcast
+message CharacterReviveBroadcast
 {
-    int32 objectID = 1;
+    int32 characterID = 1;
     int32 revivePosX = 2;
     int32 revivePosY = 3;
 }

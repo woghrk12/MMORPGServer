@@ -470,7 +470,7 @@ namespace Server.Game
 
             PerformAttackBroadcast performAttackBroadcastPacket = new()
             {
-                ObjectID = attacker.ID,
+                CreatureID = attacker.ID,
                 AttackID = attackID
             };
 
@@ -554,9 +554,9 @@ namespace Server.Game
 
             Map.MoveObject(creature, revivePos);
 
-            ObjectReviveBroadcast packet = new()
+            CharacterReviveBroadcast packet = new()
             {
-                ObjectID = creature.ID,
+                CharacterID = creature.ID,
                 RevivePosX = creature.Position.X,
                 RevivePosY = creature.Position.Y
             };
