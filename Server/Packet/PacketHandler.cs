@@ -37,7 +37,7 @@ namespace Server
         {
             PerformMoveRequest packet = message as PerformMoveRequest;
 
-            Console.WriteLine($"PerformMoveRequest. Session ID : {session.SessionID} Cur Pos : ({packet.CurPosX}, {packet.CurPosY}) Target Pos : ({packet.TargetPosX}, {packet.TargetPosY}) Move Direction : {packet.MoveDirection}");
+            Console.WriteLine($"PerformMoveRequest. Session ID : {session.SessionID} Cur Pos : ({packet.CurPosX}, {packet.CurPosY}) Move Direction : {packet.MoveDirection}");
 
             Character character = session.Character;
             if (ReferenceEquals(character, null) == true) return;

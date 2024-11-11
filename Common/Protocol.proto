@@ -212,8 +212,6 @@ message PerformMoveRequest
     EMoveDirection moveDirection = 1;
     int32 curPosX = 2;
     int32 curPosY = 3;
-    int32 targetPosX = 4;
-    int32 targetPosY = 5;
 }
 
 message PerformMoveBroadcast
