@@ -6,6 +6,8 @@ namespace Server.Game
     {
         #region Variables
 
+        private object lockObj = new();
+
         private event Action updated = null;
 
         #endregion Variables
@@ -35,7 +37,10 @@ namespace Server.Game
 
         public virtual void OnUpdate()
         {
-            updated?.Invoke();
+            lock (lockObj)
+            {
+                updated?.Invoke();
+            }
         }
 
         #endregion Events
