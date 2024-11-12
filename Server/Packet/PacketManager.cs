@@ -27,14 +27,14 @@ namespace Server
             receivedPacketHandlerDict.Add((ushort)EMessageID.LoginRequest, MakePacket<LoginRequest>);
             receivedPacketHandlerDict.Add((ushort)EMessageID.CreateCharacterRequest, MakePacket<CreateCharacterRequest>);
             receivedPacketHandlerDict.Add((ushort)EMessageID.CharacterEnterGameRoomRequest, MakePacket<CharacterEnterGameRoomRequest>);
-            receivedPacketHandlerDict.Add((ushort)EMessageID.PerformMoveRequest, MakePacket<PerformMoveRequest>);
+            receivedPacketHandlerDict.Add((ushort)EMessageID.MoveRequest, MakePacket<MoveRequest>);
             receivedPacketHandlerDict.Add((ushort)EMessageID.PerformAttackRequest, MakePacket<PerformAttackRequest>);
             receivedPacketHandlerDict.Add((ushort)EMessageID.CharacterReviveRequest, MakePacket<CharacterReviveRequest>);
 
             handlerDict.Add((ushort)EMessageID.LoginRequest, PacketHandler.HandleLoginRequest);
             handlerDict.Add((ushort)EMessageID.CreateCharacterRequest, PacketHandler.HandleCreateCharacterRequest);
             handlerDict.Add((ushort)EMessageID.CharacterEnterGameRoomRequest, PacketHandler.HandleCharacterEnterGameRoomRequest);
-            handlerDict.Add((ushort)EMessageID.PerformMoveRequest, PacketHandler.HandlePerformMoveRequest);
+            handlerDict.Add((ushort)EMessageID.MoveRequest, PacketHandler.HandleMoveRequest);
             handlerDict.Add((ushort)EMessageID.PerformAttackRequest, PacketHandler.HandlePerformAttackRequest);
             handlerDict.Add((ushort)EMessageID.CharacterReviveRequest, PacketHandler.HandleCharacterReviveRequest);
         }

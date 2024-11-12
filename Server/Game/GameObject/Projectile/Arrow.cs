@@ -32,7 +32,7 @@ namespace Server.Game
 
             if (Room.Map.CheckCanMove(destPos) == true)
             {
-                PerformMoveBroadcast packet = new()
+                MoveBroadcast packet = new()
                 {
                     ObjectID = ID,
                     TargetPosX = destPos.X,

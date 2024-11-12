@@ -1,5 +1,6 @@
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace Server.Game
 {
@@ -66,8 +67,6 @@ namespace Server.Game
         public void AddObject(GameObject gameObject) => Push(AddObject_T, gameObject);
 
         public void RemoveObject(int oldObjectID) => Push(RemoveObject_T, oldObjectID);
-
-        public void PerformMove(int objectID, Pos curPos, EMoveDirection moveDirection) => Push(PerformMove_T, objectID, curPos, moveDirection);
 
         public void PerformAttack(int creatureID, int attackID) => Push(PerformAttack_T, creatureID, attackID);
 
@@ -377,60 +376,106 @@ namespace Server.Game
             ObjectManager.Instance.Remove(oldObjectID);
         }
 
-        private void PerformMove_T(int objectID, Pos curPos, EMoveDirection moveDirection)
+        public void MoveCharacter(int characterID, EMoveDirection moveDirection, Pos targetPos) => Push(MoveCharacter_T, characterID, moveDirection, targetPos);
+
+        private void MoveCharacter_T(int characterID, EMoveDirection moveDirection, Pos targetPos)
         {
-            EGameObjectType type = ObjectManager.GetObjectTypeByID(objectID);
+            EGameObjectType type = ObjectManager.GetObjectTypeByID(characterID);
 
-            GameObject gameObject;
+            if (type != EGameObjectType.Character) return;
+            if (CharacterDictionary.TryGetValue(characterID, out Character character) == false) return;
 
-            switch (type)
+            character.CurState = moveDirection != EMoveDirection.None ? ECreatureState.Move : ECreatureState.Idle;
+            character.MoveDirection = moveDirection;
+
+            Pos frontPos = Utility.GetFrontPos(character.Position, moveDirection);
+            if (Map.CheckCanMove(frontPos) == true)
             {
-                case EGameObjectType.Character:
-                    if (CharacterDictionary.TryGetValue(objectID, out Character character) == false) return;
-
-                    character.CurState = moveDirection != EMoveDirection.None ? ECreatureState.Move : ECreatureState.Idle;
-                    character.MoveDirection = moveDirection;
-
-                    gameObject = character;
-
-                    break;
-
-                case EGameObjectType.Monster:
-                    if (MonsterDictionary.TryGetValue(objectID, out Monster monster) == false) return;
-
-                    monster.CurState = moveDirection != EMoveDirection.None ? ECreatureState.Move : ECreatureState.Idle;
-                    monster.MoveDirection = moveDirection;
-
-                    gameObject = monster;
-
-                    break;
-
-                case EGameObjectType.Projectile:
-                    if (ProjectileDictionary.TryGetValue(objectID, out Projectile projectile) == false) return;
-
-                    projectile.MoveDirection = moveDirection;
-
-                    gameObject = projectile;
-
-                    break;
-
-                default:
-                    Console.WriteLine($"Unmovable GameObject Type. ID : {objectID} Type : {type}");
-
-                    return;
+                Map.MoveObject(character, frontPos);
             }
 
-            Map.MoveObject(gameObject, moveDirection);
-
-            PerformMoveBroadcast performMoveBroadcastPacket = new()
+            if (character.Position != targetPos)
             {
-                ObjectID = gameObject.ID,
+                MoveResponse moveResponsePacket = new()
+                {
+                    ResultCode = 1,
+                    FixedPosX = character.Position.X,
+                    FixedPosY = character.Position.Y
+                };
+
+                character.Session.Send(moveResponsePacket);
+            }
+
+            MoveBroadcast MoveBroadcastPacket = new()
+            {
+                ObjectID = character.ID,
                 MoveDirection = moveDirection,
-                TargetPosX = gameObject.Position.X,
-                TargetPosY = gameObject.Position.Y
+                TargetPosX = character.Position.X,
+                TargetPosY = character.Position.Y
             };
 
-            Broadcast(performMoveBroadcastPacket);
+            Broadcast(MoveBroadcastPacket, character.ID);
+        }
+
+        public void MoveMonster(int monsterID, EMoveDirection moveDirection) => Push(MoveMonster_T, monsterID, moveDirection);
+
+        private void MoveMonster_T(int monsterID, EMoveDirection moveDirection)
+        {
+            EGameObjectType type = ObjectManager.GetObjectTypeByID(monsterID);
+
+            if (type != EGameObjectType.Monster) return;
+            if (MonsterDictionary.TryGetValue(monsterID, out Monster monster) == false) return;
+
+            monster.CurState = moveDirection != EMoveDirection.None ? ECreatureState.Move : ECreatureState.Idle;
+            monster.MoveDirection = moveDirection;
+
+            Pos frontPos = Utility.GetFrontPos(monster.Position, moveDirection);
+            if (Map.CheckCanMove(frontPos) == true)
+            {
+                Map.MoveObject(monster, frontPos);
+            }
+
+            MoveBroadcast MoveBroadcastPacket = new()
+            {
+                ObjectID = monster.ID,
+                MoveDirection = moveDirection,
+                TargetPosX = monster.Position.X,
+                TargetPosY = monster.Position.Y
+            };
+
+            Broadcast(MoveBroadcastPacket);
+        }
+
+        public void MoveProjectile(int projectileID, EMoveDirection moveDirection, Func<Pos, bool> isDestroyed = null, Action<Pos> afterMoved = null) => Push(MoveProjectile_T, projectileID, moveDirection, isDestroyed, afterMoved);
+
+        private void MoveProjectile_T(int projectileID, EMoveDirection moveDirection, Func<Pos, bool> isDestroyed, Action<Pos> afterMoved)
+        {
+            EGameObjectType type = ObjectManager.GetObjectTypeByID(projectileID);
+
+            if (type != EGameObjectType.Projectile) return;
+            if (ProjectileDictionary.TryGetValue(projectileID, out Projectile projectile) == false) return;
+
+            projectile.MoveDirection = moveDirection;
+
+            Pos frontPos = Utility.GetFrontPos(projectile.Position, moveDirection);
+            if (ReferenceEquals(isDestroyed, null) == false && isDestroyed.Invoke(frontPos) == true)
+            {
+                RemoveObject(projectile.ID);
+                return;
+            }
+
+            Map.MoveObject(projectile, frontPos);
+            afterMoved?.Invoke(frontPos);
+
+            MoveBroadcast MoveBroadcastPacket = new()
+            {
+                ObjectID = projectile.ID,
+                MoveDirection = moveDirection,
+                TargetPosX = projectile.Position.X,
+                TargetPosY = projectile.Position.Y
+            };
+
+            Broadcast(MoveBroadcastPacket);
         }
 
         private void PerformAttack_T(int creatureID, int attackID)

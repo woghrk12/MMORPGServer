@@ -39,17 +39,6 @@ namespace Server.Game
 
                 curState = stateDictionary[value];
                 curState.OnEnter();
-
-                GameRoom room = Room;
-                if (ReferenceEquals(room, null) == true) return;
-
-                UpdateCreatureStateBroadcast packet = new()
-                {
-                    CreatureID = ID,
-                    NewState = curState.StateID
-                };
-
-                room.Broadcast(packet);
             }
             get => ReferenceEquals(curState, null) == false ? curState.StateID : ECreatureState.Idle;
         }

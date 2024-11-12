@@ -33,11 +33,11 @@ namespace Server
             session.EnterGameRoom(packet.Name);
         }
 
-        public static void HandlePerformMoveRequest(ClientSession session, IMessage message)
+        public static void HandleMoveRequest(ClientSession session, IMessage message)
         {
-            PerformMoveRequest packet = message as PerformMoveRequest;
+            MoveRequest packet = message as MoveRequest;
 
-            Console.WriteLine($"PerformMoveRequest. Session ID : {session.SessionID} Cur Pos : ({packet.CurPosX}, {packet.CurPosY}) Move Direction : {packet.MoveDirection}");
+            Console.WriteLine($"MoveRequest. Session ID : {session.SessionID} Target Pos : ({packet.TargetPosX}, {packet.TargetPosY}) Move Direction : {packet.MoveDirection}");
 
             Character character = session.Character;
             if (ReferenceEquals(character, null) == true) return;
@@ -45,7 +45,7 @@ namespace Server
             GameRoom room = character.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.PerformMove(character.ID, new Pos(packet.CurPosX, packet.CurPosY), packet.MoveDirection);
+            room.MoveCharacter(character.ID, packet.MoveDirection, new Pos(packet.TargetPosX, packet.TargetPosY));
         }
 
         public static void HandlePerformAttackRequest(ClientSession session, IMessage message)

@@ -121,7 +121,7 @@ namespace Server.Game.MonsterState
 
             nextMoveTicks = Environment.TickCount64 + (long)(1000f / controller.MoveSpeed);
 
-            room.PerformMove(controller.ID, controller.Position, moveDirection);
+            room.MoveMonster(controller.ID, moveDirection);
         }
 
         #endregion Methods

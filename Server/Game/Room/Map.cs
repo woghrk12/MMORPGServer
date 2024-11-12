@@ -129,45 +129,10 @@ namespace Server.Game
             return objectList.Count > 0;
         }
 
-        public void MoveObject(GameObject gameObject, EMoveDirection moveDirection)
-        {
-            if (ReferenceEquals(gameObject, null) == true) return;
-            if (moveDirection == EMoveDirection.None) return;
-
-            Vector2Int curCellPos = ConvertPosToCell(gameObject.Position);
-            if (collision[curCellPos.Y, curCellPos.X].ContainsKey(gameObject.ID) == false) return;
-
-            Vector2Int targetCellPos = curCellPos;
-            switch (moveDirection)
-            {
-                case EMoveDirection.Up:
-                    targetCellPos += Vector2Int.Up;
-                    break;
-
-                case EMoveDirection.Down:
-                    targetCellPos += Vector2Int.Down;
-                    break;
-
-                case EMoveDirection.Left:
-                    targetCellPos += Vector2Int.Left;
-                    break;
-
-                case EMoveDirection.Right:
-                    targetCellPos += Vector2Int.Right;
-                    break;
-            }
-
-            if (CheckCanMove(targetCellPos) == false) return;
-
-            collision[curCellPos.Y, curCellPos.X].Remove(gameObject.ID);
-            collision[targetCellPos.Y, targetCellPos.X].Add(gameObject.ID, gameObject);
-
-            gameObject.Position = ConvertCellToPos(targetCellPos);
-        }
-
         public void MoveObject(GameObject gameObject, Pos targetPos)
         {
             if (ReferenceEquals(gameObject, null) == true) return;
+            if (gameObject.Position == targetPos) return;
 
             Vector2Int curCellPos = ConvertPosToCell(gameObject.Position);
             Vector2Int targetCellPos = ConvertPosToCell(targetPos);

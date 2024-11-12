@@ -19,15 +19,16 @@ enum EMessageID
     OBJECT_SPAWNED_BROADCAST = 11;
     OBJECT_DESPAWNED_BROADCAST = 12;
     UPDATE_CREATURE_STATE_BROADCAST = 13;
-    PERFORM_MOVE_REQUEST = 14;
-    PERFORM_MOVE_BROADCAST = 15;
-    PERFORM_ATTACK_REQUEST = 16;
-    PERFORM_ATTACK_BROADCAST = 17;
-    ATTACK_COMPLETE_BROADCAST = 18;
-    HIT_BROADCAST = 19;
-    CREATURE_DEAD_BROADCAST = 20;
-    CHARACTER_REVIVE_REQUEST = 21;
-    CHARACTER_REVIVE_BROADCAST = 22;
+    MOVE_REQUEST = 14;
+    MOVE_RESPONSE = 15;
+    MOVE_BROADCAST = 16;
+    PERFORM_ATTACK_REQUEST = 17;
+    PERFORM_ATTACK_BROADCAST = 18;
+    ATTACK_COMPLETE_BROADCAST = 19;
+    HIT_BROADCAST = 20;
+    CREATURE_DEAD_BROADCAST = 21;
+    CHARACTER_REVIVE_REQUEST = 22;
+    CHARACTER_REVIVE_BROADCAST = 23;
 }
 
 enum EClientState
@@ -207,14 +208,24 @@ message UpdateCreatureStateBroadcast
     ECreatureState newState = 2;
 }
 
-message PerformMoveRequest
+message MoveRequest
 {
     EMoveDirection moveDirection = 1;
-    int32 curPosX = 2;
-    int32 curPosY = 3;
+    int32 targetPosX = 2;
+    int32 targetPosY = 3;
 }
 
-message PerformMoveBroadcast
+// Result Code
+// 0 : Success
+// 1 : The character's position needs to be fixed
+message MoveResponse
+{
+    int32 resultCode = 1;
+    int32 fixedPosX = 2;
+    int32 fixedPosY = 3;
+}
+
+message MoveBroadcast
 {
     int32 objectID = 1;
     EMoveDirection moveDirection = 2;
