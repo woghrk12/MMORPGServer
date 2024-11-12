@@ -12,30 +12,30 @@ namespace Server.Game
 
         #region Methods
 
-        public void Push(Action action, long execTick = 0)
+        public void Push(Action action, long afterTick = 0)
         {
-            Task task = new Task(action, execTick);
+            Task task = new Task(action, Environment.TickCount64 + afterTick);
 
             Push(task);
         }
 
-        public void Push<P1>(Action<P1> action, P1 p1, long execTick = 0)
+        public void Push<P1>(Action<P1> action, P1 p1, long afterTick = 0)
         {
-            Task<P1> task = new Task<P1>(action, p1, execTick);
+            Task<P1> task = new Task<P1>(action, p1, Environment.TickCount64 + afterTick);
 
             Push(task);
         }
 
-        public void Push<P1, P2>(Action<P1, P2> action, P1 p1, P2 p2, long execTick = 0)
+        public void Push<P1, P2>(Action<P1, P2> action, P1 p1, P2 p2, long afterTick = 0)
         {
-            Task<P1, P2> task = new Task<P1, P2>(action, p1, p2, execTick);
+            Task<P1, P2> task = new Task<P1, P2>(action, p1, p2, Environment.TickCount64 + afterTick);
 
             Push(task);
         }
 
-        public void Push<P1, P2, P3>(Action<P1, P2, P3> action, P1 p1, P2 p2, P3 p3, long execTick = 0)
+        public void Push<P1, P2, P3>(Action<P1, P2, P3> action, P1 p1, P2 p2, P3 p3, long afterTick = 0)
         {
-            Task<P1, P2, P3> task = new Task<P1, P2, P3>(action, p1, p2, p3, execTick);
+            Task<P1, P2, P3> task = new Task<P1, P2, P3>(action, p1, p2, p3, Environment.TickCount64 + afterTick);
 
             Push(task);
         }
