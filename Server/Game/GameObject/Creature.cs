@@ -145,7 +145,7 @@ namespace Server.Game
 
         #region Events
 
-        public sealed override void OnUpdate()
+        protected sealed override void OnUpdate()
         {
             base.OnUpdate();
 

@@ -33,14 +33,19 @@ namespace Server.Game
 
         #region Methods
 
-        #region Events
-
-        public virtual void OnUpdate()
+        public void Update()
         {
             lock (lockObj)
             {
-                updated?.Invoke();
+                OnUpdate();
             }
+        }
+
+        #region Events
+
+        protected virtual void OnUpdate()
+        {
+            updated?.Invoke();
         }
 
         #endregion Events

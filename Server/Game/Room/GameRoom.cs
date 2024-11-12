@@ -38,21 +38,25 @@ namespace Server.Game
 
         public void Update()
         {
+            // In this Update logic, only the object's stat can be modified.
+            // The object's position can only be queried.
+            // The stats or state of other objects cannot be modified.
             foreach (Character character in CharacterDictionary.Values)
             {
-                character.OnUpdate();
+                character.Update();
             }
 
             foreach (Monster monster in MonsterDictionary.Values)
             {
-                monster.OnUpdate();
+                monster.Update();
             }
 
             foreach (Projectile projectile in ProjectileDictionary.Values)
             {
-                projectile.OnUpdate();
+                projectile.Update();
             }
 
+            // In this Flush logic, the object's action can be executed.
             Flush();
         }
 
