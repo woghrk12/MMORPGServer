@@ -149,4 +149,41 @@ namespace Server.Game
 
         #endregion Methods
     }
+
+    public class Task<P1, P2, P3, P4> : TaskBase
+    {
+        #region Variables
+
+        private Action<P1, P2, P3, P4> action = null;
+        private P1 p1 = default;
+        private P2 p2 = default;
+        private P3 p3 = default;
+        private P4 p4 = default;
+
+        #endregion Variables
+
+        #region Constructor
+
+        public Task(Action<P1, P2, P3, P4> action, P1 p1, P2 p2, P3 p3, P4 p4, long execTick = 0)
+        {
+            this.action = action;
+            this.p1 = p1;
+            this.p2 = p2;
+            this.p3 = p3;
+            this.p4 = p4;
+
+            ExecTick = execTick;
+        }
+
+        #endregion Constructor
+
+        #region Methods
+
+        public override void Execute()
+        {
+            action?.Invoke(p1, p2, p3, p4);
+        }
+
+        #endregion Methods
+    }
 }

@@ -40,6 +40,13 @@ namespace Server.Game
             Push(task);
         }
 
+        public void Push<P1, P2, P3, P4>(Action<P1, P2, P3, P4> action, P1 p1, P2 p2, P3 p3, P4 p4, long afterTick = 0)
+        {
+            Task<P1, P2, P3, P4> task = new Task<P1, P2, P3, P4>(action, p1, p2, p3, p4, Environment.TickCount64 + afterTick);
+
+            Push(task);
+        }
+
         public void Flush()
         {
             TaskBase task = null;
