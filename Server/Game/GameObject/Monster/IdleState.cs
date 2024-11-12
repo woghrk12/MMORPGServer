@@ -29,6 +29,11 @@ namespace Server.Game.MonsterState
         public override void OnEnter()
         {
             nextBehaviourTicks = Environment.TickCount64 + 3000;
+
+            GameRoom room = controller.Room;
+            if (ReferenceEquals(room, null) == true) return;
+
+            room.Broadcast(new UpdateCreatureStateBroadcast() { CreatureID = controller.ID, NewState = ECreatureState.Idle });
         }
 
         public override void OnUpdate()

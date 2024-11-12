@@ -29,6 +29,11 @@ namespace Server.Game.MonsterState
         public override void OnEnter()
         {
             isChasing = ReferenceEquals(controller.Target, null) == false;
+
+            GameRoom room = controller.Room;
+            if (ReferenceEquals(room, null) == true) return;
+
+            room.Broadcast(new UpdateCreatureStateBroadcast() { CreatureID = controller.ID, NewState = ECreatureState.Move });
         }
 
         public override void OnUpdate()

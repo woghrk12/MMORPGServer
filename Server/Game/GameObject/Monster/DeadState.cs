@@ -15,5 +15,17 @@ namespace Server.Game.MonsterState
         public DeadState(Monster controller) : base(controller) { }
 
         #endregion Constructor
+
+        #region Methods
+
+        public override void OnEnter()
+        {
+            GameRoom room = controller.Room;
+            if (ReferenceEquals(room, null) == true) return;
+
+            room.Broadcast(new UpdateCreatureStateBroadcast() { CreatureID = controller.ID, NewState = ECreatureState.Dead });
+        }
+
+        #endregion Methods
     }
 }
