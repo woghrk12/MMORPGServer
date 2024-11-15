@@ -7,11 +7,33 @@ namespace Server.Game
     {
         #region Variables
 
+        private Dictionary<ECreatureState, State> stateDictionary = new();
+        private State curState = null;
+
         private long nextDetectionTicks = 0;
 
         #endregion Variables
 
         #region Properties
+
+        public override ECreatureState CurState
+        {
+            set
+            {
+                if (stateDictionary.ContainsKey(value) == false) return;
+
+                if (ReferenceEquals(curState, null) == false)
+                {
+                    if (curState.StateID == value) return;
+
+                    curState.OnExit();
+                }
+
+                curState = stateDictionary[value];
+                curState.OnEnter();
+            }
+            get => ReferenceEquals(curState, null) == false ? curState.StateID : ECreatureState.Idle;
+        }
 
         public int PatrolRange { private set; get; }
         public Pos PatrolPos { set; get; }
@@ -71,6 +93,13 @@ namespace Server.Game
         }
 
         #region Events
+
+        protected sealed override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            curState?.OnUpdate();
+        }
 
         public override void OnDamaged(GameObject attacker, int damage)
         {

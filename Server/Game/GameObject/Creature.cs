@@ -7,9 +7,6 @@ namespace Server.Game
     {
         #region Variables
 
-        protected Dictionary<ECreatureState, State> stateDictionary = new();
-        protected State curState = null;
-
         private EMoveDirection moveDirection = EMoveDirection.None;
 
         private CreatureStat stat = new();
@@ -24,24 +21,7 @@ namespace Server.Game
 
         #region Properties
 
-        public ECreatureState CurState
-        {
-            set
-            {
-                if (stateDictionary.ContainsKey(value) == false) return;
-
-                if (ReferenceEquals(curState, null) == false)
-                {
-                    if (curState.StateID == value) return;
-
-                    curState.OnExit();
-                }
-
-                curState = stateDictionary[value];
-                curState.OnEnter();
-            }
-            get => ReferenceEquals(curState, null) == false ? curState.StateID : ECreatureState.Idle;
-        }
+        public virtual ECreatureState CurState { set; get; }
 
         public EMoveDirection MoveDirection
         {
@@ -144,13 +124,6 @@ namespace Server.Game
         }
 
         #region Events
-
-        protected sealed override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            curState?.OnUpdate();
-        }
 
         public virtual void OnDamaged(GameObject attacker, int damage)
         {
