@@ -632,7 +632,6 @@ namespace Server.Game
 
             var completeAttackAction = (int id) =>
             {
-                Console.WriteLine("Complete Attack");
                 EGameObjectType type = ObjectManager.GetObjectTypeByID(id);
 
                 if (type != EGameObjectType.Monster) return;
@@ -643,7 +642,6 @@ namespace Server.Game
                 m.MonsterState = EMonsterState.IDLE;
             };
 
-            Console.WriteLine("Push Complete Attack");
             Push(completeAttackAction, monsterID, attackStat.PostDelayTicks);
         }
 
