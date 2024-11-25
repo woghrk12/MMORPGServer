@@ -34,7 +34,7 @@ namespace Server.Game
             GameRoom room = controller.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.PerformAttack(controller.ID, attackID);
+            room.PerformMonsterAttack(controller.ID, attackID);
         }
 
         #endregion Methods

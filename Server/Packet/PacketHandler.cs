@@ -60,7 +60,7 @@ namespace Server
             GameRoom room = character.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.PerformAttack(character.ID, packet.AttackID);
+            room.PerformCharacterAttack(character.ID, packet.AttackID);
         }
 
         public static void HandleCharacterReviveRequest(ClientSession session, IMessage message)

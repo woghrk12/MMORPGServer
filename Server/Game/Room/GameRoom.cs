@@ -26,6 +26,11 @@ namespace Server.Game
 
             // Temp
             Monster monster = ObjectManager.Instance.Add<Monster>();
+            if (DataManager.MonsterStatDictionary.TryGetValue(1, out Data.MonsterStat stat) == false) return;
+            monster.Name = $"{stat.Name}_{monster.ID}";
+            monster.Level = 1;
+            monster.CurHp = monster.MaxHp = stat.MaxHpDictionary[monster.Level];
+            monster.AttackPower = stat.AttackPowerDictionary[monster.Level];
             monster.Position = new Pos(0, 2);
             monster.MoveSpeed = 3;
 
@@ -71,8 +76,6 @@ namespace Server.Game
         public void AddObject(GameObject gameObject) => Push(AddObject_T, gameObject);
 
         public void RemoveObject(int oldObjectID) => Push(RemoveObject_T, oldObjectID);
-
-        public void PerformAttack(int creatureID, int attackID) => Push(PerformAttack_T, creatureID, attackID);
 
         public void ReviveCreature(int creatureID, Pos revivePos) => Push(ReviveCreature_T, creatureID, revivePos);
 
@@ -482,45 +485,26 @@ namespace Server.Game
             Broadcast(MoveBroadcastPacket);
         }
 
-        private void PerformAttack_T(int creatureID, int attackID)
+        public void PerformCharacterAttack(int characterID, int attackID) => Push(PerformCharacterAttack_T, characterID, attackID);
+
+        private void PerformCharacterAttack_T(int characterID, int attackID)
         {
-            EGameObjectType type = ObjectManager.GetObjectTypeByID(creatureID);
+            EGameObjectType type = ObjectManager.GetObjectTypeByID(characterID);
 
-            Creature attacker;
-
-            switch (type)
-            {
-                case EGameObjectType.Character:
-                    if (CharacterDictionary.TryGetValue(creatureID, out Character character) == false) return;
-
-                    attacker = character;
-
-                    break;
-
-                case EGameObjectType.Monster:
-                    if (MonsterDictionary.TryGetValue(creatureID, out Monster monster) == false) return;
-
-                    attacker = monster;
-
-                    break;
-
-                default:
-                    Console.WriteLine($"Unattackable GameObject Type. ID : {creatureID} Type : {type}");
-
-                    return;
-            }
+            if (type != EGameObjectType.Character) return;
+            if (CharacterDictionary.TryGetValue(characterID, out Character character) == false) return;
 
             if (DataManager.AttackStatDictionary.TryGetValue(attackID, out Data.AttackStat attackStat) == false) return;
-            if (attacker.CheckCanAttack(attackStat) == false) return;
+            if (character.CheckCanAttack(attackStat) == false) return;
 
-            attacker.CurState = ECreatureState.Attack;
-            attacker.AttackStat = attackStat;
+            character.AttackStat = attackStat;
+            character.CurState = ECreatureState.Attack;
 
             PerformAttackBroadcast performAttackBroadcastPacket = new()
             {
-                CreatureID = attacker.ID,
+                CreatureID = character.ID,
                 AttackID = attackID,
-                FacingDirection = attacker.FacingDirection
+                FacingDirection = character.FacingDirection
             };
 
             Broadcast(performAttackBroadcastPacket);
@@ -530,7 +514,7 @@ namespace Server.Game
                 case EAttackType.Melee:
                     for (int i = 1; i <= attackStat.Range; i++)
                     {
-                        Pos attackPos = Utility.GetFrontPos(attacker.Position, attacker.FacingDirection, i);
+                        Pos attackPos = Utility.GetFrontPos(character.Position, character.FacingDirection, i);
 
                         if (Map.Find(attackPos, out List<GameObject> objectList) == false) continue;
 
@@ -541,7 +525,7 @@ namespace Server.Game
                             if (ReferenceEquals(damagable, null) == true) continue;
 
                             Console.WriteLine($"Creature OnDamaged. Name : {damagable.Name}");
-                            damagable.OnDamaged(attacker, attacker.AttackPower * attackStat.CoeffDictionary[attacker.Level]);
+                            damagable.OnDamaged(character, character.AttackPower * attackStat.CoeffDictionary[character.Level]);
                         }
                     }
 
@@ -553,11 +537,11 @@ namespace Server.Game
                     // TODO : Add the logic to generate different projectiles based on attack data
                     Arrow arrow = ObjectManager.Instance.Add<Arrow>();
 
-                    arrow.Owner = attacker;
+                    arrow.Owner = character;
                     arrow.AttackStat = attackStat;
                     arrow.Name = projectileStat.Name;
-                    arrow.Position = new Pos(attacker.Position.X, attacker.Position.Y);
-                    arrow.MoveDirection = attacker.FacingDirection;
+                    arrow.Position = new Pos(character.Position.X, character.Position.Y);
+                    arrow.MoveDirection = character.FacingDirection;
                     arrow.MoveSpeed = projectileStat.Speed;
                     arrow.IsCollidable = false;
 
@@ -566,41 +550,101 @@ namespace Server.Game
                     break;
             }
 
-            Push(CompleteAttack_T, creatureID, attackStat.PostDelayTicks);
+            var completeAttackAction = (int id) =>
+            {
+                EGameObjectType type = ObjectManager.GetObjectTypeByID(id);
+
+                if (type != EGameObjectType.Character) return;
+                if (CharacterDictionary.TryGetValue(id, out Character c) == false) return;
+
+                if (c.CurState != ECreatureState.Attack) return;
+
+                c.CurState = ECreatureState.Idle;
+            };
+
+            Push(completeAttackAction, characterID, attackStat.PostDelayTicks);
         }
 
-        private void CompleteAttack_T(int creatureID)
+        public void PerformMonsterAttack(int monsterID, int attackID) => Push(PerformMonsterAttack_T, monsterID, attackID);
+
+        private void PerformMonsterAttack_T(int monsterID, int attackID)
         {
-            Console.WriteLine("CompleteAttack");
-            EGameObjectType type = ObjectManager.GetObjectTypeByID(creatureID);
+            EGameObjectType type = ObjectManager.GetObjectTypeByID(monsterID);
 
-            Creature attacker;
+            if (type != EGameObjectType.Monster) return;
+            if (MonsterDictionary.TryGetValue(monsterID, out Monster monster) == false) return;
 
-            switch (type)
+            if (DataManager.AttackStatDictionary.TryGetValue(attackID, out Data.AttackStat attackStat) == false) return;
+            if (monster.CheckCanAttack(attackStat) == false) return;
+
+            monster.AttackStat = attackStat;
+            monster.CurState = ECreatureState.Attack;
+
+            PerformAttackBroadcast performAttackBroadcastPacket = new()
             {
-                case EGameObjectType.Character:
-                    if (CharacterDictionary.TryGetValue(creatureID, out Character character) == false) return;
+                CreatureID = monster.ID,
+                AttackID = attackID,
+                FacingDirection = monster.FacingDirection
+            };
 
-                    attacker = character;
+            Broadcast(performAttackBroadcastPacket);
+
+            switch (attackStat.AttackType)
+            {
+                case EAttackType.Melee:
+                    for (int i = 1; i <= attackStat.Range; i++)
+                    {
+                        Pos attackPos = Utility.GetFrontPos(monster.Position, monster.FacingDirection, i);
+
+                        if (Map.Find(attackPos, out List<GameObject> objectList) == false) continue;
+
+                        foreach (GameObject obj in objectList)
+                        {
+                            Creature damagable = obj as Creature;
+
+                            if (ReferenceEquals(damagable, null) == true) continue;
+
+                            Console.WriteLine($"Creature OnDamaged. Name : {damagable.Name}");
+                            damagable.OnDamaged(monster, monster.AttackPower * attackStat.CoeffDictionary[monster.Level]);
+                        }
+                    }
 
                     break;
 
-                case EGameObjectType.Monster:
-                    if (MonsterDictionary.TryGetValue(creatureID, out Monster monster) == false) return;
+                case EAttackType.Range:
+                    if (DataManager.ProjectileStatDictionary.TryGetValue(attackStat.ProjectileID, out Data.ProjectileStat projectileStat) == false) return;
 
-                    attacker = monster;
+                    // TODO : Add the logic to generate different projectiles based on attack data
+                    Arrow arrow = ObjectManager.Instance.Add<Arrow>();
+
+                    arrow.Owner = monster;
+                    arrow.AttackStat = attackStat;
+                    arrow.Name = projectileStat.Name;
+                    arrow.Position = new Pos(monster.Position.X, monster.Position.Y);
+                    arrow.MoveDirection = monster.FacingDirection;
+                    arrow.MoveSpeed = projectileStat.Speed;
+                    arrow.IsCollidable = false;
+
+                    Push(AddObject, arrow);
 
                     break;
-
-                default:
-                    Console.WriteLine($"Unattackable GameObject Type. ID : {creatureID} Type : {type}");
-
-                    return;
             }
 
-            if (attacker.CurState != ECreatureState.Attack) return;
+            var completeAttackAction = (int id) =>
+            {
+                Console.WriteLine("Complete Attack");
+                EGameObjectType type = ObjectManager.GetObjectTypeByID(id);
 
-            attacker.CurState = ECreatureState.Idle;
+                if (type != EGameObjectType.Monster) return;
+                if (MonsterDictionary.TryGetValue(id, out Monster m) == false) return;
+
+                if (m.CurState != ECreatureState.Attack) return;
+
+                m.MonsterState = EMonsterState.IDLE;
+            };
+
+            Console.WriteLine("Push Complete Attack");
+            Push(completeAttackAction, monsterID, attackStat.PostDelayTicks);
         }
 
         private void ReviveCreature_T(int creatureID, Pos revivePos)
