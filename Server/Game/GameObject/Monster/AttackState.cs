@@ -1,18 +1,27 @@
 using Google.Protobuf.Protocol;
 
-namespace Server.Game.MonsterState
+namespace Server.Game
 {
     public class AttackState : MonsterState
     {
+        #region Variables
+
+        private int attackID = -1;
+
+        #endregion Variables
+
         #region Properties
 
-        public sealed override ECreatureState StateID => ECreatureState.Attack;
+        public override EMonsterState MonsterStateID => EMonsterState.ATTACK;
 
         #endregion Properties
 
         #region Constructor
 
-        public AttackState(Monster controller) : base(controller) { }
+        public AttackState(Monster controller, int attackID) : base(controller)
+        {
+            this.attackID = attackID;
+        }
 
         #endregion Constructor
 
@@ -20,10 +29,12 @@ namespace Server.Game.MonsterState
 
         public override void OnEnter()
         {
+            controller.CurState = ECreatureState.Attack;
+
             GameRoom room = controller.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            room.Broadcast(new UpdateCreatureStateBroadcast() { CreatureID = controller.ID, NewState = ECreatureState.Attack });
+            room.PerformAttack(controller.ID, attackID);
         }
 
         #endregion Methods

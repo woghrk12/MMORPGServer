@@ -10,6 +10,7 @@ namespace Server.Data
         public int PatrolRange;
         public int DetectionRange;
         public int ChaseRange;
+        public int AttackID;
     }
 
     [Serializable]

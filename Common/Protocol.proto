@@ -24,11 +24,10 @@ enum EMessageID
     MOVE_BROADCAST = 16;
     PERFORM_ATTACK_REQUEST = 17;
     PERFORM_ATTACK_BROADCAST = 18;
-    ATTACK_COMPLETE_BROADCAST = 19;
-    HIT_BROADCAST = 20;
-    CREATURE_DEAD_BROADCAST = 21;
-    CHARACTER_REVIVE_REQUEST = 22;
-    CHARACTER_REVIVE_BROADCAST = 23;
+    HIT_BROADCAST = 19;
+    CREATURE_DEAD_BROADCAST = 20;
+    CHARACTER_REVIVE_REQUEST = 21;
+    CHARACTER_REVIVE_BROADCAST = 22;
 }
 
 enum EClientState
@@ -248,11 +247,7 @@ message PerformAttackBroadcast
 {
     int32 creatureID = 1;
     int32 attackID = 2;
-}
-
-message AttackCompleteBroadcast
-{
-    int32 creatureID = 1;
+    EMoveDirection facingDirection = 3;
 }
 
 message HitBroadcast

@@ -7,6 +7,8 @@ namespace Server.Game
     {
         #region Variables
 
+        protected ECreatureState curState = ECreatureState.Idle;
+
         private EMoveDirection moveDirection = EMoveDirection.None;
 
         private CreatureStat stat = new();
@@ -15,13 +17,25 @@ namespace Server.Game
         private event Action<int> maxHpModified = null;
         private event Action<int> attackPowerModified = null;
 
-        private long attackEndTicks = 0;
-
         #endregion Variables
 
         #region Properties
 
-        public virtual ECreatureState CurState { set; get; }
+        public ECreatureState CurState
+        {
+            set
+            {
+                if (curState == value) return;
+
+                curState = value;
+
+                GameRoom room = Room;
+                if (ReferenceEquals(room, null) == true) return;
+
+                room.Broadcast(new UpdateCreatureStateBroadcast() { CreatureID = ID, NewState = value });
+            }
+            get => curState;
+        }
 
         public EMoveDirection MoveDirection
         {
@@ -97,31 +111,7 @@ namespace Server.Game
 
         #region Methods
 
-        public void BeginAttackPostDelayCheck(long attackEndTicks)
-        {
-            this.attackEndTicks = attackEndTicks;
-
-            Updated += CheckAttackPostDelay;
-        }
-
-        private void CheckAttackPostDelay()
-        {
-            if (attackEndTicks > Environment.TickCount64) return;
-
-            CurState = ECreatureState.Idle;
-
-            AttackCompleteBroadcast packet = new()
-            {
-                CreatureID = ID
-            };
-
-            foreach (Character character in Room.CharacterDictionary.Values)
-            {
-                character.Session.Send(packet);
-            }
-
-            Updated -= CheckAttackPostDelay;
-        }
+        public virtual bool CheckCanAttack(AttackStat attackStat) { return true; }
 
         #region Events
 

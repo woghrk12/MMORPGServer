@@ -1,12 +1,18 @@
-namespace Server.Game.MonsterState
+namespace Server.Game
 {
-    public abstract class MonsterState : State
+    public abstract class MonsterState
     {
         #region Variables
 
         protected Monster controller = null;
 
         #endregion Variables
+
+        #region Properties
+
+        public abstract EMonsterState MonsterStateID { get; }
+
+        #endregion Properties
 
         #region Constructor
 
@@ -16,5 +22,15 @@ namespace Server.Game.MonsterState
         }
 
         #endregion Constructor
+
+        #region Methods
+
+        public virtual void OnEnter() { }
+
+        public virtual void OnUpdate() { }
+
+        public virtual void OnExit() { }
+
+        #endregion Methods
     }
 }

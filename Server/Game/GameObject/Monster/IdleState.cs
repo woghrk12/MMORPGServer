@@ -1,20 +1,18 @@
 using Google.Protobuf.Protocol;
-using System;
 
-namespace Server.Game.MonsterState
+namespace Server.Game
 {
     public class IdleState : MonsterState
     {
         #region Variables
 
         private long nextBehaviourTicks = 0;
-        private Random rand = new();
 
         #endregion Variables
 
         #region Properties
 
-        public sealed override ECreatureState StateID => ECreatureState.Idle;
+        public override EMonsterState MonsterStateID => EMonsterState.IDLE;
 
         #endregion Properties
 
@@ -28,12 +26,9 @@ namespace Server.Game.MonsterState
 
         public override void OnEnter()
         {
+            controller.CurState = ECreatureState.Idle;
+
             nextBehaviourTicks = Environment.TickCount64 + 3000;
-
-            GameRoom room = controller.Room;
-            if (ReferenceEquals(room, null) == true) return;
-
-            room.Broadcast(new UpdateCreatureStateBroadcast() { CreatureID = controller.ID, NewState = ECreatureState.Idle });
         }
 
         public override void OnUpdate()
@@ -43,11 +38,7 @@ namespace Server.Game.MonsterState
             GameRoom room = controller.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            int patrolRange = controller.PatrolRange;
-            controller.PatrolPos = controller.Position + new Pos(rand.Next(-patrolRange, patrolRange), rand.Next(-patrolRange, patrolRange));
-
-            Console.WriteLine($"Patrol Pos : ({controller.PatrolPos.X}, {controller.PatrolPos.Y}, {room.Map.Collision[controller.PatrolPos.Y, controller.PatrolPos.X].ContainsKey(-1)})");
-            controller.CurState = ECreatureState.Move;
+            controller.MonsterState = ReferenceEquals(controller.Target, null) == true ? EMonsterState.PATROL : EMonsterState.CHASING;
         }
 
         #endregion Methods

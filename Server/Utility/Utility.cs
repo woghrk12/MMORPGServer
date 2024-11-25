@@ -39,5 +39,23 @@ namespace Server.Game
 
             return frontPos;
         }
+
+        public static EMoveDirection GetDirection(Pos from, Pos to)
+        {
+            Vector2Int vector = new Vector2Int(to.X - from.X, to.Y - from.Y);
+
+            if (vector == Vector2Int.Zero) return EMoveDirection.None;
+
+            if (vector.X != 0 && vector.Y == 0)
+            {
+                return vector.X > 0 ? EMoveDirection.Right : EMoveDirection.Left;
+            }
+            else if (vector.X == 0 && vector.Y != 0)
+            {
+                return vector.Y > 0 ? EMoveDirection.Up : EMoveDirection.Down;
+            }
+
+            return EMoveDirection.None;
+        }
     }
 }

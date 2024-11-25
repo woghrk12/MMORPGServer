@@ -510,9 +510,8 @@ namespace Server.Game
                     return;
             }
 
-            if (attacker.CurState != ECreatureState.Idle) return;
-
             if (DataManager.AttackStatDictionary.TryGetValue(attackID, out Data.AttackStat attackStat) == false) return;
+            if (attacker.CheckCanAttack(attackStat) == false) return;
 
             attacker.CurState = ECreatureState.Attack;
             attacker.AttackStat = attackStat;
@@ -520,7 +519,8 @@ namespace Server.Game
             PerformAttackBroadcast performAttackBroadcastPacket = new()
             {
                 CreatureID = attacker.ID,
-                AttackID = attackID
+                AttackID = attackID,
+                FacingDirection = attacker.FacingDirection
             };
 
             Broadcast(performAttackBroadcastPacket);
@@ -540,6 +540,7 @@ namespace Server.Game
 
                             if (ReferenceEquals(damagable, null) == true) continue;
 
+                            Console.WriteLine($"Creature OnDamaged. Name : {damagable.Name}");
                             damagable.OnDamaged(attacker, attacker.AttackPower * attackStat.CoeffDictionary[attacker.Level]);
                         }
                     }
@@ -564,6 +565,42 @@ namespace Server.Game
 
                     break;
             }
+
+            Push(CompleteAttack_T, creatureID, attackStat.PostDelayTicks);
+        }
+
+        private void CompleteAttack_T(int creatureID)
+        {
+            Console.WriteLine("CompleteAttack");
+            EGameObjectType type = ObjectManager.GetObjectTypeByID(creatureID);
+
+            Creature attacker;
+
+            switch (type)
+            {
+                case EGameObjectType.Character:
+                    if (CharacterDictionary.TryGetValue(creatureID, out Character character) == false) return;
+
+                    attacker = character;
+
+                    break;
+
+                case EGameObjectType.Monster:
+                    if (MonsterDictionary.TryGetValue(creatureID, out Monster monster) == false) return;
+
+                    attacker = monster;
+
+                    break;
+
+                default:
+                    Console.WriteLine($"Unattackable GameObject Type. ID : {creatureID} Type : {type}");
+
+                    return;
+            }
+
+            if (attacker.CurState != ECreatureState.Attack) return;
+
+            attacker.CurState = ECreatureState.Idle;
         }
 
         private void ReviveCreature_T(int creatureID, Pos revivePos)
