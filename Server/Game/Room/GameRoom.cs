@@ -392,7 +392,15 @@ namespace Server.Game
             if (type != EGameObjectType.Character) return;
             if (CharacterDictionary.TryGetValue(characterID, out Character character) == false) return;
 
-            character.CurState = moveDirection != EMoveDirection.None ? ECreatureState.Move : ECreatureState.Idle;
+            if (character.CurState != ECreatureState.Idle || character.CurState != ECreatureState.Move) return;
+
+            if (moveDirection == EMoveDirection.None)
+            {
+                character.CurState = ECreatureState.Idle;
+                return;
+            }
+
+            character.CurState = ECreatureState.Move;
             character.MoveDirection = moveDirection;
 
             Pos frontPos = Utility.GetFrontPos(character.Position, moveDirection);
@@ -433,7 +441,15 @@ namespace Server.Game
             if (type != EGameObjectType.Monster) return;
             if (MonsterDictionary.TryGetValue(monsterID, out Monster monster) == false) return;
 
-            monster.CurState = moveDirection != EMoveDirection.None ? ECreatureState.Move : ECreatureState.Idle;
+            if (monster.CurState != ECreatureState.Idle || monster.CurState != ECreatureState.Move) return;
+
+            if (moveDirection == EMoveDirection.None)
+            {
+                monster.CurState = ECreatureState.Idle;
+                return;
+            }
+
+            monster.CurState = ECreatureState.Move;
             monster.MoveDirection = moveDirection;
 
             Pos frontPos = Utility.GetFrontPos(monster.Position, moveDirection);
