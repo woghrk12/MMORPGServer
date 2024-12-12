@@ -1,6 +1,5 @@
 using System.Net;
 using Server.Data;
-using Server.DB;
 using Server.Game;
 
 namespace Server
