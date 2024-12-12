@@ -54,12 +54,7 @@ namespace Server.Game
         {
             ObjectType = EGameObjectType.Monster;
             IsCollidable = true;
-            /*
-            stateDictionary.Add(ECreatureState.Idle, new IdleState(this));
-            stateDictionary.Add(ECreatureState.Move, new MoveState(this));
-            stateDictionary.Add(ECreatureState.Attack, new AttackState(this));
-            stateDictionary.Add(ECreatureState.Dead, new DeadState(this));
-            */
+
             if (DataManager.MonsterStatDictionary.TryGetValue(1, out Data.MonsterStat statData) == false) return;
 
             // TODO : The stat needs to be adjusted based on the monster's level
