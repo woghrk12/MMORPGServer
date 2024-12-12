@@ -181,7 +181,7 @@ namespace Server.Game
         private int[] dy = { 0, 0, -1, 1 };
         private int[] cost = { 10, 10, 10, 10 };
 
-        public bool FindPath(Pos startPos, Pos destPos, out List<Pos> path, bool isIgnoreWall = false, bool isIgnoreObject = false)
+        public bool FindPath(Pos startPos, Pos destPos, out List<Pos> path, int maxCost = -1, bool isIgnoreWall = false, bool isIgnoreObject = false)
         {
             path = null;
 
@@ -238,6 +238,9 @@ namespace Server.Game
                     if (closedArray[nextCellPos.Y, nextCellPos.X] == true) continue;
 
                     int g = node.G + cost[i];
+
+                    if (maxCost > 0 && g > maxCost) continue;
+
                     int h = Utility.CalculateDistance(nextCellPos, destCellPos);
 
                     if (openArray[nextCellPos.Y, nextCellPos.X] < g + h) continue;
