@@ -73,7 +73,7 @@ namespace Server.Game
                 return;
             }
 
-            if (room.Map.FindPath(controller.Position, target.Position, out List<Pos> path) == false || path.Count > chaseRange)
+            if (room.Map.FindPath(controller.Position, target.Position, out List<Pos> path, chaseRange) == false)
             {
                 controller.Target = null;
                 controller.MonsterState = EMonsterState.IDLE;
