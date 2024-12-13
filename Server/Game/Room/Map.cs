@@ -239,7 +239,7 @@ namespace Server.Game
 
                     int g = node.G + cost[i];
 
-                    if (maxCost > 0 && g > maxCost) continue;
+                    if (maxCost > 0 && g > maxCost * 10) continue;
 
                     int h = Utility.CalculateDistance(nextCellPos, destCellPos);
 

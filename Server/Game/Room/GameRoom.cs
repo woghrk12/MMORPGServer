@@ -32,7 +32,7 @@ namespace Server.Game
             monster.Level = 1;
             monster.CurHp = monster.MaxHp = stat.MaxHpDictionary[monster.Level];
             monster.AttackPower = stat.AttackPowerDictionary[monster.Level];
-            monster.Position = new Pos(0, 4);
+            monster.Position = new Pos(1, 0);
             monster.MoveSpeed = 3;
 
             AddObject(monster);
@@ -396,7 +396,7 @@ namespace Server.Game
             if (type != EGameObjectType.Character) return;
             if (CharacterDictionary.TryGetValue(characterID, out Character character) == false) return;
 
-            if (character.CurState != ECreatureState.Idle || character.CurState != ECreatureState.Move) return;
+            if (character.CurState != ECreatureState.Idle && character.CurState != ECreatureState.Move) return;
 
             if (moveDirection == EMoveDirection.None)
             {

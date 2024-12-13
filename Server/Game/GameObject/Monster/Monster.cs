@@ -85,14 +85,23 @@ namespace Server.Game
             GameRoom room = Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            Character target = room.FindCharacter(p =>
+            Character target = Target;
+            if (ReferenceEquals(target, null) == false)
             {
-                return room.Map.FindPath(Position, p.Position, out List<Pos> path, detectionRange);
-            });
+                if (ReferenceEquals(room, target.Room) == true)
+                {
+                    Target = null;
+                    return;
+                }
 
-            if (ReferenceEquals(target, null) == true) return;
+                if (room.Map.FindPath(Position, target.Position, out List<Pos> path, detectionRange) == true)
+                {
+                    Target = null;
+                    return;
+                }
+            }
 
-            Target = target;
+            Target = room.FindCharacter(p => room.Map.FindPath(Position, p.Position, out List<Pos> path, detectionRange));
         }
 
         #region Events
