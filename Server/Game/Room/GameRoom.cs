@@ -30,7 +30,7 @@ namespace Server.Game
             monster.Level = 1;
             monster.CurHp = monster.MaxHp = stat.MaxHpDictionary[monster.Level];
             monster.AttackPower = stat.AttackPowerDictionary[monster.Level];
-            monster.Position = new Pos(0, 2);
+            monster.Position = new Pos(0, 4);
             monster.MoveSpeed = 3;
 
             AddObject(monster);
