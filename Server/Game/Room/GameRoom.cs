@@ -5,6 +5,8 @@ namespace Server.Game
 {
     public class GameRoom : TaskQueue
     {
+        private object lockObj = new();
+
         #region Properties
 
         public int RoomID { set; get; }
@@ -42,26 +44,29 @@ namespace Server.Game
 
         public void Update()
         {
-            // In this Update logic, only the object's stat can be modified.
-            // The object's position can only be queried.
-            // The stats or state of other objects cannot be modified.
-            foreach (Character character in CharacterDictionary.Values)
+            lock (lockObj)
             {
-                character.Update();
-            }
+                // In this Update logic, only the object's stat can be modified.
+                // The object's position can only be queried.
+                // The stats or state of other objects cannot be modified.
+                foreach (Character character in CharacterDictionary.Values)
+                {
+                    character.Update();
+                }
 
-            foreach (Monster monster in MonsterDictionary.Values)
-            {
-                monster.Update();
-            }
+                foreach (Monster monster in MonsterDictionary.Values)
+                {
+                    monster.Update();
+                }
 
-            foreach (Projectile projectile in ProjectileDictionary.Values)
-            {
-                projectile.Update();
-            }
+                foreach (Projectile projectile in ProjectileDictionary.Values)
+                {
+                    projectile.Update();
+                }
 
-            // In this Flush logic, the object's action can be executed.
-            Flush();
+                // In this Flush logic, the object's action can be executed.
+                Flush();
+            }
         }
 
         public void Broadcast(IMessage packet, int excludedPlayerID = -1) => Push(Broadcast_T, packet, excludedPlayerID);
@@ -440,7 +445,7 @@ namespace Server.Game
             if (type != EGameObjectType.Monster) return;
             if (MonsterDictionary.TryGetValue(monsterID, out Monster monster) == false) return;
 
-            if (monster.CurState != ECreatureState.Idle || monster.CurState != ECreatureState.Move) return;
+            if (monster.CurState != ECreatureState.Idle && monster.CurState != ECreatureState.Move) return;
 
             if (moveDirection == EMoveDirection.None)
             {
