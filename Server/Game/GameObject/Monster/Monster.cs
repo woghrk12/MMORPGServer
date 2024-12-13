@@ -87,7 +87,7 @@ namespace Server.Game
 
             Character target = room.FindCharacter(p =>
             {
-                return Utility.CalculateDistance(p.Position, Position) <= detectionRange;
+                return room.Map.FindPath(Position, p.Position, out List<Pos> path, detectionRange);
             });
 
             if (ReferenceEquals(target, null) == true) return;
