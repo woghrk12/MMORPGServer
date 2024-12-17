@@ -69,23 +69,23 @@ namespace Server.Game
             {
                 new NoTargetDecision(this, EMonsterState.PATROL, statData.DetectionRange),
                 new TargetInRangeDecision(this, EMonsterState.ATTACK, 1),
-                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.DetectionRange),
+                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.ChaseRange),
             }));
             transitionDictionary.Add(EMonsterState.PATROL, new Transition(this, EMonsterState.PATROL, new List<Decision>
             {
                 new NoTargetDecision(this, EMonsterState.PATROL, statData.DetectionRange),
                 new TargetInRangeDecision(this, EMonsterState.ATTACK, 1),
-                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.DetectionRange)
+                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.ChaseRange)
             }));
             transitionDictionary.Add(EMonsterState.CHASING, new Transition(this, EMonsterState.IDLE, new List<Decision>
             {
                 new TargetInRangeDecision(this, EMonsterState.ATTACK, 1),
-                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.DetectionRange)
+                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.ChaseRange)
             }));
             transitionDictionary.Add(EMonsterState.ATTACK, new Transition(this, EMonsterState.IDLE, new List<Decision>
             {
                 new TargetInRangeDecision(this, EMonsterState.ATTACK, 1),
-                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.DetectionRange)
+                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.ChaseRange)
             }));
 
             CurMonsterState = EMonsterState.IDLE;
