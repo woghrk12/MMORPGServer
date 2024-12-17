@@ -6,18 +6,18 @@ namespace Server.Game.MonsterAI
 
         private Monster controller = null;
 
-        private EMonsterState targetState = EMonsterState.IDLE;
+        private EMonsterState fallbackState = EMonsterState.IDLE;
         private List<Decision> decisionList = null;
 
         #endregion Variables
 
         #region Constructor
 
-        public Transition(Monster controller, EMonsterState targetState, List<Decision> decisionList)
+        public Transition(Monster controller, EMonsterState fallbackState, List<Decision> decisionList)
         {
             this.controller = controller;
 
-            this.targetState = targetState;
+            this.fallbackState = fallbackState;
             this.decisionList = decisionList;
         }
 
@@ -25,18 +25,18 @@ namespace Server.Game.MonsterAI
 
         #region Methods
 
-        public EMonsterState Decide()
+        public EMonsterState Evaluate()
         {
             if (ReferenceEquals(decisionList, null) == true) return EMonsterState.IDLE;
 
             foreach (Decision decision in decisionList)
             {
-                if (decision.Decide() == true) continue;
+                if (decision.Decide() == false) continue;
 
-                return decision.FallbackState;
+                return decision.TargetState;
             }
 
-            return targetState;
+            return fallbackState;
         }
 
         #endregion Methods

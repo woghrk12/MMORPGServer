@@ -10,17 +10,17 @@ namespace Server.Game.MonsterAI
 
         #region Properties
 
-        public EMonsterState FallbackState { get; }
+        public EMonsterState TargetState { get; }
 
         #endregion Properties
 
         #region Constructor
 
-        public Decision(Monster controller, EMonsterState fallbackState)
+        public Decision(Monster controller, EMonsterState targetState)
         {
             this.controller = controller;
 
-            FallbackState = fallbackState;
+            TargetState = targetState;
         }
 
         #endregion Constructor
