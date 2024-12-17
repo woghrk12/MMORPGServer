@@ -1,8 +1,8 @@
 using Google.Protobuf.Protocol;
 
-namespace Server.Game
+namespace Server.Game.MonsterAI
 {
-    public class IdleState : MonsterState
+    public class IdleState : State
     {
         #region Variables
 
@@ -29,6 +29,7 @@ namespace Server.Game
             controller.CurState = ECreatureState.Idle;
 
             nextBehaviourTicks = Environment.TickCount64 + 3000;
+            IsTransitionBlocked = true;
         }
 
         public override void OnUpdate()
@@ -38,7 +39,7 @@ namespace Server.Game
             GameRoom room = controller.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            controller.MonsterState = ReferenceEquals(controller.Target, null) == true ? EMonsterState.PATROL : EMonsterState.CHASING;
+            IsTransitionBlocked = false;
         }
 
         #endregion Methods

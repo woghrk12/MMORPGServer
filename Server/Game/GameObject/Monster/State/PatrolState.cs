@@ -1,15 +1,15 @@
+using System.Data;
 using Google.Protobuf.Protocol;
 
-namespace Server.Game
+namespace Server.Game.MonsterAI
 {
-    public class PatrolState : MonsterState
+    public class PatrolState : State
     {
         #region Variables
 
         private long nextMoveTicks = 0;
 
         private int patrolRange = 0;
-        private Pos patrolPos = new Pos(0, 0);
 
         #endregion Variables
 
@@ -34,32 +34,32 @@ namespace Server.Game
         {
             controller.CurState = ECreatureState.Move;
 
+            IsTransitionBlocked = true;
             nextMoveTicks = 0;
 
             // TODO : Predefine the locations where movement is possible
             Random rand = new();
-            patrolPos = controller.Position + new Pos(rand.Next(-patrolRange, patrolRange), rand.Next(-patrolRange, patrolRange));
+            controller.TargetPos = controller.Position + new Pos(rand.Next(-patrolRange, patrolRange), rand.Next(-patrolRange, patrolRange));
         }
 
         public override void OnUpdate()
         {
-            if (nextMoveTicks >= Environment.TickCount64) return;
+            if (nextMoveTicks >= Environment.TickCount64)
+            {
+                IsTransitionBlocked = true;
+                return;
+            }
 
             GameRoom room = controller.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            if (ReferenceEquals(controller.Target, null) == false)
+            if (room.Map.FindPath(controller.Position, controller.TargetPos, out List<Pos> path) == false)
             {
-                controller.MonsterState = EMonsterState.CHASING;
+                controller.CurMonsterState = EMonsterState.IDLE;
                 return;
             }
 
-            if (room.Map.FindPath(controller.Position, patrolPos, out List<Pos> path) == false)
-            {
-                controller.MonsterState = EMonsterState.IDLE;
-                return;
-            }
-
+            IsTransitionBlocked = false;
             nextMoveTicks = Environment.TickCount64 + (long)(1000f / controller.MoveSpeed);
 
             room.MoveMonster(controller.ID, Utility.GetDirection(controller.Position, path[1]));

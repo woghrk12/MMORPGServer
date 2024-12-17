@@ -11,6 +11,7 @@ namespace Server.Game.MonsterAI
         #region Properties
 
         public abstract EMonsterState MonsterStateID { get; }
+        public bool IsTransitionBlocked { protected set; get; } = false;
 
         #endregion Properties
 

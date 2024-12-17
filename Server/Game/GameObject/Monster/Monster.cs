@@ -1,5 +1,5 @@
 using Google.Protobuf.Protocol;
-using Server.Data;
+using Server.Game.MonsterAI;
 
 namespace Server.Game
 {
@@ -15,8 +15,9 @@ namespace Server.Game
     {
         #region Variables
 
-        private Dictionary<EMonsterState, MonsterState> stateDictionary = new();
-        private MonsterState monsterState = null;
+        private State curMonsterState = null;
+        private Dictionary<EMonsterState, State> stateDictionary = new();
+        private Dictionary<EMonsterState, Transition> transitionDictionary = new();
 
         private long nextDetectionTicks = 0;
         private int detectionRange = 0;
@@ -25,26 +26,27 @@ namespace Server.Game
 
         #region Properties
 
-        public EMonsterState MonsterState
+        public EMonsterState CurMonsterState
         {
             set
             {
                 if (stateDictionary.ContainsKey(value) == false) return;
 
-                if (ReferenceEquals(monsterState, null) == false)
+                if (ReferenceEquals(curMonsterState, null) == false)
                 {
-                    if (monsterState.MonsterStateID == value) return;
+                    if (curMonsterState.MonsterStateID == value) return;
 
-                    monsterState.OnExit();
+                    curMonsterState.OnExit();
                 }
 
-                monsterState = stateDictionary[value];
-                monsterState.OnEnter();
+                curMonsterState = stateDictionary[value];
+                curMonsterState.OnEnter();
             }
-            get => ReferenceEquals(monsterState, null) == false ? monsterState.MonsterStateID : EMonsterState.IDLE;
+            get => ReferenceEquals(curMonsterState, null) == false ? curMonsterState.MonsterStateID : EMonsterState.IDLE;
         }
 
         public Character Target { set; get; }
+        public Pos TargetPos { set; get; }
 
         #endregion Properties
 
@@ -68,41 +70,35 @@ namespace Server.Game
             stateDictionary.Add(EMonsterState.CHASING, new ChaseState(this, statData.ChaseRange));
             stateDictionary.Add(EMonsterState.ATTACK, new AttackState(this, statData.AttackID));
 
-            MonsterState = EMonsterState.IDLE;
+            transitionDictionary.Add(EMonsterState.IDLE, new Transition(this, EMonsterState.PATROL, new List<Decision>
+            {
+                new NoTargetDecision(this, EMonsterState.PATROL, statData.DetectionRange),
+                new TargetInRangeDecision(this, EMonsterState.ATTACK, 1),
+                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.DetectionRange),
+            }));
+            transitionDictionary.Add(EMonsterState.PATROL, new Transition(this, EMonsterState.PATROL, new List<Decision>
+            {
+                new NoTargetDecision(this, EMonsterState.PATROL, statData.DetectionRange),
+                new TargetInRangeDecision(this, EMonsterState.ATTACK, 1),
+                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.DetectionRange)
+            }));
+            transitionDictionary.Add(EMonsterState.CHASING, new Transition(this, EMonsterState.IDLE, new List<Decision>
+            {
+                new TargetInRangeDecision(this, EMonsterState.ATTACK, 1),
+                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.DetectionRange)
+            }));
+            transitionDictionary.Add(EMonsterState.ATTACK, new Transition(this, EMonsterState.IDLE, new List<Decision>
+            {
+                new TargetInRangeDecision(this, EMonsterState.ATTACK, 1),
+                new ReachableTargetDecision(this, EMonsterState.CHASING, statData.DetectionRange)
+            }));
 
-            Updated += DetectPlayer;
+            CurMonsterState = EMonsterState.IDLE;
         }
 
         #endregion Constructor
 
         #region Methods
-
-        private void DetectPlayer()
-        {
-            if (nextDetectionTicks > Environment.TickCount64) return;
-            nextDetectionTicks = Environment.TickCount64 + 1000;
-
-            GameRoom room = Room;
-            if (ReferenceEquals(room, null) == true) return;
-
-            Character target = Target;
-            if (ReferenceEquals(target, null) == false)
-            {
-                if (ReferenceEquals(room, target.Room) == true)
-                {
-                    Target = null;
-                    return;
-                }
-
-                if (room.Map.FindPath(Position, target.Position, out List<Pos> path, detectionRange) == true)
-                {
-                    Target = null;
-                    return;
-                }
-            }
-
-            Target = room.FindCharacter(p => room.Map.FindPath(Position, p.Position, out List<Pos> path, detectionRange));
-        }
 
         #region Events
 
@@ -110,7 +106,19 @@ namespace Server.Game
         {
             base.OnUpdate();
 
-            monsterState?.OnUpdate();
+            if (curMonsterState?.IsTransitionBlocked == false
+                && transitionDictionary.TryGetValue(curMonsterState.MonsterStateID, out Transition transition) == true)
+            {
+                EMonsterState newState = transition.Evaluate();
+
+                if (newState != curMonsterState.MonsterStateID)
+                {
+                    CurMonsterState = newState;
+                    return;
+                }
+            }
+
+            curMonsterState?.OnUpdate();
         }
 
         public override void OnDamaged(GameObject attacker, int damage)

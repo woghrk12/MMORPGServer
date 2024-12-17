@@ -659,7 +659,7 @@ namespace Server.Game
 
                 if (m.CurState != ECreatureState.Attack) return;
 
-                m.MonsterState = EMonsterState.IDLE;
+                m.CurMonsterState = EMonsterState.IDLE;
             };
 
             Push(completeAttackAction, monsterID, attackStat.PostDelayTicks);
