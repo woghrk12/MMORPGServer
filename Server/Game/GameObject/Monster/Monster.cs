@@ -19,9 +19,6 @@ namespace Server.Game
         private Dictionary<EMonsterState, State> stateDictionary = new();
         private Dictionary<EMonsterState, Transition> transitionDictionary = new();
 
-        private long nextDetectionTicks = 0;
-        private int detectionRange = 0;
-
         #endregion Variables
 
         #region Properties
@@ -62,8 +59,6 @@ namespace Server.Game
             // TODO : The stat needs to be adjusted based on the monster's level
             CurHp = MaxHp = statData.MaxHpDictionary[1];
             AttackPower = statData.AttackPowerDictionary[1];
-
-            detectionRange = statData.DetectionRange;
 
             stateDictionary.Add(EMonsterState.IDLE, new IdleState(this));
             stateDictionary.Add(EMonsterState.PATROL, new PatrolState(this, statData.PatrolRange));
