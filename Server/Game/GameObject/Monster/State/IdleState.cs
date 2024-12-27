@@ -14,6 +14,8 @@ namespace Server.Game.MonsterAI
 
         public override EMonsterState MonsterStateID => EMonsterState.IDLE;
 
+        public override bool IsTransitionBlocked => nextBehaviourTicks >= Environment.TickCount64;
+
         #endregion Properties
 
         #region Constructor
@@ -29,7 +31,6 @@ namespace Server.Game.MonsterAI
             controller.CurState = ECreatureState.Idle;
 
             nextBehaviourTicks = Environment.TickCount64 + 3000;
-            IsTransitionBlocked = true;
         }
 
         public override void OnUpdate()
@@ -39,7 +40,6 @@ namespace Server.Game.MonsterAI
             GameRoom room = controller.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            IsTransitionBlocked = false;
         }
 
         #endregion Methods

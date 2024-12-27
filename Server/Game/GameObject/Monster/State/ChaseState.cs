@@ -16,6 +16,8 @@ namespace Server.Game.MonsterAI
 
         public override EMonsterState MonsterStateID => EMonsterState.CHASING;
 
+        public override bool IsTransitionBlocked => nextMoveTicks >= Environment.TickCount64;
+
         #endregion Properties
 
         #region Constructor
@@ -34,16 +36,11 @@ namespace Server.Game.MonsterAI
             controller.CurState = ECreatureState.Move;
 
             nextMoveTicks = 0;
-            IsTransitionBlocked = true;
         }
 
         public override void OnUpdate()
         {
-            if (nextMoveTicks >= Environment.TickCount64)
-            {
-                IsTransitionBlocked = true;
-                return;
-            }
+            if (nextMoveTicks >= Environment.TickCount64) return;
 
             GameRoom room = controller.Room;
             if (ReferenceEquals(room, null) == true) return;
@@ -54,7 +51,6 @@ namespace Server.Game.MonsterAI
                 return;
             }
 
-            IsTransitionBlocked = false;
             nextMoveTicks = Environment.TickCount64 + (long)(1000f / controller.MoveSpeed);
 
             room.MoveMonster(controller.ID, Utility.GetDirection(controller.Position, path[1]));
