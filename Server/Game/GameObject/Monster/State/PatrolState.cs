@@ -39,8 +39,15 @@ namespace Server.Game.MonsterAI
             nextMoveTicks = 0;
 
             // TODO : Predefine the locations where movement is possible
+            GameRoom room = controller.Room;
+            if (ReferenceEquals(room, null) == true) return;
+
             Random rand = new();
-            controller.TargetPos = controller.Position + new Pos(rand.Next(-patrolRange, patrolRange), rand.Next(-patrolRange, patrolRange));
+            do
+            {
+                controller.TargetPos = controller.Position + new Pos(rand.Next(-patrolRange, patrolRange), rand.Next(-patrolRange, patrolRange));
+            }
+            while (room.Map.CheckCanMove(controller.TargetPos) == false);
         }
 
         public override void OnUpdate()
