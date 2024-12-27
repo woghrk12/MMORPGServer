@@ -649,20 +649,6 @@ namespace Server.Game
 
                     break;
             }
-
-            var completeAttackAction = (int id) =>
-            {
-                EGameObjectType type = ObjectManager.GetObjectTypeByID(id);
-
-                if (type != EGameObjectType.Monster) return;
-                if (MonsterDictionary.TryGetValue(id, out Monster m) == false) return;
-
-                if (m.CurState != ECreatureState.Attack) return;
-
-                m.CurMonsterState = EMonsterState.IDLE;
-            };
-
-            Push(completeAttackAction, monsterID, attackStat.PostDelayTicks);
         }
 
         private void ReviveCreature_T(int creatureID, Pos revivePos)
