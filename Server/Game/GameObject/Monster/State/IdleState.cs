@@ -33,15 +33,6 @@ namespace Server.Game.MonsterAI
             nextBehaviourTicks = Environment.TickCount64 + 3000;
         }
 
-        public override void OnUpdate()
-        {
-            if (nextBehaviourTicks >= Environment.TickCount64) return;
-
-            GameRoom room = controller.Room;
-            if (ReferenceEquals(room, null) == true) return;
-
-        }
-
         #endregion Methods
     }
 }
