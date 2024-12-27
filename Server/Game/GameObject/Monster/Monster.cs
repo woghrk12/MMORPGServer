@@ -44,6 +44,7 @@ namespace Server.Game
 
         public Character Target { set; get; }
         public Pos TargetPos { set; get; }
+        public Pos NextPos { set; get; }
 
         #endregion Properties
 
@@ -73,6 +74,7 @@ namespace Server.Game
             }));
             transitionDictionary.Add(EMonsterState.PATROL, new Transition(this, EMonsterState.PATROL, new List<Decision>
             {
+                new DestinationReachedDecision(this, EMonsterState.IDLE),
                 new NoTargetDecision(this, EMonsterState.PATROL, statData.DetectionRange),
                 new TargetInRangeDecision(this, EMonsterState.ATTACK, 1),
                 new ReachableTargetDecision(this, EMonsterState.CHASING, statData.ChaseRange)

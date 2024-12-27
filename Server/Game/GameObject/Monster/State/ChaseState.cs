@@ -45,15 +45,11 @@ namespace Server.Game.MonsterAI
             GameRoom room = controller.Room;
             if (ReferenceEquals(room, null) == true) return;
 
-            if (room.Map.FindPath(controller.Position, controller.TargetPos, out List<Pos> path, chaseRange) == false)
-            {
-                controller.CurMonsterState = EMonsterState.IDLE;
-                return;
-            }
+            if (controller.NextPos == controller.Position) return;
 
             nextMoveTicks = Environment.TickCount64 + (long)(1000f / controller.MoveSpeed);
 
-            room.MoveMonster(controller.ID, Utility.GetDirection(controller.Position, path[1]));
+            room.MoveMonster(controller.ID, Utility.GetDirection(controller.Position, controller.NextPos));
         }
 
         #endregion Methods

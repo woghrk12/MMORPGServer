@@ -37,6 +37,7 @@ namespace Server.Game.MonsterAI
             if (room.Map.FindPath(controller.Position, target.Position, out List<Pos> path, range) == true)
             {
                 controller.TargetPos = target.Position;
+                controller.NextPos = path[1];
                 return true;
             }
 
