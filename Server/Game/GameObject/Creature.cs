@@ -7,14 +7,15 @@ namespace Server.Game
     {
         #region Variables
 
-        protected ECreatureState curState = ECreatureState.Idle;
+        private ECreatureState curState = ECreatureState.Idle;
 
         private EMoveDirection moveDirection = EMoveDirection.None;
 
         private CreatureStat stat = new();
         private event Action<int> levelModified = null;
-        private event Action<int> curHpModified = null;
+        private event Action<int> totalExpModified = null;
         private event Action<int> maxHpModified = null;
+        private event Action<int> curHpModified = null;
         private event Action<int> attackPowerModified = null;
 
         #endregion Variables
@@ -69,17 +70,16 @@ namespace Server.Game
 
         public event Action<int> LevelModified { add { levelModified += value; } remove { levelModified -= value; } }
 
-        public int CurHp
+        public int TotalExp
         {
             set
             {
-                stat.CurHP = Math.Clamp(value, 0, stat.MaxHP);
-                curHpModified?.Invoke(stat.CurHP);
+                stat.TotalExp = Math.Max(value, 0);
+                totalExpModified?.Invoke(stat.TotalExp);
             }
-            get => stat.CurHP;
+            get => stat.TotalExp;
         }
 
-        public event Action<int> CurHpModified { add { curHpModified += value; } remove { curHpModified -= value; } }
 
         public int MaxHp
         {
@@ -92,6 +92,18 @@ namespace Server.Game
         }
 
         public event Action<int> MaxHpModified { add { maxHpModified += value; } remove { maxHpModified -= value; } }
+
+        public int CurHp
+        {
+            set
+            {
+                stat.CurHP = Math.Clamp(value, 0, stat.MaxHP);
+                curHpModified?.Invoke(stat.CurHP);
+            }
+            get => stat.CurHP;
+        }
+
+        public event Action<int> CurHpModified { add { curHpModified += value; } remove { curHpModified -= value; } }
 
         public int AttackPower
         {

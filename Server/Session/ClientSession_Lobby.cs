@@ -101,11 +101,14 @@ namespace Server
                     AccountID = AccountID,
                     Name = name,
                     Level = 1,
-                    CurHp = stat.MaxHpDictionary[1],
+                    TotalExp = 0,
                     MaxHp = stat.MaxHpDictionary[1],
+                    CurHp = stat.MaxHpDictionary[1],
                     AttackPower = stat.AttackPowerDictionary[1],
                     Speed = 5,
-                    TotalExp = 0
+                    CurPosX = 0,
+                    CurPosY = 0,
+                    FacingDirection = EMoveDirection.Right
                 };
 
                 db.Characters.Add(newCharacterDB);
@@ -158,6 +161,8 @@ namespace Server
                 Character.Session = this;
 
                 Character.Name = characterDB.Name;
+                Character.Level = characterDB.Level;
+                Character.TotalExp = characterDB.TotalExp;
                 Character.MaxHp = characterDB.MaxHp;
                 Character.CurHp = characterDB.CurHp;
                 Character.AttackPower = characterDB.AttackPower;

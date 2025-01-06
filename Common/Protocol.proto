@@ -85,9 +85,10 @@ message LobbyCharacterInfo
 message CreatureStat
 {
     int32 level = 1;
-    int32 maxHP = 2;
-    int32 curHP = 3;
-    int32 attackPower = 4;
+    int32 totalExp = 2;
+    int32 maxHP = 3;
+    int32 curHP = 4;
+    int32 attackPower = 5;
 }
 
 message CreatureInfo
