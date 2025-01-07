@@ -1,4 +1,5 @@
 using Google.Protobuf.Protocol;
+using Server.Data;
 
 namespace Server.Game
 {
@@ -21,6 +22,13 @@ namespace Server.Game
         #endregion Constructor
 
         #region Methods
+
+        public override bool CheckCanAttack(AttackStat attackStat)
+        {
+            if (CurState != ECreatureState.Idle) return false;
+
+            return base.CheckCanAttack(attackStat);
+        }
 
         #region Events
 
