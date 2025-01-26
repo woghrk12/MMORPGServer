@@ -39,7 +39,6 @@ namespace Server
             RegisterRecv();
         }
 
-
         #endregion Methods
     }
 }

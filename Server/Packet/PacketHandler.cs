@@ -28,9 +28,9 @@ namespace Server
         {
             CharacterEnterGameRoomRequest packet = message as CharacterEnterGameRoomRequest;
 
-            Console.WriteLine($"CharacterEnterGameRoomRequest. Name : {packet.Name}");
+            Console.WriteLine($"CharacterEnterGameRoomRequest. Name : {packet.CharacterID}");
 
-            session.EnterGameRoom(packet.Name);
+            session.EnterGameRoom(packet.CharacterID);
         }
 
         public static void HandleMoveRequest(ClientSession session, IMessage message)

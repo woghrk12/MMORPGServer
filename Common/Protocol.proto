@@ -78,8 +78,9 @@ message StatData
 
 message LobbyCharacterInfo
 {
-    string name = 1;
-    int32 level = 2;
+    int32 characterID = 1;
+    string name = 2;
+    int32 level = 3;
 }
 
 message CreatureStat
@@ -158,7 +159,7 @@ message CreateCharacterResponse
 
 message CharacterEnterGameRoomRequest
 {
-    string name = 1;
+    int32 characterID = 1;
 }
 
 // Result Code

@@ -1,5 +1,7 @@
 using Google.Protobuf.Protocol;
 using Server.Data;
+using Server.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace Server.Game
 {
@@ -8,6 +10,8 @@ namespace Server.Game
         #region Properties
 
         public ClientSession Session { set; get; }
+
+        public int CharacterID { set; get; }
 
         #endregion Properties
 
@@ -49,6 +53,22 @@ namespace Server.Game
 
             CurState = ECreatureState.Dead;
             IsCollidable = false;
+        }
+
+        public void OnLeftRoom()
+        {
+            using (AppDBContext db = new())
+            {
+                CharacterDB characterDB = new();
+
+                characterDB.ID = CharacterID;
+                characterDB.CurHp = CurHp;
+
+                db.Entry(characterDB).State = EntityState.Unchanged;
+                db.Entry(characterDB).Property(nameof(characterDB.CurHp)).IsModified = true;
+
+                db.SaveChangesEx();
+            }
         }
 
         #endregion Events

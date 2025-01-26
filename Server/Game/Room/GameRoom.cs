@@ -240,6 +240,8 @@ namespace Server.Game
         {
             if (CharacterDictionary.Remove(leftCharacterID, out Character leftCharacter) == false) return;
 
+            leftCharacter.OnLeftRoom();
+
             Map.RemoveObject(leftCharacter);
             leftCharacter.Room = null;
 

@@ -56,6 +56,7 @@ namespace Server
                     {
                         LobbyCharacterInfo info = new()
                         {
+                            CharacterID = characterDB.ID,
                             Name = characterDB.Name,
                             Level = characterDB.Level
                         };
@@ -137,11 +138,11 @@ namespace Server
             }
         }
 
-        public void EnterGameRoom(string characterName)
+        public void EnterGameRoom(int characterID)
         {
             if (ClientState != EClientState.Lobby) return;
 
-            LobbyCharacterInfo lobbyCharacter = lobbyCharacterDict.Values.FirstOrDefault(c => c.Name.Equals(characterName));
+            LobbyCharacterInfo lobbyCharacter = lobbyCharacterDict.Values.FirstOrDefault(c => c.CharacterID.Equals(characterID));
             if (ReferenceEquals(lobbyCharacter, null) == true)
             {
                 Send(new CharacterEnterGameRoomResponse() { ResultCode = 1 });
@@ -150,7 +151,7 @@ namespace Server
 
             using (AppDBContext db = new())
             {
-                CharacterDB characterDB = db.Characters.FirstOrDefault(c => c.Name.Equals(characterName));
+                CharacterDB characterDB = db.Characters.FirstOrDefault(c => c.ID.Equals(characterID));
                 if (ReferenceEquals(characterDB, null) == true)
                 {
                     Send(new CharacterEnterGameRoomResponse() { ResultCode = 2 });
@@ -158,7 +159,9 @@ namespace Server
                 }
 
                 Character = ObjectManager.Instance.Add<Character>();
+
                 Character.Session = this;
+                Character.CharacterID = characterID;
 
                 Character.Name = characterDB.Name;
                 Character.Level = characterDB.Level;
