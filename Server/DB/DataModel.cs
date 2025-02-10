@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Google.Protobuf.Protocol;
@@ -20,12 +19,11 @@ namespace Server.DB
     {
         [Key]
         public int ID { set; get; }
+        public string Name { set; get; }
 
         [ForeignKey("Account")]
         public int AccountID { set; get; }
         public AccountDB Account { set; get; }
-
-        public string Name { set; get; }
 
         public int Level { set; get; }
         public int CurHp { set; get; }
@@ -37,5 +35,23 @@ namespace Server.DB
         public int CurPosX { set; get; }
         public int CurPosY { set; get; }
         public EMoveDirection FacingDirection { set; get; }
+
+        public ICollection<ItemDB> Items { set; get; }
+    }
+
+    [Table("Item")]
+    public class ItemDB
+    {
+        [Key]
+        public int ID { set; get; }
+
+        public int TemplateID { set; get; }
+
+        public int Count { set; get; }
+        public int Slot { set; get; }
+
+        [ForeignKey("Owner")]
+        public int? OwnerID { set; get; }
+        public CharacterDB Owner { set; get; }
     }
 }
