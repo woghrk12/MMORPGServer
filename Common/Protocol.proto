@@ -70,6 +70,35 @@ enum EMoveDirection
     RIGHT = 8;
 }
 
+enum EItemType
+{
+    ITEM_TYPE_NONE = 0;
+    ITEM_TYPE_WEAPON = 1;
+    ITEM_TYPE_ARMOR = 2;
+    ITEM_TYPE_CONSUMABLE = 3;
+}
+
+enum EWeaponType
+{
+    WEAPON_TYPE_NONE = 0;
+    WEAPON_TYPE_SWORD = 1;
+    WEAPON_TYPE_BOW = 2;
+}
+
+enum EArmorType
+{
+    ARMOR_TYPE_NONE = 0;
+    ARMOR_TYPE_HELMET = 1;
+    ARMOR_TYPE_CHEST = 2;
+    ARMOR_TYPE_BOOTS = 3;
+}
+
+enum EConsumableType
+{
+    CONSUMABLE_TYPE_NONE = 0;
+    CONSUMABLE_TYPE_POTION = 1;
+}
+
 message StatData
 {
     EStatType statType = 1;
@@ -119,6 +148,13 @@ message ObjectInfo
         CreatureInfo creatureInfo = 6;
         ProjectileInfo projectileInfo = 7;
     }
+}
+
+message ItemInfo
+{
+    int32 templateID = 1;
+    int32 count = 2;
+    int32 slot = 3;
 }
 
 message ConnectedResponse
@@ -171,6 +207,7 @@ message CharacterEnterGameRoomResponse
     int32 resultCode = 1;
     ObjectInfo newCharacter = 2;
     repeated ObjectInfo otherObjects = 3;
+    repeated ItemInfo items = 4;
 }
 
 message CharacterEnterGameRoomBroadcast
