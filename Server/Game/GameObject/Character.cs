@@ -1,7 +1,6 @@
 using Google.Protobuf.Protocol;
 using Server.Data;
 using Server.DB;
-using Microsoft.EntityFrameworkCore;
 
 namespace Server.Game
 {
@@ -11,6 +10,9 @@ namespace Server.Game
 
         public ClientSession Session { set; get; }
 
+        /// <summary>
+        /// The character ID used in the database.
+        /// </summary>
         public int CharacterID { set; get; }
 
         #endregion Properties
@@ -57,18 +59,7 @@ namespace Server.Game
 
         public void OnLeftRoom()
         {
-            using (AppDBContext db = new())
-            {
-                CharacterDB characterDB = new();
-
-                characterDB.ID = CharacterID;
-                characterDB.CurHp = CurHp;
-
-                db.Entry(characterDB).State = EntityState.Unchanged;
-                db.Entry(characterDB).Property(nameof(characterDB.CurHp)).IsModified = true;
-
-                db.SaveChangesEx();
-            }
+            DBTransaction.SavePlayerStatus(this, Room);
         }
 
         #endregion Events

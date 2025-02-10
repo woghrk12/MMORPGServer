@@ -16,7 +16,10 @@ namespace Server.Game
 
         public GameRoom Room { set; get; }
 
-        // [UNUSED(1)][TYPE(7)][ID(24)]
+        /// <summary>
+        /// <para>The ID that refers to the GameObject existing in the game room.</para>
+        /// [UNUSED(1)][TYPE(7)][ID(24)] 
+        /// </summary>
         public int ID { set; get; } = -1;
 
         public string Name { set; get; } = string.Empty;

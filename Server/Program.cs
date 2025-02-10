@@ -1,5 +1,6 @@
 using System.Net;
 using Server.Data;
+using Server.DB;
 using Server.Game;
 
 namespace Server
@@ -31,7 +32,7 @@ namespace Server
 
             while (true)
             {
-                Thread.Sleep(100);
+                DBTransaction.Instance.Flush();
             }
         }
 
