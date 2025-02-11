@@ -44,6 +44,7 @@ enum EStatType
     MONSTER_DATA = 1;
     ATTACK_DATA = 2;
     PROJECTILE_DATA = 3;
+    ITEM_DATA = 4;
 }
 
 enum EGameObjectType

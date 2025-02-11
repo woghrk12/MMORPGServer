@@ -1,6 +1,7 @@
 using Google.Protobuf;
 using Google.Protobuf.Protocol;
 using Newtonsoft.Json;
+using Server.Data;
 using Server.Game;
 using System.Net;
 using System.Net.Sockets;
@@ -124,14 +125,16 @@ namespace Server
             ClientState = EClientState.Connected;
 
             ConnectedResponse packet = new();
-            List<Data.ObjectStat> objectStatList = [.. DataManager.ObjectStatDictionary.Values];
+            List<ObjectStat> objectStatList = [.. DataManager.ObjectStatDictionary.Values];
             packet.Stats.Add(new StatData() { StatType = EStatType.ObjectData, Data = JsonConvert.SerializeObject(objectStatList) });
-            List<Data.MonsterStat> monsterStatList = [.. DataManager.MonsterStatDictionary.Values];
+            List<MonsterStat> monsterStatList = [.. DataManager.MonsterStatDictionary.Values];
             packet.Stats.Add(new StatData() { StatType = EStatType.MonsterData, Data = JsonConvert.SerializeObject(monsterStatList) });
-            List<Data.AttackStat> attackStatList = [.. DataManager.AttackStatDictionary.Values];
+            List<AttackStat> attackStatList = [.. DataManager.AttackStatDictionary.Values];
             packet.Stats.Add(new StatData() { StatType = EStatType.AttackData, Data = JsonConvert.SerializeObject(attackStatList) });
-            List<Data.ProjectileStat> projectileStatList = [.. DataManager.ProjectileStatDictionary.Values];
+            List<ProjectileStat> projectileStatList = [.. DataManager.ProjectileStatDictionary.Values];
             packet.Stats.Add(new StatData() { StatType = EStatType.ProjectileData, Data = JsonConvert.SerializeObject(projectileStatList) });
+            List<ItemStat> itemStatList = [.. DataManager.ItemStatDictionary.Values];
+            packet.Stats.Add(new StatData() { StatType = EStatType.ItemData, Data = JsonConvert.SerializeObject(itemStatList) });
 
             Send(packet);
         }

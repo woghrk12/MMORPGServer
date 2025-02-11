@@ -7,7 +7,6 @@ namespace Server.Data
     {
         public int ID;
         public string Name;
-
         public EItemType ItemType;
     }
 
