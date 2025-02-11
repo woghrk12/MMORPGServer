@@ -18,6 +18,7 @@ namespace Server.DB
 
         public DbSet<AccountDB> Accounts { set; get; }
         public DbSet<CharacterDB> Characters { set; get; }
+        public DbSet<ItemDB> Items { set; get; }
 
         #endregion Properties
 

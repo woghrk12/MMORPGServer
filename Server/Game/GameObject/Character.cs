@@ -15,6 +15,8 @@ namespace Server.Game
         /// </summary>
         public int CharacterID { set; get; }
 
+        public Inventory Inventory { private set; get; } = new();
+
         #endregion Properties
 
         #region Constructor

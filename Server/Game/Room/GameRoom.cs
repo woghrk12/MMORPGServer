@@ -225,6 +225,18 @@ namespace Server.Game
                 characterEnteredRoomResponsePacket.OtherObjects.Add(projectileInfo);
             }
 
+            foreach (Item item in newCharacter.Inventory.GetAllItems())
+            {
+                ItemInfo itemInfo = new()
+                {
+                    TemplateID = item.TemplateID,
+                    Count = item.Count,
+                    Slot = item.Slot
+                };
+
+                characterEnteredRoomResponsePacket.Items.Add(itemInfo);
+            }
+
             Send(characterEnteredRoomResponsePacket, newCharacter.ID);
 
             // Send the packets to the players who are in the room

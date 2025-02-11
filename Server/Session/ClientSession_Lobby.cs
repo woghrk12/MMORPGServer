@@ -1,5 +1,6 @@
 using Google.Protobuf.Protocol;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Server.DB;
 using Server.Game;
 
@@ -172,6 +173,19 @@ namespace Server
                 Character.MoveSpeed = characterDB.Speed;
                 Character.Position = new Pos(characterDB.CurPosX, characterDB.CurPosY);
                 Character.FacingDirection = characterDB.FacingDirection;
+
+                List<ItemDB> itemDBList = db.Items
+                    .Where(i => i.OwnerID == characterID)
+                    .ToList();
+
+                foreach (ItemDB itemDB in itemDBList)
+                {
+                    Item item = Item.MakeItem(itemDB);
+
+                    if (ReferenceEquals(item, null) == true) continue;
+
+                    Character.Inventory.AddItem(item);
+                }
             }
 
             GameRoom room = RoomManager.Instance.Find(1);
