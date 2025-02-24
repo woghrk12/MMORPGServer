@@ -12,17 +12,7 @@ namespace Server.Game
 
         public void AddItem(Item item)
         {
-            if (item.IsStackable == true)
-            {
-                if (itemDictionary.ContainsKey(item.ID) == false)
-                {
-
-                }
-            }
-            else
-            {
-
-            }
+            itemDictionary.Add(item.ID, item);
         }
 
         public Item GetItem(int id)
