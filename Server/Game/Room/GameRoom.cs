@@ -229,6 +229,7 @@ namespace Server.Game
             {
                 ItemInfo itemInfo = new()
                 {
+                    Id = item.ID,
                     TemplateID = item.TemplateID,
                     Count = item.Count,
                     Slot = item.Slot

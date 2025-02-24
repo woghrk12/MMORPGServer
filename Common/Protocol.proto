@@ -153,9 +153,10 @@ message ObjectInfo
 
 message ItemInfo
 {
-    int32 templateID = 1;
-    int32 count = 2;
-    int32 slot = 3;
+    int32 id = 1;
+    int32 templateID = 2;
+    int32 count = 3;
+    int32 slot = 4;
 }
 
 message ConnectedResponse
