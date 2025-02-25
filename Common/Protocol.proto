@@ -74,9 +74,16 @@ enum EMoveDirection
 enum EItemType
 {
     ITEM_TYPE_NONE = 0;
-    ITEM_TYPE_WEAPON = 1;
-    ITEM_TYPE_ARMOR = 2;
-    ITEM_TYPE_CONSUMABLE = 3;
+    ITEM_TYPE_EQUIPMENT = 1;
+    ITEM_TYPE_CONSUMABLE = 2;
+    ITEM_TYPE_LOOT = 3;
+}
+
+enum EEquipmentType
+{
+    EQUIPMENT_TYPE_NONE = 0;
+    EQUIPMENT_TYPE_WEAPON = 1;
+    EQUIPMENT_TYPE_ARMOR = 2;
 }
 
 enum EWeaponType

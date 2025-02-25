@@ -104,20 +104,22 @@ namespace Google.Protobuf.Protocol {
             "RVIQABILCgdNT05TVEVSEAESDgoKUFJPSkVDVElMRRACKjoKDkVDcmVhdHVy",
             "ZVN0YXRlEggKBElETEUQABIICgRNT1ZFEAESCgoGQVRUQUNLEAISCAoEREVB",
             "RBADKkEKDkVNb3ZlRGlyZWN0aW9uEggKBE5PTkUQABIGCgJVUBABEggKBERP",
-            "V04QAhIICgRMRUZUEAQSCQoFUklHSFQQCCpkCglFSXRlbVR5cGUSEgoOSVRF",
-            "TV9UWVBFX05PTkUQABIUChBJVEVNX1RZUEVfV0VBUE9OEAESEwoPSVRFTV9U",
-            "WVBFX0FSTU9SEAISGAoUSVRFTV9UWVBFX0NPTlNVTUFCTEUQAypPCgtFV2Vh",
-            "cG9uVHlwZRIUChBXRUFQT05fVFlQRV9OT05FEAASFQoRV0VBUE9OX1RZUEVf",
-            "U1dPUkQQARITCg9XRUFQT05fVFlQRV9CT1cQAipkCgpFQXJtb3JUeXBlEhMK",
-            "D0FSTU9SX1RZUEVfTk9ORRAAEhUKEUFSTU9SX1RZUEVfSEVMTUVUEAESFAoQ",
-            "QVJNT1JfVFlQRV9DSEVTVBACEhQKEEFSTU9SX1RZUEVfQk9PVFMQAypHCg9F",
-            "Q29uc3VtYWJsZVR5cGUSGAoUQ09OU1VNQUJMRV9UWVBFX05PTkUQABIaChZD",
-            "T05TVU1BQkxFX1RZUEVfUE9USU9OEAEqIwoLRUF0dGFja1R5cGUSCQoFTUVM",
-            "RUUQABIJCgVSQU5HRRABQhuqAhhHb29nbGUuUHJvdG9idWYuUHJvdG9jb2xi",
-            "BnByb3RvMw=="));
+            "V04QAhIICgRMRUZUEAQSCQoFUklHSFQQCCpmCglFSXRlbVR5cGUSEgoOSVRF",
+            "TV9UWVBFX05PTkUQABIXChNJVEVNX1RZUEVfRVFVSVBNRU5UEAESGAoUSVRF",
+            "TV9UWVBFX0NPTlNVTUFCTEUQAhISCg5JVEVNX1RZUEVfTE9PVBADKl4KDkVF",
+            "cXVpcG1lbnRUeXBlEhcKE0VRVUlQTUVOVF9UWVBFX05PTkUQABIZChVFUVVJ",
+            "UE1FTlRfVFlQRV9XRUFQT04QARIYChRFUVVJUE1FTlRfVFlQRV9BUk1PUhAC",
+            "Kk8KC0VXZWFwb25UeXBlEhQKEFdFQVBPTl9UWVBFX05PTkUQABIVChFXRUFQ",
+            "T05fVFlQRV9TV09SRBABEhMKD1dFQVBPTl9UWVBFX0JPVxACKmQKCkVBcm1v",
+            "clR5cGUSEwoPQVJNT1JfVFlQRV9OT05FEAASFQoRQVJNT1JfVFlQRV9IRUxN",
+            "RVQQARIUChBBUk1PUl9UWVBFX0NIRVNUEAISFAoQQVJNT1JfVFlQRV9CT09U",
+            "UxADKkcKD0VDb25zdW1hYmxlVHlwZRIYChRDT05TVU1BQkxFX1RZUEVfTk9O",
+            "RRAAEhoKFkNPTlNVTUFCTEVfVFlQRV9QT1RJT04QASojCgtFQXR0YWNrVHlw",
+            "ZRIJCgVNRUxFRRAAEgkKBVJBTkdFEAFCG6oCGEdvb2dsZS5Qcm90b2J1Zi5Q",
+            "cm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.EMessageID), typeof(global::Google.Protobuf.Protocol.EClientState), typeof(global::Google.Protobuf.Protocol.EStatType), typeof(global::Google.Protobuf.Protocol.EGameObjectType), typeof(global::Google.Protobuf.Protocol.ECreatureState), typeof(global::Google.Protobuf.Protocol.EMoveDirection), typeof(global::Google.Protobuf.Protocol.EItemType), typeof(global::Google.Protobuf.Protocol.EWeaponType), typeof(global::Google.Protobuf.Protocol.EArmorType), typeof(global::Google.Protobuf.Protocol.EConsumableType), typeof(global::Google.Protobuf.Protocol.EAttackType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.EMessageID), typeof(global::Google.Protobuf.Protocol.EClientState), typeof(global::Google.Protobuf.Protocol.EStatType), typeof(global::Google.Protobuf.Protocol.EGameObjectType), typeof(global::Google.Protobuf.Protocol.ECreatureState), typeof(global::Google.Protobuf.Protocol.EMoveDirection), typeof(global::Google.Protobuf.Protocol.EItemType), typeof(global::Google.Protobuf.Protocol.EEquipmentType), typeof(global::Google.Protobuf.Protocol.EWeaponType), typeof(global::Google.Protobuf.Protocol.EArmorType), typeof(global::Google.Protobuf.Protocol.EConsumableType), typeof(global::Google.Protobuf.Protocol.EAttackType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.StatData), global::Google.Protobuf.Protocol.StatData.Parser, new[]{ "StatType", "Data" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.LobbyCharacterInfo), global::Google.Protobuf.Protocol.LobbyCharacterInfo.Parser, new[]{ "CharacterID", "Name", "Level" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Google.Protobuf.Protocol.CreatureStat), global::Google.Protobuf.Protocol.CreatureStat.Parser, new[]{ "Level", "TotalExp", "MaxHP", "CurHP", "AttackPower" }, null, null, null, null),
@@ -218,9 +220,15 @@ namespace Google.Protobuf.Protocol {
 
   public enum EItemType {
     [pbr::OriginalName("ITEM_TYPE_NONE")] ItemTypeNone = 0,
-    [pbr::OriginalName("ITEM_TYPE_WEAPON")] ItemTypeWeapon = 1,
-    [pbr::OriginalName("ITEM_TYPE_ARMOR")] ItemTypeArmor = 2,
-    [pbr::OriginalName("ITEM_TYPE_CONSUMABLE")] ItemTypeConsumable = 3,
+    [pbr::OriginalName("ITEM_TYPE_EQUIPMENT")] ItemTypeEquipment = 1,
+    [pbr::OriginalName("ITEM_TYPE_CONSUMABLE")] ItemTypeConsumable = 2,
+    [pbr::OriginalName("ITEM_TYPE_LOOT")] ItemTypeLoot = 3,
+  }
+
+  public enum EEquipmentType {
+    [pbr::OriginalName("EQUIPMENT_TYPE_NONE")] EquipmentTypeNone = 0,
+    [pbr::OriginalName("EQUIPMENT_TYPE_WEAPON")] EquipmentTypeWeapon = 1,
+    [pbr::OriginalName("EQUIPMENT_TYPE_ARMOR")] EquipmentTypeArmor = 2,
   }
 
   public enum EWeaponType {

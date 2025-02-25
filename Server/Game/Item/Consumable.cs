@@ -7,11 +7,10 @@ namespace Server.Game
     {
         #region Properties
 
-        public override EItemType Type => EItemType.ItemTypeConsumable;
+        public override EItemType ItemType => EItemType.ItemTypeConsumable;
+        public EConsumableType ConsumableType { private set; get; } = EConsumableType.ConsumableTypeNone;
 
         public override bool IsStackable => MaxCount > 1;
-
-        public EConsumableType ConsumableType { private set; get; } = EConsumableType.ConsumableTypeNone;
 
         public int Value { private set; get; } = 0;
 
@@ -24,12 +23,14 @@ namespace Server.Game
         public Consumable(int id, int templateID, int count = 1) : base(id, templateID)
         {
             if (DataManager.ItemStatDictionary.TryGetValue(templateID, out ItemStat stat) == false) return;
-            if (stat.ItemType != EItemType.ItemTypeConsumable) return;
 
             ConsumableStat consumableStat = stat as ConsumableStat;
 
+            if (ReferenceEquals(consumableStat, null) == true) return;
+            if (consumableStat.ItemType != EItemType.ItemTypeConsumable) return;
+
             Count = count;
-            ConsumableType = consumableStat.Type;
+            ConsumableType = consumableStat.ConsumableType;
             Value = consumableStat.Value;
             MaxCount = consumableStat.MaxCount;
         }

@@ -7,11 +7,11 @@ namespace Server.Game
     {
         #region Properties
 
-        public override EItemType Type => EItemType.ItemTypeArmor;
+        public override EItemType ItemType => EItemType.ItemTypeEquipment;
+        public EEquipmentType EquipmentType => EEquipmentType.EquipmentTypeArmor;
+        public EArmorType ArmorType { private set; get; } = EArmorType.ArmorTypeNone;
 
         public override bool IsStackable => false;
-
-        public EArmorType ArmorType { private set; get; } = EArmorType.ArmorTypeNone;
 
         public int Value { private set; get; } = 0;
 
@@ -22,12 +22,15 @@ namespace Server.Game
         public Armor(int id, int templateID) : base(id, templateID)
         {
             if (DataManager.ItemStatDictionary.TryGetValue(templateID, out ItemStat stat) == false) return;
-            if (stat.ItemType != EItemType.ItemTypeArmor) return;
 
             ArmorStat armorStat = stat as ArmorStat;
 
+            if (ReferenceEquals(armorStat, null) == true) return;
+            if (armorStat.ItemType != EItemType.ItemTypeEquipment) return;
+            if (armorStat.EquipmentType != EEquipmentType.EquipmentTypeArmor) return;
+
             Count = 1;
-            ArmorType = armorStat.Type;
+            ArmorType = armorStat.ArmorType;
             Value = armorStat.Value;
         }
 
