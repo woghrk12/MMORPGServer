@@ -19,7 +19,7 @@ namespace Server.Game
 
         #region Constructor
 
-        public Armor(int id, int templateID) : base(id, templateID)
+        public Armor(int id, int templateID, int slot) : base(id, templateID, slot)
         {
             if (DataManager.ItemStatDictionary.TryGetValue(templateID, out ItemStat stat) == false) return;
 

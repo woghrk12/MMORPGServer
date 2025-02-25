@@ -17,7 +17,7 @@ namespace Server.Game
 
         #region Constructor
 
-        public Loot(int id, int templateID, int count = 1) : base(id, templateID)
+        public Loot(int id, int templateID, int slot, int count = 1) : base(id, templateID, slot)
         {
             if (DataManager.ItemStatDictionary.TryGetValue(templateID, out ItemStat stat) == false) return;
 

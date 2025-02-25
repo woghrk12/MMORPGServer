@@ -39,10 +39,11 @@ namespace Server.Game
 
         #region Constructor
 
-        public Item(int id, int templateID)
+        public Item(int id, int templateID, int slot)
         {
             info.Id = id;
             info.TemplateID = templateID;
+            info.Slot = slot;
         }
 
         #endregion Constructor
@@ -63,20 +64,20 @@ namespace Server.Game
                     switch (equipmentStat.EquipmentType)
                     {
                         case EEquipmentType.EquipmentTypeWeapon:
-                            return new Weapon(target.ID, target.TemplateID);
+                            return new Weapon(target.ID, target.TemplateID, target.Slot);
 
                         case EEquipmentType.EquipmentTypeArmor:
-                            return new Armor(target.ID, target.TemplateID);
+                            return new Armor(target.ID, target.TemplateID, target.Slot);
 
                         default:
                             return null;
                     }
 
                 case EItemType.ItemTypeConsumable:
-                    return new Consumable(target.ID, target.TemplateID, target.Count);
+                    return new Consumable(target.ID, target.TemplateID, target.Slot, target.Count);
 
                 case EItemType.ItemTypeLoot:
-                    return new Loot(target.ID, target.TemplateID, target.Count);
+                    return new Loot(target.ID, target.TemplateID, target.Slot, target.Count);
             }
 
             return null;
