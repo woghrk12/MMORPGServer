@@ -58,6 +58,8 @@ namespace Server.Game
                 case EItemType.ItemTypeEquipment:
                     EquipmentStat equipmentStat = stat as EquipmentStat;
 
+                    if (ReferenceEquals(equipmentStat, null) == true) return null;
+
                     switch (equipmentStat.EquipmentType)
                     {
                         case EEquipmentType.EquipmentTypeWeapon:
