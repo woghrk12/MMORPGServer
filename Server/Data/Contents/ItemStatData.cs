@@ -8,6 +8,7 @@ namespace Server.Data
         public int ID;
         public string Name;
         public EItemType ItemType;
+        public string IconPath;
     }
 
     public class WeaponStat : ItemStat
