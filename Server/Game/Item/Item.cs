@@ -24,6 +24,7 @@ namespace Server.Game
             get => info.Count;
         }
 
+        // [UNUSED(1)][TAP(7)][SLOT(24)] 
         public int Slot
         {
             set { info.Slot = value; }
