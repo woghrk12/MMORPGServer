@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using Server.Game;
 
@@ -20,6 +19,7 @@ namespace Server.DB
 
             CharacterDB characterDB = new();
             characterDB.ID = character.CharacterID;
+            characterDB.CurHp = character.CurHp;
 
             // The problem that occur when executing the DB save logic in the character class.
             // 1) If the server goes down, all unsaved data will be lost
