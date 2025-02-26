@@ -319,7 +319,5 @@ message CharacterReviveRequest
 
 message CharacterReviveBroadcast
 {
-    int32 characterID = 1;
-    int32 revivePosX = 2;
-    int32 revivePosY = 3;
+    ObjectInfo revivedCharacter = 1;
 }

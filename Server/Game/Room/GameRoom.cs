@@ -83,7 +83,7 @@ namespace Server.Game
 
         public void ReviveCreature(int creatureID, Pos revivePos) => Push(ReviveCreature_T, creatureID, revivePos);
 
-        public Character FindCharacter(Func<GameObject, bool> condition)
+        public Character FindCharacter(Func<Character, bool> condition)
         {
             foreach (Character character in CharacterDictionary.Values)
             {
@@ -705,9 +705,27 @@ namespace Server.Game
 
             CharacterReviveBroadcast packet = new()
             {
-                CharacterID = creature.ID,
-                RevivePosX = creature.Position.X,
-                RevivePosY = creature.Position.Y
+                RevivedCharacter = new()
+                {
+                    ObjectID = creature.ID,
+                    Name = creature.Name,
+                    PosX = creature.Position.X,
+                    PosY = creature.Position.Y,
+                    IsCollidable = creature.IsCollidable,
+                    CreatureInfo = new CreatureInfo()
+                    {
+                        CurState = creature.CurState,
+                        MoveDirection = creature.MoveDirection,
+                        FacingDirection = creature.FacingDirection,
+                        MoveSpeed = creature.MoveSpeed,
+                        Stat = new CreatureStat()
+                        {
+                            MaxHP = creature.MaxHp,
+                            CurHP = creature.CurHp,
+                            AttackPower = creature.AttackPower
+                        }
+                    }
+                }
             };
 
             Broadcast(packet);
