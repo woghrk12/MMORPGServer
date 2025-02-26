@@ -1,3 +1,5 @@
+using Google.Protobuf.Protocol;
+
 namespace Server.Game.MonsterAI
 {
     /// <summary>
@@ -31,6 +33,12 @@ namespace Server.Game.MonsterAI
             if (ReferenceEquals(target, null) == true) return false;
 
             if (ReferenceEquals(room, target.Room) == false)
+            {
+                controller.Target = null;
+                return false;
+            }
+
+            if (target.CurState == ECreatureState.Dead)
             {
                 controller.Target = null;
                 return false;

@@ -1,3 +1,5 @@
+using Google.Protobuf.Protocol;
+
 namespace Server.Game.MonsterAI
 {
     /// <summary>
@@ -32,7 +34,7 @@ namespace Server.Game.MonsterAI
             }
 
             Character target = controller.Target;
-            if (ReferenceEquals(target, null) == false)
+            if (ReferenceEquals(target, null) == false && target.CurState != ECreatureState.Dead)
             {
                 if (room.Map.FindPath(controller.Position, target.Position, out List<Pos> path, range) == true) return false;
 
@@ -40,7 +42,7 @@ namespace Server.Game.MonsterAI
                 return true;
             }
 
-            Character newTarget = room.FindCharacter(p => room.Map.FindPath(controller.Position, p.Position, out List<Pos> path, range));
+            Character newTarget = room.FindCharacter(c => c.CurState != ECreatureState.Dead && room.Map.FindPath(controller.Position, c.Position, out List<Pos> path, range));
             if (ReferenceEquals(newTarget, null) == true) return true;
 
             controller.Target = newTarget;
