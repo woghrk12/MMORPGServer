@@ -30,8 +30,8 @@ namespace Server.Game
             if (DataManager.MonsterStatDictionary.TryGetValue(1, out Data.MonsterStat stat) == false) return;
             monster.Name = $"{stat.Name}_{monster.ID}";
             monster.Level = 1;
-            monster.CurHp = monster.MaxHp = stat.MaxHpDictionary[monster.Level];
-            monster.AttackPower = stat.AttackPowerDictionary[monster.Level];
+            monster.CurHp = monster.MaxHp = stat.MaxHP;
+            monster.AttackPower = stat.AttackPower;
             monster.Position = new Pos(1, 0);
             monster.MoveSpeed = 3;
 

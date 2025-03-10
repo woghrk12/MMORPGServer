@@ -58,8 +58,8 @@ namespace Server.Game
             if (DataManager.MonsterStatDictionary.TryGetValue(1, out Data.MonsterStat statData) == false) return;
 
             // TODO : The stat needs to be adjusted based on the monster's level
-            CurHp = MaxHp = statData.MaxHpDictionary[1];
-            AttackPower = statData.AttackPowerDictionary[1];
+            CurHp = MaxHp = statData.MaxHP;
+            AttackPower = statData.AttackPower;
 
             stateDictionary.Add(EMonsterState.IDLE, new IdleState(this));
             stateDictionary.Add(EMonsterState.PATROL, new PatrolState(this, statData.PatrolRange));
@@ -118,9 +118,9 @@ namespace Server.Game
             curMonsterState?.OnUpdate();
         }
 
-        public override void OnDamaged(GameObject attacker, int damage)
+        public override void OnDead(GameObject attacker)
         {
-            base.OnDamaged(attacker, damage);
+
         }
 
         #endregion Events

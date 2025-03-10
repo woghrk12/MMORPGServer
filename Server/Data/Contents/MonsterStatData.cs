@@ -5,8 +5,8 @@ namespace Server.Data
     {
         public int ID;
         public string Name;
-        public Dictionary<int, int> MaxHpDictionary;
-        public Dictionary<int, int> AttackPowerDictionary;
+        public int MaxHP;
+        public int AttackPower;
         public int PatrolRange;
         public int DetectionRange;
         public int ChaseRange;
