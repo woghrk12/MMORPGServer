@@ -91,7 +91,7 @@ namespace Server
                 }
 
                 // TODO : Search the data sheet based on the information provided by the player
-                if (DataManager.ObjectStatDictionary.TryGetValue(1, out Data.ObjectStat stat) == false)
+                if (DataManager.CharacterStatDictionary.TryGetValue(1, out Data.CharacterStat stat) == false)
                 {
                     Send(new CreateCharacterResponse() { ResultCode = 2 });
 

@@ -97,26 +97,26 @@ namespace Google.Protobuf.Protocol {
             "QURDQVNUEBMSGwoXQ1JFQVRVUkVfREVBRF9CUk9BRENBU1QQFBIcChhDSEFS",
             "QUNURVJfUkVWSVZFX1JFUVVFU1QQFRIeChpDSEFSQUNURVJfUkVWSVZFX0JS",
             "T0FEQ0FTVBAWKkYKDEVDbGllbnRTdGF0ZRIQCgxESVNDT05ORUNURUQQABIN",
-            "CglDT05ORUNURUQQARIJCgVMT0JCWRACEgoKBklOR0FNRRADKmMKCUVTdGF0",
-            "VHlwZRIPCgtPQkpFQ1RfREFUQRAAEhAKDE1PTlNURVJfREFUQRABEg8KC0FU",
-            "VEFDS19EQVRBEAISEwoPUFJPSkVDVElMRV9EQVRBEAMSDQoJSVRFTV9EQVRB",
-            "EAQqPQoPRUdhbWVPYmplY3RUeXBlEg0KCUNIQVJBQ1RFUhAAEgsKB01PTlNU",
-            "RVIQARIOCgpQUk9KRUNUSUxFEAIqOgoORUNyZWF0dXJlU3RhdGUSCAoESURM",
-            "RRAAEggKBE1PVkUQARIKCgZBVFRBQ0sQAhIICgRERUFEEAMqQQoORU1vdmVE",
-            "aXJlY3Rpb24SCAoETk9ORRAAEgYKAlVQEAESCAoERE9XThACEggKBExFRlQQ",
-            "BBIJCgVSSUdIVBAIKmYKCUVJdGVtVHlwZRISCg5JVEVNX1RZUEVfTk9ORRAA",
-            "EhcKE0lURU1fVFlQRV9FUVVJUE1FTlQQARIYChRJVEVNX1RZUEVfQ09OU1VN",
-            "QUJMRRACEhIKDklURU1fVFlQRV9MT09UEAMqXgoORUVxdWlwbWVudFR5cGUS",
-            "FwoTRVFVSVBNRU5UX1RZUEVfTk9ORRAAEhkKFUVRVUlQTUVOVF9UWVBFX1dF",
-            "QVBPThABEhgKFEVRVUlQTUVOVF9UWVBFX0FSTU9SEAIqTwoLRVdlYXBvblR5",
-            "cGUSFAoQV0VBUE9OX1RZUEVfTk9ORRAAEhUKEVdFQVBPTl9UWVBFX1NXT1JE",
-            "EAESEwoPV0VBUE9OX1RZUEVfQk9XEAIqZAoKRUFybW9yVHlwZRITCg9BUk1P",
-            "Ul9UWVBFX05PTkUQABIVChFBUk1PUl9UWVBFX0hFTE1FVBABEhQKEEFSTU9S",
-            "X1RZUEVfQ0hFU1QQAhIUChBBUk1PUl9UWVBFX0JPT1RTEAMqRwoPRUNvbnN1",
-            "bWFibGVUeXBlEhgKFENPTlNVTUFCTEVfVFlQRV9OT05FEAASGgoWQ09OU1VN",
-            "QUJMRV9UWVBFX1BPVElPThABKiMKC0VBdHRhY2tUeXBlEgkKBU1FTEVFEAAS",
-            "CQoFUkFOR0UQAUIbqgIYR29vZ2xlLlByb3RvYnVmLlByb3RvY29sYgZwcm90",
-            "bzM="));
+            "CglDT05ORUNURUQQARIJCgVMT0JCWRACEgoKBklOR0FNRRADKmYKCUVTdGF0",
+            "VHlwZRISCg5DSEFSQUNURVJfREFUQRAAEhAKDE1PTlNURVJfREFUQRABEg8K",
+            "C0FUVEFDS19EQVRBEAISEwoPUFJPSkVDVElMRV9EQVRBEAMSDQoJSVRFTV9E",
+            "QVRBEAQqPQoPRUdhbWVPYmplY3RUeXBlEg0KCUNIQVJBQ1RFUhAAEgsKB01P",
+            "TlNURVIQARIOCgpQUk9KRUNUSUxFEAIqOgoORUNyZWF0dXJlU3RhdGUSCAoE",
+            "SURMRRAAEggKBE1PVkUQARIKCgZBVFRBQ0sQAhIICgRERUFEEAMqQQoORU1v",
+            "dmVEaXJlY3Rpb24SCAoETk9ORRAAEgYKAlVQEAESCAoERE9XThACEggKBExF",
+            "RlQQBBIJCgVSSUdIVBAIKmYKCUVJdGVtVHlwZRISCg5JVEVNX1RZUEVfTk9O",
+            "RRAAEhcKE0lURU1fVFlQRV9FUVVJUE1FTlQQARIYChRJVEVNX1RZUEVfQ09O",
+            "U1VNQUJMRRACEhIKDklURU1fVFlQRV9MT09UEAMqXgoORUVxdWlwbWVudFR5",
+            "cGUSFwoTRVFVSVBNRU5UX1RZUEVfTk9ORRAAEhkKFUVRVUlQTUVOVF9UWVBF",
+            "X1dFQVBPThABEhgKFEVRVUlQTUVOVF9UWVBFX0FSTU9SEAIqTwoLRVdlYXBv",
+            "blR5cGUSFAoQV0VBUE9OX1RZUEVfTk9ORRAAEhUKEVdFQVBPTl9UWVBFX1NX",
+            "T1JEEAESEwoPV0VBUE9OX1RZUEVfQk9XEAIqZAoKRUFybW9yVHlwZRITCg9B",
+            "Uk1PUl9UWVBFX05PTkUQABIVChFBUk1PUl9UWVBFX0hFTE1FVBABEhQKEEFS",
+            "TU9SX1RZUEVfQ0hFU1QQAhIUChBBUk1PUl9UWVBFX0JPT1RTEAMqRwoPRUNv",
+            "bnN1bWFibGVUeXBlEhgKFENPTlNVTUFCTEVfVFlQRV9OT05FEAASGgoWQ09O",
+            "U1VNQUJMRV9UWVBFX1BPVElPThABKiMKC0VBdHRhY2tUeXBlEgkKBU1FTEVF",
+            "EAASCQoFUkFOR0UQAUIbqgIYR29vZ2xlLlByb3RvYnVmLlByb3RvY29sYgZw",
+            "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Google.Protobuf.Protocol.EMessageID), typeof(global::Google.Protobuf.Protocol.EClientState), typeof(global::Google.Protobuf.Protocol.EStatType), typeof(global::Google.Protobuf.Protocol.EGameObjectType), typeof(global::Google.Protobuf.Protocol.ECreatureState), typeof(global::Google.Protobuf.Protocol.EMoveDirection), typeof(global::Google.Protobuf.Protocol.EItemType), typeof(global::Google.Protobuf.Protocol.EEquipmentType), typeof(global::Google.Protobuf.Protocol.EWeaponType), typeof(global::Google.Protobuf.Protocol.EArmorType), typeof(global::Google.Protobuf.Protocol.EConsumableType), typeof(global::Google.Protobuf.Protocol.EAttackType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -190,7 +190,7 @@ namespace Google.Protobuf.Protocol {
   }
 
   public enum EStatType {
-    [pbr::OriginalName("OBJECT_DATA")] ObjectData = 0,
+    [pbr::OriginalName("CHARACTER_DATA")] CharacterData = 0,
     [pbr::OriginalName("MONSTER_DATA")] MonsterData = 1,
     [pbr::OriginalName("ATTACK_DATA")] AttackData = 2,
     [pbr::OriginalName("PROJECTILE_DATA")] ProjectileData = 3,
@@ -305,7 +305,7 @@ namespace Google.Protobuf.Protocol {
 
     /// <summary>Field number for the "statType" field.</summary>
     public const int StatTypeFieldNumber = 1;
-    private global::Google.Protobuf.Protocol.EStatType statType_ = global::Google.Protobuf.Protocol.EStatType.ObjectData;
+    private global::Google.Protobuf.Protocol.EStatType statType_ = global::Google.Protobuf.Protocol.EStatType.CharacterData;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::Google.Protobuf.Protocol.EStatType StatType {
@@ -351,7 +351,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (StatType != global::Google.Protobuf.Protocol.EStatType.ObjectData) hash ^= StatType.GetHashCode();
+      if (StatType != global::Google.Protobuf.Protocol.EStatType.CharacterData) hash ^= StatType.GetHashCode();
       if (Data.Length != 0) hash ^= Data.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -371,7 +371,7 @@ namespace Google.Protobuf.Protocol {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (StatType != global::Google.Protobuf.Protocol.EStatType.ObjectData) {
+      if (StatType != global::Google.Protobuf.Protocol.EStatType.CharacterData) {
         output.WriteRawTag(8);
         output.WriteEnum((int) StatType);
       }
@@ -389,7 +389,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (StatType != global::Google.Protobuf.Protocol.EStatType.ObjectData) {
+      if (StatType != global::Google.Protobuf.Protocol.EStatType.CharacterData) {
         output.WriteRawTag(8);
         output.WriteEnum((int) StatType);
       }
@@ -407,7 +407,7 @@ namespace Google.Protobuf.Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (StatType != global::Google.Protobuf.Protocol.EStatType.ObjectData) {
+      if (StatType != global::Google.Protobuf.Protocol.EStatType.CharacterData) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) StatType);
       }
       if (Data.Length != 0) {
@@ -425,7 +425,7 @@ namespace Google.Protobuf.Protocol {
       if (other == null) {
         return;
       }
-      if (other.StatType != global::Google.Protobuf.Protocol.EStatType.ObjectData) {
+      if (other.StatType != global::Google.Protobuf.Protocol.EStatType.CharacterData) {
         StatType = other.StatType;
       }
       if (other.Data.Length != 0) {

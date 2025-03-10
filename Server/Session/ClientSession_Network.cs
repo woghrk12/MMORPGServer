@@ -125,8 +125,8 @@ namespace Server
             ClientState = EClientState.Connected;
 
             ConnectedResponse packet = new();
-            List<ObjectStat> objectStatList = [.. DataManager.ObjectStatDictionary.Values];
-            packet.Stats.Add(new StatData() { StatType = EStatType.ObjectData, Data = JsonConvert.SerializeObject(objectStatList) });
+            List<CharacterStat> characterStatList = [.. DataManager.CharacterStatDictionary.Values];
+            packet.Stats.Add(new StatData() { StatType = EStatType.CharacterData, Data = JsonConvert.SerializeObject(characterStatList) });
             List<MonsterStat> monsterStatList = [.. DataManager.MonsterStatDictionary.Values];
             packet.Stats.Add(new StatData() { StatType = EStatType.MonsterData, Data = JsonConvert.SerializeObject(monsterStatList) });
             List<AttackStat> attackStatList = [.. DataManager.AttackStatDictionary.Values];

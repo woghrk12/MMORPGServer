@@ -1,7 +1,7 @@
 namespace Server.Data
 {
     [Serializable]
-    public class ObjectStat
+    public class CharacterStat
     {
         public int ID;
         public string Name;
@@ -10,21 +10,21 @@ namespace Server.Data
     }
 
     [Serializable]
-    public class ObjectStatData : ILoader<int, ObjectStat>
+    public class CharacterStatData : ILoader<int, CharacterStat>
     {
         #region Variables
 
-        public List<ObjectStat> ObjectStatList = new();
+        public List<CharacterStat> CharacterStatList = new();
 
         #endregion Variables
 
         #region Methods
 
-        public Dictionary<int, ObjectStat> MakeDictionary()
+        public Dictionary<int, CharacterStat> MakeDictionary()
         {
-            Dictionary<int, ObjectStat> dictionary = new();
+            Dictionary<int, CharacterStat> dictionary = new();
 
-            foreach (ObjectStat stat in ObjectStatList)
+            foreach (CharacterStat stat in CharacterStatList)
             {
                 dictionary.Add(stat.ID, stat);
             }

@@ -11,7 +11,7 @@ namespace Server
     {
         #region Properties
 
-        public static Dictionary<int, Data.ObjectStat> ObjectStatDictionary { private set; get; } = new();
+        public static Dictionary<int, Data.CharacterStat> CharacterStatDictionary { private set; get; } = new();
         public static Dictionary<int, Data.MonsterStat> MonsterStatDictionary { private set; get; } = new();
         public static Dictionary<int, Data.AttackStat> AttackStatDictionary { private set; get; } = new();
         public static Dictionary<int, Data.ProjectileStat> ProjectileStatDictionary { private set; get; } = new();
@@ -23,7 +23,7 @@ namespace Server
 
         public static void LoadData()
         {
-            ObjectStatDictionary = LoadJson<Data.ObjectStatData, int, Data.ObjectStat>("ObjectStatData").MakeDictionary();
+            CharacterStatDictionary = LoadJson<Data.CharacterStatData, int, Data.CharacterStat>("CharacterStatData").MakeDictionary();
             MonsterStatDictionary = LoadJson<Data.MonsterStatData, int, Data.MonsterStat>("MonsterStatData").MakeDictionary();
             AttackStatDictionary = LoadJson<Data.AttackStatData, int, Data.AttackStat>("AttackStatData").MakeDictionary();
             ProjectileStatDictionary = LoadJson<Data.ProjectileStatData, int, Data.ProjectileStat>("ProjectileStatData").MakeDictionary();
